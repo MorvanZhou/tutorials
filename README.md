@@ -1,4 +1,4 @@
-# tutorials
+# Python 练习 tutorials
 python 基础教程视频链接:
 https://www.youtube.com/watch?v=1PC3etgLwVc&list=PLXO45tsB95cIRP5gCi8AlYwQ1uFO2aQBw
 
