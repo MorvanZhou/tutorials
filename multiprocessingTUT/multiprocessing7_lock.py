@@ -1,3 +1,8 @@
+# View more python learning tutorial on my Youtube and Youku channel!!!
+
+# Youtube video tutorial: https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg
+# Youku video tutorial: http://i.youku.com/pythontutorial
+
 import multiprocessing as mp
 import time
 
