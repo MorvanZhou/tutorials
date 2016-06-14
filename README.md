@@ -18,4 +18,7 @@ https://www.youtube.com/playlist?list=PLXO45tsB95cKaHtKLn-jat8SOGndS3MEt
 python tkinter 跨平台 GUI 视频教学链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cJU56K4EtkG0YNGBZCuDwAH
 
+如果你是大陆的用户, 欢迎订阅我在优酷里的频道:
+http://i.youku.com/pythontutorial
+
 本github 提供这些视频链接的 python 学习相关代码
