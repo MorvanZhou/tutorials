@@ -32,6 +32,10 @@ editmenu.add_command(label='Cut', command=do_job)
 editmenu.add_command(label='Copy', command=do_job)
 editmenu.add_command(label='Paste', command=do_job)
 
+submenu = tk.Menu(filemenu)
+filemenu.add_cascade(label='Import', menu=submenu, underline=0)
+submenu.add_command(label="Submenu1", command=do_job)
+
 window.config(menu=menubar)
 
 window.mainloop()
