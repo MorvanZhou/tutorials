@@ -32,7 +32,7 @@ sess = tf.Session()
 sess.run(tf.initialize_all_variables())
 
 for i in range(1000):
-
+    pass
     if i % 50 == 0:
-
+         pass
 

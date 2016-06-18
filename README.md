@@ -3,7 +3,7 @@
 python 基础 教程视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cIRP5gCi8AlYwQ1uFO2aQBw
 
-python tensorflow 神经网络 学习教程 视频链接:
+python tensorflow 神经网络 机器学习 深度学习 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8
 
 python numpy & pandas 数据处理 学习教程 视频链接:
