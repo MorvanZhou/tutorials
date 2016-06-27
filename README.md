@@ -6,6 +6,9 @@ https://www.youtube.com/playlist?list=PLXO45tsB95cIRP5gCi8AlYwQ1uFO2aQBw
 python tensorflow 神经网络 机器学习 深度学习 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8
 
+python scikit-learn 机器学习 学习教程 视频链接:
+https://www.youtube.com/playlist?list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO
+
 python numpy & pandas 数据处理 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKKyC45gatc8wEc3Ue7BlI4
 
