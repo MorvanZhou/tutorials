@@ -13,12 +13,12 @@ import theano.tensor as T
 
 # activation function example
 x = T.dmatrix('x')
-s = 1 / (1 + T.exp(-x))
+s = 1 / (1 + T.exp(-x))    # logistic or soft step
 logistic = theano.function([x], s)
 print(logistic([[0, 1],[-1, -2]]))
 
 # multiply outputs for a function
-a , b = T.dmatrices('a', 'b')
+a, b = T.dmatrices('a', 'b')
 diff = a - b
 abs_diff = abs(diff)
 diff_squared = diff ** 2
