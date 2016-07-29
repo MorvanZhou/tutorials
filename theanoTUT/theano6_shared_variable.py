@@ -12,7 +12,7 @@ import theano
 import theano.tensor as T
 
 state = theano.shared(np.array(0,dtype=np.float64), 'state') # inital state = 0
-inc = T.scalar('inc', dtype=state.dtype)  # integer scalar  (dscalar = decimal scalar)
+inc = T.scalar('inc', dtype=state.dtype)
 accumulator = theano.function([inc], state, updates=[(state, state+inc)])
 
 # to get variable value
