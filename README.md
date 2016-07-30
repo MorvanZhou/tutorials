@@ -9,6 +9,9 @@ https://www.youtube.com/playlist?list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8
 python scikit-learn 机器学习 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO
 
+python theano 神经网络 机器学习 视频链接:
+https://www.youtube.com/playlist?list=PLXO45tsB95cKpDID642AjNkygrSR5X15T
+
 python numpy & pandas 数据处理 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKKyC45gatc8wEc3Ue7BlI4
 
