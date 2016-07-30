@@ -34,7 +34,7 @@ b = theano.shared(0., name="b")
 
 
 # Construct Theano expression graph
-p_1 = 1 / (1 + T.exp(-T.dot(x, w) - b))   # Logistic Probability that target = 1 (activation function)
+p_1 = T.nnet.sigmoid(T.dot(x, w) + b)   # Logistic Probability that target = 1 (activation function)
 prediction = p_1 > 0.5                    # The prediction thresholded
 xent = -y * T.log(p_1) - (1-y) * T.log(1-p_1) # Cross-entropy loss function
 cost = xent.mean() + 0.01 * (w ** 2).sum()# The cost to minimize (l2 regularization)
