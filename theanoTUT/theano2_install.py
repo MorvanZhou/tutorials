@@ -18,7 +18,7 @@ The must easy way to install theano is to use pip install.
 1. open your terminal (MacOS and Linux), or your command window (Windows)
 2. type "pip install theano" (for python 2x); type "pip3 install theano" (for python 3x)
 
-Note: to install theano on Windows machine may be a little bit stuggling. If you encounter any
+Note: to install theano on Windows machine may be a little bit struggling. If you encounter any
 problem, please refer to this web page:
 http://deeplearning.net/software/theano/install_windows.html#install-windows
 
