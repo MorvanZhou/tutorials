@@ -23,4 +23,4 @@ print(char_list.discard('d'))
 print(char_list.remove('d'))
 
 print(char_list.difference({'a', 'e', 'i'}))
-print(char_list.intersection({'a', 'e', 'i'})
+print(char_list.intersection({'a', 'e', 'i'}))
