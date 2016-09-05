@@ -7,7 +7,7 @@
 """
 Please note, this script is for python3+.
 If you are using python2+, please modify it accordingly.
-Tutorial page:
+Tutorial reference:
 http://www.python-course.eu/matplotlib_multiple_figures.php
 """
 
@@ -25,7 +25,7 @@ R = np.sqrt(X ** 2 + Y ** 2)
 # height value
 Z = np.sin(R)
 
-ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.cm.hot)
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('rainbow'))
 """
 ============= ================================================
         Argument      Description
@@ -44,7 +44,7 @@ ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.cm.hot)
 """
 
 # I think this is different from plt12_contours
-ax.contourf(X, Y, Z, zdir='z', offset=-2, cmap=plt.cm.hot)
+ax.contourf(X, Y, Z, zdir='z', offset=-2, cmap=plt.get_cmap('rainbow'))
 """
 ==========  ================================================
         Argument    Description

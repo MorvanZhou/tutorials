@@ -7,7 +7,7 @@
 """
 Please note, this script is for python3+.
 If you are using python2+, please modify it accordingly.
-Tutorial page:
+Tutorial reference:
 http://www.python-course.eu/matplotlib_multiple_figures.php
 """
 
