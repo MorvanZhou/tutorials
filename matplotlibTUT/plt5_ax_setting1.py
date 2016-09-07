@@ -29,9 +29,9 @@ plt.xlabel('I am x')
 plt.ylabel('I am y')
 
 # set new sticks
-new_sticks = np.linspace(-1, 2, 5)
-print(new_sticks)
-plt.xticks(new_sticks)
+new_ticks = np.linspace(-1, 2, 5)
+print(new_ticks)
+plt.xticks(new_ticks)
 # set tick labels
 plt.yticks([-2, -1.8, -1, 1.22, 3],
            [r'$really\ bad$', r'$bad$', r'$normal$', r'$good$', r'$really\ good$'])
