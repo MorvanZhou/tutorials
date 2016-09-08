@@ -6,6 +6,7 @@
 """
 Please note, this code is only for python 3+. If you are using python 2+, please modify the code accordingly.
 """
+from __future__ import print_function
 from sklearn.datasets import load_iris
 from sklearn.cross_validation import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
