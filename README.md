@@ -12,6 +12,9 @@ https://www.youtube.com/playlist?list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO
 python theano 神经网络 机器学习 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKpDID642AjNkygrSR5X15T
 
+python matplotlib 图像可视化 视频教程:
+https://www.youtube.com/playlist?list=PLXO45tsB95cKiBRXYqNNCw8AUo6tYen3l
+
 python numpy & pandas 数据处理 学习教程 视频链接:
 https://www.youtube.com/playlist?list=PLXO45tsB95cKKyC45gatc8wEc3Ue7BlI4
 
