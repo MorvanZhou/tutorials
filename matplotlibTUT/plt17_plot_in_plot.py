@@ -12,7 +12,6 @@ http://www.python-course.eu/matplotlib_multiple_figures.php
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 
 fig = plt.figure()
 x = [1, 2, 3, 4, 5, 6, 7]

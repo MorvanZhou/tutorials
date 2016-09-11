@@ -32,7 +32,7 @@ def animate(i):
 
 # Init only required for blitting to give a clean slate.
 def init():
-    line.set_ydata(np.ma.array(x, mask=True))
+    line.set_ydata(np.sin(x))
     return line,
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
