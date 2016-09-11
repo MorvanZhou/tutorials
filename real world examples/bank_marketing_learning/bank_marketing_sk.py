@@ -59,37 +59,47 @@ def feature_utility(data, selected_feature_name, target_name):
     plt.legend([bar[0] for bar in bars], target_classes, loc='best')
     plt.show()
 
+def encode_label(data):
+    la_en = preprocessing.LabelEncoder()
+    for col in ['job', 'marital', 'education', 'default', 'housing', 'loan',
+                'contact', 'month', 'poutcome', 'y']:
+        data[col] = bank_data[col].astype('category')
+        data[col] = la_en.fit_transform(bank_data[col])
+    return data
+
 dataset_path = ['bank.csv', 'bank-full.csv']
 bank_data = pd.read_csv(dataset_path[1], sep=';')
+print(bank_data.head())
 
 # good categorical features: job, marital, education, housing, loan, contact, month, poutcome
 # bad categorical features: default
 # feature_utility(bank_data, 'housing', 'y')
 
-le_en = preprocessing.LabelEncoder()
-for col in ['job', 'marital', 'education', 'default', 'housing', 'loan',
-            'contact', 'month', 'poutcome', 'y']:
-    bank_data[col] = bank_data[col].astype('category')
-    bank_data[col] = le_en.fit_transform(bank_data[col])
+bank_data = encode_label(bank_data)
 # print(bank_data.dtypes)
 # print(bank_data.head())
 
 X_data, y_data = bank_data.iloc[:, :-1], bank_data.iloc[:, -1]
+# show the percentage of answer yes and no.
+answer_no, answer_yes = y_data.value_counts()
+print('Percentage of answering no: ', answer_no/(answer_no+answer_yes))
+
 X_train, X_test, y_train, y_test = train_test_split(
     X_data, y_data,
     test_size=0.2)
 
-dt_clf = DecisionTreeClassifier()
-rf_clf = RandomForestClassifier()
+dt_clf = DecisionTreeClassifier(class_weight='balanced',)
+rf_clf = RandomForestClassifier(class_weight='balanced')
+# randomize the data, and run the cross validation for 5 times
 cv = ShuffleSplit(X_data.shape[0], n_iter=5,
-        test_size=0.2, random_state=0)
-print(cross_val_score(dt_clf, X_data, y_data, cv=cv, scoring='accuracy').mean())
-print(cross_val_score(rf_clf, X_data, y_data, cv=cv, scoring='accuracy').mean())
+        test_size=0.3, random_state=0)
+print(cross_val_score(dt_clf, X_data, y_data, cv=cv, scoring='f1').mean())
+print(cross_val_score(rf_clf, X_data, y_data, cv=cv, scoring='f1').mean())
 
-dt_clf.fit(X_train, y_train)
-print(dt_clf.score(X_test, y_test))
-rf_clf.fit(X_train, y_train)
-print(rf_clf.score(X_test, y_test))
+# dt_clf.fit(X_train, y_train)
+# print(dt_clf.score(X_test, y_test))
+# rf_clf.fit(X_train, y_train)
+# print(rf_clf.score(X_test, y_test))
 
 # print(rf_clf.predict(X_test.iloc[10, :][np.newaxis, :]))
 # print(y_test.iloc[10])
