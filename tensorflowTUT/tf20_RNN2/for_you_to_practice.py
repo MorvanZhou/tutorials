@@ -23,7 +23,7 @@ display_step = 10
 
 n_inputs = 28   # MNIST data input (img shape: 28*28)
 n_steps = 28    # time steps
-n_hidden_unis = 128   # neurons in hidden layer
+n_hidden_units = 128   # neurons in hidden layer
 n_classes = 10      # MNIST classes (0-9 digits)
 
 # tf Graph input
@@ -33,13 +33,13 @@ y = tf.placeholder(tf.float32, [None, n_classes])
 # Define weights
 weights = {
     # (28, 128)
-    'in': tf.Variable(tf.random_normal([n_inputs, n_hidden_unis])),
+    'in': tf.Variable(tf.random_normal([n_inputs, n_hidden_units])),
     # (128, 10)
-    'out': tf.Variable(tf.random_normal([n_hidden_unis, n_classes]))
+    'out': tf.Variable(tf.random_normal([n_hidden_units, n_classes]))
 }
 biases = {
     # (128, )
-    'in': tf.Variable(tf.constant(0.1, shape=[n_hidden_unis, ])),
+    'in': tf.Variable(tf.constant(0.1, shape=[n_hidden_units, ])),
     # (10, )
     'out': tf.Variable(tf.constant(0.1, shape=[n_classes, ]))
 }
