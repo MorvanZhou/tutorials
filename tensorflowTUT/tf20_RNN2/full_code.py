@@ -75,11 +75,11 @@ def RNN(X, weights, biases):
     # In here, we go for option 2.
     # dynamic_rnn receive Tensor (batch, steps, inputs) or (steps, batch, inputs) as X_in.
     # Make sure the time_major is changed accordingly.
-    outputs, states = tf.nn.dynamic_rnn(lstm_cell, X_in, initial_state=_init_state, time_major=False)
+    outputs, final_state = tf.nn.dynamic_rnn(lstm_cell, X_in, initial_state=_init_state, time_major=False)
 
     # hidden layer for output as the final results
     #############################################
-    results = tf.matmul(states[1], weights['out']) + biases['out']
+    results = tf.matmul(final_state[1], weights['out']) + biases['out']
 
     # # or
     # # unpack to list [(batch, outputs)..] * steps
