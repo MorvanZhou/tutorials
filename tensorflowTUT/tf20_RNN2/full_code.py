@@ -12,6 +12,9 @@ His code is a very good one for RNN beginners. Feel free to check it out.
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
+# set random seed for comparing the two result calculations
+tf.set_random_seed(1)
+
 # this is data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
@@ -79,12 +82,12 @@ def RNN(X, weights, biases):
 
     # hidden layer for output as the final results
     #############################################
-    results = tf.matmul(final_state[1], weights['out']) + biases['out']
+    # results = tf.matmul(final_state[1], weights['out']) + biases['out']
 
     # # or
-    # # unpack to list [(batch, outputs)..] * steps
-    # outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
-    # results = tf.matmul(outputs[-1], weights['out']) + biases['out']
+    # unpack to list [(batch, outputs)..] * steps
+    outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
+    results = tf.matmul(outputs[-1], weights['out']) + biases['out']
 
     return results
 
