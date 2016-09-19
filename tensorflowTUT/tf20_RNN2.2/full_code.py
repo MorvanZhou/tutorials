@@ -30,7 +30,7 @@ def get_batch():
     seq = np.sin(xs)
     res = np.cos(xs)
     BATCH_START += TIME_STEPS
-    # plt.plot(xs[0, :], seq[0, :])
+    # plt.plot(xs[0, :], res[0, :], 'r', xs[0, :], seq[0, :], 'b--')
     # plt.show()
     # returned seq, res and shape (batch, step, input)
     return [seq[:, :, np.newaxis], res[:, :, np.newaxis], xs]
