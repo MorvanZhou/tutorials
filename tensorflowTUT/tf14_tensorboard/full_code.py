@@ -49,3 +49,7 @@ writer = tf.train.SummaryWriter("logs/", sess.graph)
 # important step
 sess.run(tf.initialize_all_variables())
 
+# direct to the local dir and run this in terminal:
+# $ tensorboard --logdir=logs
+
+
