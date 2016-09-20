@@ -20,7 +20,6 @@ INPUT_SIZE = 1
 OUTPUT_SIZE = 1
 CELL_SIZE = 10
 LR = 0.006
-BATCH_START_TEST = 0
 
 
 def get_batch():
@@ -32,7 +31,7 @@ def get_batch():
     BATCH_START += TIME_STEPS
     # plt.plot(xs[0, :], res[0, :], 'r', xs[0, :], seq[0, :], 'b--')
     # plt.show()
-    # returned seq, res and shape (batch, step, input)
+    # returned seq, res and xs: shape (batch, step, input)
     return [seq[:, :, np.newaxis], res[:, :, np.newaxis], xs]
 
 
@@ -91,7 +90,7 @@ class LSTMRNN(object):
             [tf.reshape(self.ys, [-1], name='reshape_target')],
             [tf.ones([self.batch_size * self.n_steps], dtype=tf.float32)],
             average_across_timesteps=True,
-            softmax_loss_function=self.msr_error,
+            softmax_loss_function=self.ms_error,
             name='losses'
         )
         with tf.name_scope('average_cost'):
@@ -101,7 +100,7 @@ class LSTMRNN(object):
                 name='average_cost')
             tf.scalar_summary('cost', self.cost)
 
-    def msr_error(self, y_pre, y_target):
+    def ms_error(self, y_pre, y_target):
         return tf.square(tf.sub(y_pre, y_target))
 
     def _weight_variable(self, shape, name='weights'):
