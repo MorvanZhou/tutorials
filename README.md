@@ -22,6 +22,15 @@
 
 ---
 
+### [机器学习-简介系列](https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/README.md)
+[<img src='https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/ML%20brief%20intro.png?raw=true' height=200>](https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/README.md)
+
+这是对于机器学习的各种方法的一个简短介绍, 还有学好机器学习很多实用的小技巧.
+
+[机器学习-简介系列 视频教程](https://www.youtube.com/playlist?list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin)
+以及所有视频的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/README.md)
+---
+
 ### [Tensorflow](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
 [<img src="https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Tensorflow%20course%20cover%20page.jpg?raw=true" height='200'>](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
 
