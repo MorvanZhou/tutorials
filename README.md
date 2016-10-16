@@ -3,8 +3,9 @@
 
 [<img src="https://github.com/MorvanZhou/tutorials/blob/master/%E7%89%87%E5%A4%B4.png?raw=true" height="200">](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
 
-## 大陆没办法翻墙, 我们还有优酷
+## 大陆没办法翻墙, 我们还有优酷, 网易云
 [优酷频道主页](http://i.youku.com/pythontutorial)
+[网易云课堂](http://study.163.com/u/2635988091)
 
 ## 有梯子的同学, youtube 等着你呢
 [Youtube 频道主页](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg)
