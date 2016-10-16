@@ -5,10 +5,12 @@
   * Tensorflow 简介
   * 在这之前, [<什么是机器学习>](https://www.youtube.com/watch?v=YY7-VKXybjc&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=1), [<什么是神经网络>](https://www.youtube.com/watch?v=RSRkp8VAavQ&index=2&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin)这两段简短的视频介绍都是很推荐的. 优酷的这两段视频在这: [<什么是机器学习>](http://v.youku.com/v_show/id_XMTYyMjk2NDIwOA==.html?f=27892935&o=1), [<什么是神经网络>](http://v.youku.com/v_show/id_XMTU5NDc3MDQwOA==.html?f=27892935&o=1).
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMzQzMDA3Mg==.html?f=27327189&o=1)
+
 ---
 2. [安装](https://www.youtube.com/watch?v=pk6sAg2M-fU&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=3)
   * 介绍如何安装和安装时的限制
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMzQzMjEyNA==.html?f=27327189&o=1)
+---
 
 3. [例子1](https://www.youtube.com/watch?v=tM4z02cDNa4&index=4&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8)
   * 用一个线性回归的例子来说明神经网络究竟在干什么. 我们还可视化了整个学习的过程. 代码和实现我们会在[例子3](https://www.youtube.com/watch?v=FTR36h-LKcY&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=11)中慢慢说.
