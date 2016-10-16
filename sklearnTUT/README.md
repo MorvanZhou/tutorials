@@ -39,7 +39,7 @@
 
 
 7. [Normalization 数据标准化](https://www.youtube.com/watch?v=3GxT8n0ShsU&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO&index=8)
-  * 请参考<机器学习-简介系列>中的[数据标准化4分钟介绍](https://www.youtube.com/watch?v=1YpKUpitT98&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=7). 优酷的[数据便遵化视频在这](http://v.youku.com/v_show/id_XMTY5MjU1MTg0NA==.html?f=27892935&o=1) ([代码](https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sk7_normalization.py))
+  * 请参考<机器学习-简介系列>中的[数据标准化4分钟介绍](https://www.youtube.com/watch?v=1YpKUpitT98&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=7). 优酷的[数据标准化视频在这](http://v.youku.com/v_show/id_XMTY5MjU1MTg0NA==.html?f=27892935&o=1) ([代码](https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sk7_normalization.py))
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxNjgwNjkxNg==.html?f=27469882&o=1)
 
 
