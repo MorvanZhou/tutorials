@@ -44,7 +44,7 @@
   [<img src='https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/LSTM.png?raw=true' height=200>](https://www.youtube.com/watch?v=Vdg5zlZAXnU&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=5)
 
 
-
+---
 
 ## 机器学习小窍门:
 * [**怎样检验神经网络**](https://www.youtube.com/watch?v=vBJ_XbRnzKE&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=6)
