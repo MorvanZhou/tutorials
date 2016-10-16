@@ -9,6 +9,7 @@
 ## 以下内容都是基于 Youtube 频道的结构咯
 ### Python 基础
 [Python 基础 教程视频链接](https://www.youtube.com/playlist?list=PLXO45tsB95cIRP5gCi8AlYwQ1uFO2aQBw)
+
 对于 python 还很陌生的同学们,没问题, 这里是一个快速入门的通道. 这不一定是最好的通道, 不过是通往机器学习道路上比较好的通道.我筛选了一些没必要的内容, 只留下专门为了机器学习有关的内容.
 
 ### Tensorflow
