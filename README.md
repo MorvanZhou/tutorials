@@ -15,6 +15,7 @@
 
 ### Tensorflow
 [Tensorflow 神经网络 深度学习 视频教程](https://www.youtube.com/playlist?list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8)
+以及 Tensorflow 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
 
 Tensorflow 是神经网络方面的主力军之一. 这一套教程从最基础的方面,一直简单风趣地讲解到最高级的方面. 是入门的Tensorflow 神经网络的首选.
 
