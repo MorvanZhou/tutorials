@@ -29,6 +29,7 @@
 
 [机器学习-简介系列 视频教程](https://www.youtube.com/playlist?list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin)
 以及所有视频的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/README.md)
+
 ---
 
 ### [Tensorflow](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
