@@ -2,6 +2,17 @@
 # Sklearn 学习目录
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sklearn%20cover%20page.jpg?raw=true' height=200>
 
+
+Sklearn 是汇集了多种机器学习方法的 python 包. 如果是入门机器学习, 这里面总能有适合你问题的机器学习方法. 而且他以高度统一的学习模式规范了所有学习方法. 我们知道用一种, 就知道使用其他所有种的学习方法. Sklearn 是一款很好上手的机器学习包.
+
+* 这套教材主要包含了:
+ * 了解 sklearn 的使用规范和原则;
+ * 知道怎么去找合适的机器学习方法;
+ * 如何按照规范调整个个参数;
+ * 运用它强大的数据库;
+ * 机器学习的一些重要原则;
+ 
+ 
 ---
 ## *点击标题进入Youtube视频教程*
 
