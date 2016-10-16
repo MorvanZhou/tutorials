@@ -10,6 +10,7 @@
   * 在这之前, [<什么是机器学习>](https://www.youtube.com/watch?v=YY7-VKXybjc&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=1), 这段简短的视频介绍都是很推荐的. 优酷的这段视频在这: [<什么是机器学习>](http://v.youku.com/v_show/id_XMTYyMjk2NDIwOA==.html?f=27892935&o=1).
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMjg1NjQ4MA==.html?f=27469882&o=1)
 
+
 2. [安装](https://www.youtube.com/watch?v=FG3W1_8ogBE&index=3&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO)
   * 介绍如何安装
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMjg5MTYyOA==.html?f=27469882&o=1)
@@ -18,7 +19,9 @@
 3. [如何选择机器学习方法](https://www.youtube.com/watch?v=GB8SNR-cT7w&index=4&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO)
   * 机器学习的方法有很多, 我们如何[通过比较](http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html)来选择适合的机器学习方法呢.
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMjk0MzY3Ng==.html?f=27469882&o=1)
+
 <img src='http://scikit-learn.org/stable/_static/ml_map.png' height=250>
+
 
 4. [通用学习模式](https://www.youtube.com/watch?v=EvV99YhSsJU&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO&index=5)
   * Sklearn 是一个高度统一的模块, 所有的学习方法都有类似的学习语句. 知一懂百. ([代码](https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sk4_learning_pattern.py))
