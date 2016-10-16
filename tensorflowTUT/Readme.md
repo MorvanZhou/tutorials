@@ -1,7 +1,18 @@
 # Tensorflow 视频教程结构
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Tensorflow%20course%20cover%20page.jpg?raw=true' height=200>
+
 这是一个从基础开始,一层层添加难度的 Tensorflow 视频教程. 从代码的格式一直讲到如何创建多层神经网络, 和当下流行的CNN, RNN等等.
 是新手入门的首选.
+
+内容主要包括:
+  Tensorflow 基础;
+  Tensorboard 可视化工具;
+  制作简单神经网络;
+  处理分类, 回归问题, 深度学习;
+  CNN 卷积神经网络;
+  RNN 循环神经网络.
+  
+  
 ---
 ## *点击标题进入 Youtube 视频教程*
 1. [Why? ](https://www.youtube.com/watch?v=vZ263nfbh8g&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=2)
