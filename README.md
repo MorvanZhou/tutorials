@@ -1,4 +1,5 @@
-# Python 练习 tutorials
+# 关于本 github 的介绍
+这个 github 是我做 python 机器学习视频教程的支柱. 里面都是视频中提到的代码源码.
 
 ## 大陆没办法翻墙, 我们还有优酷
 [优酷频道主页](http://i.youku.com/pythontutorial)
