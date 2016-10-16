@@ -20,7 +20,7 @@
   * 机器学习的方法有很多, 我们如何[通过比较](http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html)来选择适合的机器学习方法呢.
   * [优酷链接](http://v.youku.com/v_show/id_XMTYxMjk0MzY3Ng==.html?f=27469882&o=1)
 
-<img src='http://scikit-learn.org/stable/_static/ml_map.png' height=250>
+  <img src='http://scikit-learn.org/stable/_static/ml_map.png' height=250>
 
 
 4. [通用学习模式](https://www.youtube.com/watch?v=EvV99YhSsJU&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO&index=5)
