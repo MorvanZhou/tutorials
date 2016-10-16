@@ -67,7 +67,7 @@
 
 17. [Dropout 过拟合问题](https://www.youtube.com/watch?v=f2F9Xsd7KVk&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=18)
   * 请参考过拟合在<[机器学习-简介系列](https://www.youtube.com/watch?v=e9OKufD6lRM&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin&index=10)>的4分钟介绍. ([优酷的<机器学习-简介系列>](http://v.youku.com/v_show/id_XMTczNjA2Nzc5Ng==.html?f=27892935&o=1)). 这节实现了用 dropout 解决过拟合的途径. ([代码](https://github.com/MorvanZhou/tutorials/tree/master/tensorflowTUT/tf17_dropout))
-  * * [优酷链接](http://v.youku.com/v_show/id_XMTYxODI2Mzk5Ng==.html?f=27327189&o=1)
+  * [优酷链接](http://v.youku.com/v_show/id_XMTYxODI2Mzk5Ng==.html?f=27327189&o=1)
 
 18. [CNN 1 卷积神经网络](https://www.youtube.com/watch?v=tjcgL5RIdTM&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=19)
   * 请参考CNN 在<[机器学习-简介系列](https://www.youtube.com/watch?v=hMIZ85t9r9A&index=3&list=PLXO45tsB95cIFm8Y8vMkNNPPXAtYXwKin)>中的介绍. ([优酷的<机器学习-简介系列>](http://v.youku.com/v_show/id_XMTY4MzAyNTc4NA==.html?f=27892935&o=1))
@@ -75,7 +75,7 @@
 
 19. [CNN 2 卷积神经网络](https://www.youtube.com/watch?v=JCBe_yjDmY8&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=20)
   * 代码部分. ([代码](https://github.com/MorvanZhou/tutorials/tree/master/tensorflowTUT/tf18_CNN2))
-  [优酷链接](http://v.youku.com/v_show/id_XMTYyMTY1MjMwOA==.html?f=27327189&o=1)
+  * [优酷链接](http://v.youku.com/v_show/id_XMTYyMTY1MjMwOA==.html?f=27327189&o=1)
 
 20. [CNN 3 卷积神经网络](https://www.youtube.com/watch?v=pjjH2dGGwwY&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=21)
   * 代码部分. ([代码](https://github.com/MorvanZhou/tutorials/tree/master/tensorflowTUT/tf18_CNN3))
