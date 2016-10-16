@@ -5,10 +5,13 @@
 
 ## 大陆没办法翻墙, 我们还有优酷, 网易云
 [优酷频道主页](http://i.youku.com/pythontutorial)
+
 [网易云课堂](http://study.163.com/u/2635988091)
+
 
 ## 有梯子的同学, youtube 等着你呢
 [Youtube 频道主页](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg)
+
 
 ## 以下内容都是基于 Youtube 频道的结构咯
 ### Python 基础
