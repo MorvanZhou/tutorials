@@ -3,7 +3,7 @@
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sklearn%20cover%20page.jpg?raw=true' height=200>
 
 ---
-# 点击标题进入视频教程
+## *点击标题进入Youtube视频教程*
 
 1. [Why? ](https://www.youtube.com/watch?v=7wWMP2elSvE&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO&index=2)
   * Scikit-learn 简单介绍
