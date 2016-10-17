@@ -8,7 +8,8 @@
 * 这套教材主要包含了:
  * 机器学习的各种方法;
  * 机器学习的各种小窍门;
- 
+
+更多其他的学习[教程资源](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
  
 ---
 ## *点击标题进入Youtube视频教程*
