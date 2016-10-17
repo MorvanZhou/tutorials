@@ -137,13 +137,12 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 
 ## 赞助, 让教学变得更好
 
-
-<form style="text-align:center;" method="post" action="https://shenghuo.alipay.com/send/payment/fill.htm" target="_blank">
-  <input type="hidden" value="604619004@qq.com" name="optEmail">
-  <input type="hidden" value="10" name="payAmount">
-  <input type="hidden" name="支持继续制作优质视频" placeholder="付款说明">
-  <input type="image" value="submit" src="https://t.alipayobjects.com/images/T1HHFgXXVeXXXXXXXX.png" name="pay"> 
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/zh_XC/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal——最安全便捷的在线支付方式！">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
 </form>
 
-<input type="test" value='dasda'>
 
