@@ -145,12 +145,21 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
 </form>
 
+
 <div>
+
 <form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK">
+
 <input name="optEmail" type="hidden" value="yypstd@vip.qq.com" />//收款地址
+
 <input name="payAmount" type="hidden" value="100" />             //金额
+
 <input id="title" name="title" type="hidden" value="付款说明" />  //付款说明
+
 <input name="memo" type="hidden" value="备注" />                 //备注（按需修改）
+
 <input name="pay" type="image" value="转账" src="http://file.arefly.com/alipay.png" />
+
 </form>
+
 </div>
