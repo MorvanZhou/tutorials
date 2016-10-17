@@ -12,7 +12,8 @@
   * CNN 卷积神经网络;
   * RNN 循环神经网络.
   
-  
+更多其他的学习[教程资源](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
+
 ---
 ## *点击标题进入 Youtube 视频教程*
 1. [**Why?** ](https://www.youtube.com/watch?v=vZ263nfbh8g&list=PLXO45tsB95cKI5AIlf5TxxFPzb-0zeVZ8&index=2)
