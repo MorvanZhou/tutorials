@@ -47,7 +47,7 @@ Tensorflow 是神经网络方面的主力军之一. 这一套教程从最基础�
 
 [Tensorflow 神经网络 深度学习 视频教程(优酷)](http://www.youku.com/playlist_show/id_27327189.html)
 
-以及<Tensorflow>的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
+以及 Tensorflow 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Readme.md)
 
 ---
 
@@ -60,7 +60,7 @@ SciKit-Learn 汇集了各种各样的机器学习方法, 是一个全方面的�
 
 [scikit-learn 机器学习 视频教程(优酷)](http://www.youku.com/playlist_show/id_27469882.html)
 
-以及 <Sklearn> 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/README.md)
+以及 Sklearn 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/README.md)
 
 ---
 
@@ -73,7 +73,7 @@ Theano 算得上是 Tensorflow 的前身, 和 Tensorflow 有着类似的结构�
 
 [Theano 神经网络 机器学习 视频教程(优酷)](http://www.youku.com/playlist_show/id_27743371.html)
 
-以及 <Theano> 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/theanoTUT/README.md)
+以及 Theano 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/theanoTUT/README.md)
 
 
 ---
@@ -87,7 +87,7 @@ Theano 算得上是 Tensorflow 的前身, 和 Tensorflow 有着类似的结构�
 
 [Matplotlib 图像可视化 视频教程(优酷)](http://www.youku.com/playlist_show/id_28097045.html)
 
-以及 <Matplotlib> 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/matplotlibTUT/README.md)
+以及 Matplotlib 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/matplotlibTUT/README.md)
 
 ---
 
@@ -100,7 +100,7 @@ Theano 算得上是 Tensorflow 的前身, 和 Tensorflow 有着类似的结构�
 
 [Numpy & Pandas 数据处理 视频教程(优酷)](http://www.youku.com/playlist_show/id_27329155.html)
 
-以及 <Numpy & Pandas> 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/numpy%26pandas/README.md)
+以及 Numpy & Pandas 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/numpy%26pandas/README.md)
 
 ---
 
