@@ -145,10 +145,5 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
   <input type="image" value="submit" src="https://t.alipayobjects.com/images/T1HHFgXXVeXXXXXXXX.png" name="pay"> 
 </form>
 
+<input type="test" value='dasda'>
 
-Which of these features will you need?
-[+] simplicity
-[-] Don't know
-[-] complete
-
-[ok]
