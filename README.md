@@ -2,7 +2,7 @@
 这个 github 是我做 python 机器学习视频教程的支柱. 里面都是视频中提到的代码源码. 主要做的方面是机器学习的, 包括神经网络等等. 
 自己的 research 是在神经网络和强化学习方面, 所以以后也会补上强化学习的教程, 敬请期待. 欢迎大家分享传播, 让我们都能轻松的学习~
 
-[<img src="https://github.com/MorvanZhou/tutorials/blob/master/%E7%89%87%E5%A4%B4.png?raw=true" height="200">](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
+[<img src="https://github.com/MorvanZhou/tutorials/blob/master/%E7%89%87%E5%A4%B4.png?raw=true" height="200">](http://morvanzhou.github.io/tutorials/)
 
 
 ## 大陆没办法翻墙, 我们还有优酷, 网易云
