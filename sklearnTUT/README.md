@@ -1,5 +1,5 @@
 
-# Sklearn 学习目录
+# Sklearn 学习目录 (莫烦Python)
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/sklearnTUT/sklearn%20cover%20page.jpg?raw=true' height=200>
 
 
