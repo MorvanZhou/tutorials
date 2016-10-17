@@ -136,8 +136,7 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 ---
 
 ## 赞助, 让教学变得更好
-<textarea class="mdhtmlform-md">## Write markdown in the textarea!</textarea>
-<br /><br />
+
 
 <form style="text-align:center;" method="post" action="https://shenghuo.alipay.com/send/payment/fill.htm" target="_blank">
   <input type="hidden" value="604619004@qq.com" name="optEmail">
@@ -146,4 +145,10 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
   <input type="image" value="submit" src="https://t.alipayobjects.com/images/T1HHFgXXVeXXXXXXXX.png" name="pay"> 
 </form>
 
-<textarea class="mdhtmlform-html" style="display: none;"></textarea>
+
+Which of these features will you need?
+[+] simplicity
+[-] Don't know
+[-] complete
+
+[ok]
