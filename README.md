@@ -136,7 +136,8 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 ---
 
 ## 赞助, 让教学变得更好
-
+<html>
+<body>
 <form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="post" target="_blank" accept-charset="GBK" id="alipayForm">
 <input name="optEmail" type="hidden" value="604619004@qq.com" />
 <input name="payAmount" type="hidden" value="10.00" />
@@ -144,3 +145,6 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 <input name="memo" type="hidden" value="支持继续做优质视频" />
 <input name="pay" type="image" src="https://img.alipay.com/sys/personalprod/style/mc/btn-index.png" width="250" height="58">
 </form>
+
+</body>
+</html>
