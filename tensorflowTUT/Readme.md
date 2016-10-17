@@ -1,4 +1,4 @@
-# Tensorflow 视频教程结构
+# 莫烦Python Tensorflow 视频教程结构
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/Tensorflow%20course%20cover%20page.jpg?raw=true' height=200>
 
 这是一个从基础开始,一层层添加难度的 Tensorflow 视频教程. 从代码的格式一直讲到如何创建多层神经网络, 和当下流行的CNN, RNN等等.
