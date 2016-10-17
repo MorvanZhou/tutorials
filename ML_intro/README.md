@@ -1,5 +1,5 @@
 
-# 机器学习-简介系列 学习目录
+# 机器学习-简介系列 学习目录 (莫烦Python)
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/ML_intro/ML%20brief%20intro.png?raw=true' height=200>
 
 机器学习本身很复杂, 而且万事开口难. 不过如果我们有了生动的比喻和有趣的说明, 相信在困难的事情都能被慢慢解决. 这个教学视频系列不会专注算法的实现,
