@@ -134,12 +134,13 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 以及 tkinter 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/tkinterTUT/README.md)
 
 ---
----
 
-<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK">
-	<input name="optEmail" type="hidden" value="yypstd@vip.qq.com" />//收款地址
-	<input name="payAmount" type="hidden" value="100" />             //金额
-	<input id="title" name="title" type="hidden" value="付款说明" />  //付款说明
-	<input name="memo" type="hidden" value="备注" />                 //备注（按需修改）
-	<input name="pay" type="image" value="转账" src="http://file.arefly.com/alipay.png" />
+## 赞助, 让教学变得更好
+
+<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="post" target="_blank" accept-charset="GBK" id="alipayForm">
+<input name="optEmail" type="hidden" value="604619004@qq.com" />
+<input name="payAmount" type="hidden" value="10.00" />
+<input id="title" name="title" type="hidden" value="支付宝赞助" />
+<input name="memo" type="hidden" value="支持继续做优质视频" />
+<input name="pay" type="image" src="https://img.alipay.com/sys/personalprod/style/mc/btn-index.png" width="250" height="58">
 </form>
