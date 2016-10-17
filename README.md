@@ -133,7 +133,8 @@ Tkinter 是 python 自带的可视化窗口包, 可以用来做 simulation 的�
 
 以及 tkinter 的[学习目录](https://github.com/MorvanZhou/tutorials/blob/master/tkinterTUT/README.md)
 
-
+---
+---
 
 <form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK">
 	<input name="optEmail" type="hidden" value="yypstd@vip.qq.com" />//收款地址
