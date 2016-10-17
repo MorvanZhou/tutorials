@@ -2,7 +2,7 @@
 # Matplotlib 学习目录
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/matplotlibTUT/cover%20page.jpg?raw=true' height=200>
 
-Matplotli 是我们的数据可视化好帮手, 他能呈现出2D, 3D 的数据形式,而且还能做动画. 如果你对坐标显示还有特殊要求,他都能满足你的要求.
+Matplotlib 是我们的数据可视化好帮手, 他能呈现出2D, 3D 的数据形式,而且还能做动画. 如果你对坐标显示还有特殊要求,他都能满足你的要求.
 可以说是高度自主化的一个 python 可视化模块包.
 
 
@@ -15,6 +15,8 @@ Matplotli 是我们的数据可视化好帮手, 他能呈现出2D, 3D 的数据�
   * 3D 图;
   * 多图显示(subplot);
   * 动画;
+
+更多其他的学习[教程资源](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
 
 ---
 ## *点击标题进入Youtube视频教程*
