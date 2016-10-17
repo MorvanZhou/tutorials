@@ -11,7 +11,8 @@ Sklearn 是汇集了多种机器学习方法的 python 包. 如果是入门机�
  * 如何按照规范调整个个参数;
  * 运用它强大的数据库;
  * 机器学习的一些重要原则;
- 
+
+更多其他的学习[教程资源](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
  
 ---
 ## *点击标题进入Youtube视频教程*
