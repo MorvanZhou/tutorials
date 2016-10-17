@@ -16,7 +16,7 @@ Matplotlib 是我们的数据可视化好帮手, 他能呈现出2D, 3D 的数据
   * 多图显示(subplot);
   * 动画;
 
-更多其他的学习[教程资源](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
+更多其它的学习[教程资源点这里](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
 
 ---
 ## *点击标题进入Youtube视频教程*
