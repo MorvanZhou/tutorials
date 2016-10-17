@@ -6,7 +6,8 @@ Tkinter 是 python 的一个跨平GUi 包. 他是一个制作窗口文件, 做�
 * 这套教材主要包含了:
  * 窗口的各种小部件;
  * 实际运用的一个登陆窗口的例子;
- 
+
+更多其他的学习[教程资源点这里](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
  
 ---
 ## *点击标题进入Youtube视频教程*
