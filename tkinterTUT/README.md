@@ -1,4 +1,4 @@
-# Tkinter 学习目录
+# Tkinter 学习目录 (莫烦Python)
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/tkinterTUT/cover%20page.jpg?raw=true' height=200>
 
 Tkinter 是 python 的一个跨平GUi 包. 他是一个制作窗口文件, 做模拟的最简单,也是最方便的模块. 不用下载安装其他的包, 也不用担心哪个系统是不是不兼容.
