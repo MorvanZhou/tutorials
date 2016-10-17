@@ -1,5 +1,5 @@
   
-# Matplotlib 学习目录
+# Matplotlib 学习目录 (莫烦Python)
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/matplotlibTUT/cover%20page.jpg?raw=true' height=200>
 
 Matplotlib 是我们的数据可视化好帮手, 他能呈现出2D, 3D 的数据形式,而且还能做动画. 如果你对坐标显示还有特殊要求,他都能满足你的要求.
