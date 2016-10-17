@@ -10,7 +10,8 @@ Theano 算得上是 Tensorflow 的前身, 也是一种非常优秀的神经网�
  * 如何按照规范调整个个参数;
  * 运用它强大的数据库;
  * 机器学习的一些重要原则;
- 
+
+更多其他的学习[教程资源点这里](https://github.com/MorvanZhou/tutorials/blob/master/README.md)
  
 ---
 ## *点击标题进入Youtube视频教程*
