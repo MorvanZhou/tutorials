@@ -1,5 +1,5 @@
 
-# Numpy & Pandas 学习目录
+# Numpy & Pandas 学习目录 (莫烦Python)
 <img src='https://github.com/MorvanZhou/tutorials/blob/master/numpy&pandas/cover%20page.jpg?raw=true' height=200>
 
 
