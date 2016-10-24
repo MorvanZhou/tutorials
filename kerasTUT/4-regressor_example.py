@@ -14,7 +14,6 @@ import numpy as np
 np.random.seed(1337)  # for reproducibility
 from keras.models import Sequential
 from keras.layers import Dense
-import numpy as np
 import matplotlib.pyplot as plt
 
 # create some data
@@ -48,3 +47,9 @@ cost = model.evaluate(X_test, Y_test, batch_size=40)
 print('test cost:', cost)
 W, b = model.layers[0].get_weights()
 print('Weights=', W, '\nbiases=', b)
+
+# plotting the prediction
+Y_pred = model.predict(X_test)
+plt.scatter(X_test, Y_test)
+plt.plot(X_test, Y_pred)
+plt.show()
