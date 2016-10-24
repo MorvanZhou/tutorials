@@ -30,12 +30,13 @@ for step in range(301):
     cost = model.train_on_batch(X_train, Y_train)
 
 # save
-model.save('my_model.h5')   # HDF5 file
+print('test before save: ', model.predict(X_test[0:2]))
+model.save('my_model.h5')   # HDF5 file, you have to pip3 install h5py if don't have it
 del model  # deletes the existing model
 
 # load
 model = load_model('my_model.h5')
-
+print('test after load: ', model.predict(X_test[0:2]))
 """
 # save and load weights
 model.save_weights('my_model_weights.h5')
