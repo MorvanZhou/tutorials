@@ -35,4 +35,4 @@ for step in range(201):
     if step % 20 == 0:
         print(step, sess.run(Weights), sess.run(biases))
 
-
+sess.close()
