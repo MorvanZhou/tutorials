@@ -67,3 +67,5 @@ for i in range(500):
         test_result = sess.run(merged, feed_dict={xs: X_test, ys: y_test, keep_prob: 1})
         train_writer.add_summary(train_result, i)
         test_writer.add_summary(test_result, i)
+
+sess.close()
