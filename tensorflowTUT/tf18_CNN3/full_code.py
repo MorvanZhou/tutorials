@@ -86,3 +86,4 @@ for i in range(1000):
         print(compute_accuracy(
             mnist.test.images, mnist.test.labels))
 
+sess.close()
