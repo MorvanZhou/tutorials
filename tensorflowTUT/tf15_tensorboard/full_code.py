@@ -68,5 +68,6 @@ for i in range(1000):
                           feed_dict={xs: x_data, ys: y_data})
         writer.add_summary(result, i)
 
+sess.close()
 # direct to the local dir and run this in terminal:
 # $ tensorboard --logdir=logs
