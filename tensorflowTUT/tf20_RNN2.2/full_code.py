@@ -152,3 +152,4 @@ if __name__ == '__main__':
             print('cost: ', round(cost, 4))
             result = sess.run(merged, feed_dict)
             writer.add_summary(result, i)
+    sess.close()
