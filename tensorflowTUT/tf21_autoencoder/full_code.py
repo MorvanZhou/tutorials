@@ -69,8 +69,8 @@ def decoder(x):
 
 # Visualize encoder setting
 # Parameters
-learning_rate = 0.001
-training_epochs = 20
+learning_rate = 0.01    # 0.01 this learning rate will be better! Tested
+training_epochs = 10
 batch_size = 256
 display_step = 1
 
@@ -177,7 +177,9 @@ with tf.Session() as sess:
         a[0][i].imshow(np.reshape(mnist.test.images[i], (28, 28)))
         a[1][i].imshow(np.reshape(encode_decode[i], (28, 28)))
     plt.show()
+
     # encoder_result = sess.run(encoder_op, feed_dict={X: mnist.test.images})
     # plt.scatter(encoder_result[:, 0], encoder_result[:, 1], c=mnist.test.labels)
+    # plt.colorbar()
     # plt.show()
 
