@@ -93,7 +93,7 @@ with tf.Session() as sess:
 
     # # Applying encode and decode over test set
     encode_decode = sess.run(
-        y_pred, feed_dict={X: mnist.test.images[:examples_to_show]})
+        y_pred, feed_dict={X: mnist.test.images[:examples_to_show] })
     # Compare original images with their reconstructions
     f, a = plt.subplots(2, 10, figsize=(10, 2))
     for i in range(examples_to_show):
