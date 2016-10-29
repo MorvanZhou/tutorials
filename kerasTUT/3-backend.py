@@ -36,15 +36,12 @@ and Keras will use the new configuration next time you run any Keras code.
 ----------------------------
 Method 2:
 
-Call this line in terminal and change the BACKEND to tensorflow or theano:
+define this before import keras:
 
-KERAS_BACKEND=tensorflow python -c "from keras import backend"
-
----this is for python2+
-
-KERAS_BACKEND=tensorflow python3 -c "from keras import backend"
-
----this is for python3+
+>>> import os
+>>> os.environ['KERAS_BACKEND']='theano'
+>>> import keras
+Using Theano backend.
 
 """
 
