@@ -10,6 +10,9 @@ Thank you for supporting!
 
 # 9 - Autoencoder example
 
+# to try tensorflow, un-comment following two lines
+# import os
+# os.environ['KERAS_BACKEND']='tensorflow'
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 

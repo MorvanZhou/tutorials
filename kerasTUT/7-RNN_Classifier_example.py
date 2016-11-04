@@ -10,6 +10,10 @@ Thank you for supporting!
 
 # 8 - RNN Classifier example
 
+# to try tensorflow, un-comment following two lines
+# import os
+# os.environ['KERAS_BACKEND']='tensorflow'
+
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 
@@ -43,8 +47,11 @@ model = Sequential()
 
 # RNN cell
 model.add(SimpleRNN(
-    batch_input_shape=(BATCH_SIZE, TIME_STEPS, INPUT_SIZE),       # Or: input_dim=INPUT_SIZE, input_length=TIME_STEPS,
+    # for batch_input_shape, if using tensorflow as the backend, we have to put None for the batch_size.
+    # Otherwise, model.evaluate() will get error.
+    batch_input_shape=(None, TIME_STEPS, INPUT_SIZE),       # Or: input_dim=INPUT_SIZE, input_length=TIME_STEPS,
     output_dim=CELL_SIZE,
+    unroll=True,
 ))
 
 # output layer

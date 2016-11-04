@@ -10,6 +10,10 @@ Thank you for supporting!
 
 # 6 - CNN example
 
+# to try tensorflow, un-comment following two lines
+# import os
+# os.environ['KERAS_BACKEND']='tensorflow'
+
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 from keras.datasets import mnist
@@ -23,8 +27,8 @@ from keras.optimizers import Adam
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 # data pre-processing
-X_train = X_train.reshape(-1, 1, 28, 28)
-X_test = X_test.reshape(-1, 1, 28, 28)
+X_train = X_train.reshape(-1, 1,28, 28)
+X_test = X_test.reshape(-1, 1,28, 28)
 y_train = np_utils.to_categorical(y_train, nb_classes=10)
 y_test = np_utils.to_categorical(y_test, nb_classes=10)
 
@@ -37,8 +41,9 @@ model.add(Convolution2D(
     nb_row=5,
     nb_col=5,
     border_mode='same',     # Padding method
+    dim_ordering='th',      # if use tensorflow, to set the input dimension order to theano ("th") style, but you can change it.
     input_shape=(1,         # channels
-                 28, 28)    # height & width
+                 28, 28,)    # height & width
 ))
 model.add(Activation('relu'))
 
