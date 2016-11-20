@@ -12,7 +12,7 @@ window.geometry('200x100')
 var = tk.StringVar()
 l = tk.Label(window, textvariable=var, bg='green', font=('Arial', 12), width=15,
              height=2)
-#l = tk.Label(root, text='OMG! this is TK!', bg='green', font=('Arial', 12), width=15, height=2)
+#l = tk.Label(window, text='OMG! this is TK!', bg='green', font=('Arial', 12), width=15, height=2)
 l.pack()
 
 on_hit = False
