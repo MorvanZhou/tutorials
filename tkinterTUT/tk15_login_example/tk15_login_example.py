@@ -4,6 +4,7 @@
 # Youku video tutorial: http://i.youku.com/pythontutorial
 
 import tkinter as tk
+from tkinter import messagebox  # import this to fix messagebox error
 import pickle
 
 window = tk.Tk()
