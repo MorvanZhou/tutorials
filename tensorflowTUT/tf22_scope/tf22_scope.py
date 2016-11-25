@@ -4,7 +4,6 @@
 # 22 scope (name_scope/variable_scope)
 from __future__ import print_function
 import tensorflow as tf
-tf.set_random_seed(1)   # reproducible
 
 with tf.name_scope("a_name_scope"):
     initializer = tf.constant_initializer(value=1)

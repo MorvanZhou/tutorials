@@ -4,8 +4,6 @@
 # 22 scope (name_scope/variable_scope)
 from __future__ import print_function
 import tensorflow as tf
-tf.set_random_seed(1)   # reproducible
-
 
 class TrainConfig:
     batch_size = 20
