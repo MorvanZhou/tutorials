@@ -46,7 +46,7 @@ class RNN(object):
                     l_in_y = tf.matmul(l_in_x, Wi) + bi
                 l_in_y = tf.reshape(l_in_y, [-1, self._time_steps, self._cell_size], name='2_3D')
 
-            with tf.variable_scope('lstm_cell'):
+            with tf.variable_scope('cell'):
                 cell = tf.nn.rnn_cell.BasicRNNCell(self._cell_size)
                 with tf.name_scope('initial_state'):
                     self._cell_initial_state = cell.zero_state(self._batch_size, dtype=tf.float32)
