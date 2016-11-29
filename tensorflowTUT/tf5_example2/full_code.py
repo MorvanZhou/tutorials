@@ -28,7 +28,9 @@ init = tf.initialize_all_variables()
 ### create tensorflow structure end ###
 
 sess = tf.Session()
-sess.run(init)          # Very important
+# tf.initialize_all_variables() no long valid from
+# 2017-03-02 if using tensorflow >= 0.12
+sess.run(tf.global_variables_initializer())
 
 for step in range(201):
     sess.run(train)

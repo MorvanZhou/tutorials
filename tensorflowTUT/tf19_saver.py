@@ -15,7 +15,9 @@ import numpy as np
 ##W = tf.Variable([[1,2,3],[3,4,5]], dtype=tf.float32, name='weights')
 ##b = tf.Variable([[1,2,3]], dtype=tf.float32, name='biases')
 ##
-##init= tf.initialize_all_variables()
+## tf.initialize_all_variables() no long valid from
+## 2017-03-02 if using tensorflow >= 0.12
+##init = tf.global_variables_initializer()
 ##
 ##saver = tf.train.Saver()
 ##

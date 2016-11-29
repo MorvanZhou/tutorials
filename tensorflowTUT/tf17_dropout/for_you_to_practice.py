@@ -52,7 +52,9 @@ sess = tf.Session()
 merged = tf.merge_all_summaries()
 # summary writer goes in here
 
-sess.run(tf.initialize_all_variables())
+# tf.initialize_all_variables() no long valid from
+# 2017-03-02 if using tensorflow >= 0.12
+sess.run(tf.global_variables_initializer())
 
 for i in range(500):
     sess.run(train_step, feed_dict={xs: X_train, ys: y_train})

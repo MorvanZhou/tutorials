@@ -49,7 +49,9 @@ train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
 sess = tf.Session()
 # important step
-sess.run(tf.initialize_all_variables())
+# tf.initialize_all_variables() no long valid from
+# 2017-03-02 if using tensorflow >= 0.12
+sess.run(tf.global_variables_initializer())
 
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)

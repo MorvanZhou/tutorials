@@ -34,7 +34,9 @@ with tf.variable_scope("a_variable_scope") as scope:
     var3_reuse = tf.get_variable(name='var3',)
 
 with tf.Session() as sess:
-    sess.run(tf.initialize_all_variables())
+    # tf.initialize_all_variables() no long valid from
+    # 2017-03-02 if using tensorflow >= 0.12
+    sess.run(tf.global_variables_initializer())
     print(var3.name)            # a_variable_scope/var3:0
     print(sess.run(var3))       # [ 3.]
     print(var4.name)            # a_variable_scope/var4:0

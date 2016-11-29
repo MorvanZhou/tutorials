@@ -16,7 +16,9 @@ one = tf.constant(1)
 new_value = tf.add(state, one)
 update = tf.assign(state, new_value)
 
-init = tf.initialize_all_variables()  # must have if define variable
+# tf.initialize_all_variables() no long valid from
+# 2017-03-02 if using tensorflow >= 0.12
+init = tf.global_variables_initializer()  # must have if define variable
 
 with tf.Session() as sess:
     sess.run(init)

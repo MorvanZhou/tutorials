@@ -117,7 +117,9 @@ if __name__ == '__main__':
     sess = tf.Session()
     merged = tf.merge_all_summaries()
     writer = tf.train.SummaryWriter("logs", sess.graph)
-    sess.run(tf.initialize_all_variables())
+    # tf.initialize_all_variables() no long valid from
+    # 2017-03-02 if using tensorflow >= 0.12
+    sess.run(tf.global_variables_initializer())
     # relocate to the local dir and run this line to view it on Chrome (http://0.0.0.0:6006/):
     # $ tensorboard --logdir='logs'
 

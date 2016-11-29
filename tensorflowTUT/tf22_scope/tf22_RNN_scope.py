@@ -111,4 +111,6 @@ if __name__ == '__main__':
         train_rnn2 = RNN(train_config)
         scope.reuse_variables()
         test_rnn2 = RNN(test_config)
-        sess.run(tf.initialize_all_variables())
+        # tf.initialize_all_variables() no long valid from
+        # 2017-03-02 if using tensorflow >= 0.12
+        sess.run(tf.global_variables_initializer())

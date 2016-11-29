@@ -70,12 +70,11 @@ y_true = X
 cost = tf.reduce_mean(tf.pow(y_true - y_pred, 2))
 optimizer = tf.train.AdamOptimizer(learning_rate).minimize(cost)
 
-# Initializing the variables
-init = tf.initialize_all_variables()
-
 # Launch the graph
 with tf.Session() as sess:
-    sess.run(init)
+    # tf.initialize_all_variables() no long valid from
+    # 2017-03-02 if using tensorflow >= 0.12
+    sess.run(tf.global_variables_initializer())
     total_batch = int(mnist.train.num_examples/batch_size)
     # Training cycle
     for epoch in range(training_epochs):

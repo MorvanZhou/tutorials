@@ -56,7 +56,9 @@ merged = tf.merge_all_summaries()
 train_writer = tf.train.SummaryWriter("logs/train", sess.graph)
 test_writer = tf.train.SummaryWriter("logs/test", sess.graph)
 
-sess.run(tf.initialize_all_variables())
+# tf.initialize_all_variables() no long valid from
+# 2017-03-02 if using tensorflow >= 0.12
+sess.run(tf.global_variables_initializer())
 
 for i in range(500):
     # here to determine the keeping probability
