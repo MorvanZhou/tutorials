@@ -41,7 +41,7 @@ prediction = add_layer(l1, 10, 1, activation_function=None)
 loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys-prediction), reduction_indices=[1]))
 train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 # important step
-sess= tf.Session()
+sess = tf.Session()
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
 sess.run(tf.global_variables_initializer())
