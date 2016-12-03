@@ -95,8 +95,10 @@ def rl():
 
             update_env(S, episode, step_counter+1)
             step_counter += 1
+    return q_table
 
 
 if __name__ == "__main__":
-    rl()
-    print('\r\nfinish')
+    q_table = rl()
+    print('\r\nQ-table:\n')
+    print(q_table)
