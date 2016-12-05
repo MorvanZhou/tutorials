@@ -28,7 +28,6 @@ def fix_seed(seed=1):
 
 def plot_his(inputs, inputs_norm):
     # plot histogram for the inputs of every layer
-
     for j, all_inputs in enumerate([inputs, inputs_norm]):
         for i, input in enumerate(all_inputs):
             plt.subplot(2, len(all_inputs), j*len(all_inputs)+(i+1))
@@ -59,6 +58,7 @@ def built_net(xs, ys, norm):
         # normalize fully connected product
         if norm:
             # Batch Normalize
+            # when testing, you should fix fc_mean, fc_var instead of using tf.nn.moments!
             fc_mean, fc_var = tf.nn.moments(
                 Wx_plus_b,
                 axes=[0],   # the dimension you wanna normalize, here [0] for batch
@@ -67,9 +67,10 @@ def built_net(xs, ys, norm):
             scale = tf.Variable(tf.ones([out_size]))
             shift = tf.Variable(tf.zeros([out_size]))
             epsilon = 0.001
-            # similar with this:
-            # Wx_plus_b = (Wx_plus_b - fc_mean) / tf.sqrt(fc_var + 0.001)
             Wx_plus_b = tf.nn.batch_normalization(Wx_plus_b, fc_mean, fc_var, shift, scale, epsilon)
+            # similar with this two steps:
+            # Wx_plus_b = (Wx_plus_b - fc_mean) / tf.sqrt(fc_var + 0.001)
+            # Wx_plus_b = Wx_plus_b * scale + shift
 
         # activation
         if activation_function is None:
@@ -111,8 +112,8 @@ noise = np.random.normal(0, 8, x_data.shape)
 y_data = np.square(x_data) - 5 + noise
 
 # plot input data
-# plt.scatter(x_data, y_data)
-# plt.show()
+plt.scatter(x_data, y_data)
+plt.show()
 
 xs = tf.placeholder(tf.float32, [None, 1])  # [num_samples, num_features]
 ys = tf.placeholder(tf.float32, [None, 1])
@@ -149,5 +150,7 @@ plt.plot(np.arange(len(cost_his))*record_step, np.array(cost_his), label='no BN'
 plt.plot(np.arange(len(cost_his))*record_step, np.array(cost_his_norm), label='BN')   # norm
 plt.legend()
 plt.show()
+
+# when testing, you should fix fc_mean, fc_var instead of using tf.nn.moments!
 
 
