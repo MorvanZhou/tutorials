@@ -32,10 +32,14 @@ def plot_his(inputs, inputs_norm):
         for i, input in enumerate(all_inputs):
             plt.subplot(2, len(all_inputs), j*len(all_inputs)+(i+1))
             plt.cla()
-            plt.hist(input.ravel(), bins=15, range=(-1, 1), color='#FF5733')
+            if i == 0:
+                the_range = (-7, 10)
+            else:
+                the_range = (-1, 1)
+            plt.hist(input.ravel(), bins=15, range=the_range, color='#FF5733')
             plt.yticks(())
             if j == 1:
-                plt.xticks((-1, 0, 1))
+                plt.xticks(the_range)
             else:
                 plt.xticks(())
             ax = plt.gca()
@@ -81,6 +85,18 @@ def built_net(xs, ys, norm):
         return outputs
 
     fix_seed(1)
+
+    if norm:
+        # BN for the first input
+        fc_mean, fc_var = tf.nn.moments(
+            xs,
+            axes=[0],
+        )
+        scale = tf.Variable(tf.ones([1]))
+        shift = tf.Variable(tf.zeros([1]))
+        epsilon = 0.001
+        xs = tf.nn.batch_normalization(xs, fc_mean, fc_var, shift, scale, epsilon)
+
     # record inputs for every layer
     layers_inputs = [xs]
 
@@ -137,8 +153,8 @@ for i in range(251):
         all_inputs, all_inputs_norm = sess.run([layers_inputs, layers_inputs_norm], feed_dict={xs: x_data, ys: y_data})
         plot_his(all_inputs, all_inputs_norm)
 
-    sess.run(train_op, feed_dict={xs: x_data, ys: y_data})
-    sess.run(train_op_norm, feed_dict={xs: x_data, ys: y_data})
+    sess.run([train_op, train_op_norm], feed_dict={xs: x_data, ys: y_data})
+
     if i % record_step == 0:
         # record cost
         cost_his.append(sess.run(cost, feed_dict={xs: x_data, ys: y_data}))
