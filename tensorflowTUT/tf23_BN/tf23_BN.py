@@ -62,7 +62,6 @@ def built_net(xs, ys, norm):
         # normalize fully connected product
         if norm:
             # Batch Normalize
-            # when testing, you should fix fc_mean, fc_var instead of using tf.nn.moments!
             fc_mean, fc_var = tf.nn.moments(
                 Wx_plus_b,
                 axes=[0],   # the dimension you wanna normalize, here [0] for batch
@@ -71,7 +70,16 @@ def built_net(xs, ys, norm):
             scale = tf.Variable(tf.ones([out_size]))
             shift = tf.Variable(tf.zeros([out_size]))
             epsilon = 0.001
-            Wx_plus_b = tf.nn.batch_normalization(Wx_plus_b, fc_mean, fc_var, shift, scale, epsilon)
+
+            # apply moving average for mean and var when train on batch
+            ema = tf.train.ExponentialMovingAverage(decay=0.5)
+            def mean_var_with_update():
+                ema_apply_op = ema.apply([fc_mean, fc_var])
+                with tf.control_dependencies([ema_apply_op]):
+                    return tf.identity(fc_mean), tf.identity(fc_var)
+            mean, var = mean_var_with_update()
+
+            Wx_plus_b = tf.nn.batch_normalization(Wx_plus_b, mean, var, shift, scale, epsilon)
             # similar with this two steps:
             # Wx_plus_b = (Wx_plus_b - fc_mean) / tf.sqrt(fc_var + 0.001)
             # Wx_plus_b = Wx_plus_b * scale + shift
@@ -95,7 +103,14 @@ def built_net(xs, ys, norm):
         scale = tf.Variable(tf.ones([1]))
         shift = tf.Variable(tf.zeros([1]))
         epsilon = 0.001
-        xs = tf.nn.batch_normalization(xs, fc_mean, fc_var, shift, scale, epsilon)
+        # apply moving average for mean and var when train on batch
+        ema = tf.train.ExponentialMovingAverage(decay=0.5)
+        def mean_var_with_update():
+            ema_apply_op = ema.apply([fc_mean, fc_var])
+            with tf.control_dependencies([ema_apply_op]):
+                return tf.identity(fc_mean), tf.identity(fc_var)
+        mean, var = mean_var_with_update()
+        xs = tf.nn.batch_normalization(xs, mean, var, shift, scale, epsilon)
 
     # record inputs for every layer
     layers_inputs = [xs]
@@ -123,7 +138,8 @@ def built_net(xs, ys, norm):
 
 # make up data
 fix_seed(1)
-x_data = np.linspace(-7, 10, 500)[:, np.newaxis]
+x_data = np.linspace(-7, 10, 2500)[:, np.newaxis]
+np.random.shuffle(x_data)
 noise = np.random.normal(0, 8, x_data.shape)
 y_data = np.square(x_data) - 5 + noise
 
@@ -147,13 +163,14 @@ record_step = 5
 
 plt.ion()
 plt.figure(figsize=(7, 3))
-for i in range(251):
+for i in range(250):
     if i % 50 == 0:
         # plot histogram
         all_inputs, all_inputs_norm = sess.run([layers_inputs, layers_inputs_norm], feed_dict={xs: x_data, ys: y_data})
         plot_his(all_inputs, all_inputs_norm)
 
-    sess.run([train_op, train_op_norm], feed_dict={xs: x_data, ys: y_data})
+    # train on batch
+    sess.run([train_op, train_op_norm], feed_dict={xs: x_data[i*10:i*10+10], ys: y_data[i*10:i*10+10]})
 
     if i % record_step == 0:
         # record cost
@@ -166,7 +183,5 @@ plt.plot(np.arange(len(cost_his))*record_step, np.array(cost_his), label='no BN'
 plt.plot(np.arange(len(cost_his))*record_step, np.array(cost_his_norm), label='BN')   # norm
 plt.legend()
 plt.show()
-
-# when testing, you should fix fc_mean, fc_var instead of using tf.nn.moments!
 
 
