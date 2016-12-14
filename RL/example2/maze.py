@@ -111,7 +111,7 @@ def get_reward_and_next_state(s, a):
         s_ = 'terminal'
     else:
         reward = 0
-    return s_, reward
+    return reward, s_
 
 
 # update loop
@@ -121,9 +121,9 @@ def update():
     is_terminated = False
     while not is_terminated:
         A = QLearn.choose_action(str(S))
-        S_, R = get_reward_and_next_state(S, A)  # take action & get next state and reward
+        R, S_ = get_reward_and_next_state(S, A)  # take action & get reward and next state
         QLearn.update_table(str(S), A, R, str(S_))
-        S = S_
+        S = S_  # state will become next state
         window.update()
         time.sleep(0.1)
         if S_ == 'terminal':
