@@ -9,13 +9,12 @@ import numpy as np
 import pandas as pd
 
 
-class QLearning:
+class QTable:
     def __init__(self, actions, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9):
         self.actions = actions  # a list
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon = e_greedy
-
         self.q_table = pd.DataFrame(columns=self.actions)
 
     def check_state_exist(self, state):
@@ -29,12 +28,12 @@ class QLearning:
                 )
             )
 
-    def choose_action(self, state):
-        self.check_state_exist(state)
+    def choose_action(self, observation):
+        self.check_state_exist(observation)
         # action selection
         if np.random.rand() < self.epsilon:
             # choose best action
-            state_action = self.q_table.ix[state, :]
+            state_action = self.q_table.ix[observation, :]
             state_action = state_action.reindex(np.random.permutation(state_action.index))     # some actions have same value
             action = state_action.argmax()
         else:
@@ -42,7 +41,7 @@ class QLearning:
             action = np.random.choice(self.actions)
         return action
 
-    def update_table(self, s, a, r, s_):
+    def learn(self, s, a, r, s_):
         self.check_state_exist(s_)
         q_predict = self.q_table.ix[s, a]
         if s_ != 'terminal':

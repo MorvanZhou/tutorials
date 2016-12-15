@@ -2,7 +2,7 @@
 Reinforcement learning maze example.
 
 Red rectangle represents out explorer.
-Black rectangles are hell where gives a -1 reward.
+Black rectangles are wall where gives a -1 reward.
 Yellow bin circle is the paradise where explorer can get a +1 reward.
 All other states have 0 reward.
 
@@ -16,12 +16,12 @@ import numpy as np
 np.random.seed(1)
 import tkinter as tk
 import time
-from RL_brain import QLearning
+from RL_DQN import QLearning
 
 
 UNIT = 40   # pixels
-MAZE_H = 4
-MAZE_W = 4
+MAZE_H = 10
+MAZE_W = 10
 
 window = tk.Tk()
 window.title('maze')
@@ -42,21 +42,19 @@ for r in range(0, MAZE_H*UNIT, UNIT):
 # create origin
 origin = np.array([20, 20])
 
-# hell
-hell1_center = origin + np.array([UNIT*2, UNIT])
-hell1 = canvas.create_rectangle(
-    hell1_center[0]-15, hell1_center[1]-15,
-    hell1_center[0]+15, hell1_center[1]+15,
-    fill='black')
-# hell
-hell2_center = origin + np.array([UNIT, UNIT*2])
-hell2 = canvas.create_rectangle(
-    hell2_center[0]-15, hell2_center[1]-15,
-    hell2_center[0]+15, hell2_center[1]+15,
-    fill='black')
+# wall
+walls = []
+for i in [0,1,2,3,5,6,7,8,9]:
+    wall_center = origin + np.array([UNIT*i, UNIT*5])
+    wall = canvas.create_rectangle(
+        wall_center[0]-15, wall_center[1]-15,
+        wall_center[0]+15, wall_center[1]+15,
+        fill='black')
+    walls.append(wall)
+
 
 # create oval
-oval_center = origin + UNIT*2
+oval_center = origin + np.array([UNIT*9, UNIT*9])
 oval = canvas.create_oval(
     oval_center[0] - 15, oval_center[1] - 15,
     oval_center[0] + 15, oval_center[1] + 15,
@@ -84,19 +82,27 @@ def reset(rect):
 
 def get_reward_and_next_state(s, a):
     global rect
-    base_action = np.array([0,0])
+    base_action = np.array([0, 0, 0, 0])
     if a == 'u':
         if s[1] > UNIT:
             base_action[1] -= UNIT
+            base_action[3] -= UNIT
     elif a == 'd':
         if s[1] < (MAZE_H-1)*UNIT:
             base_action[1] += UNIT
+            base_action[3] += UNIT
     elif a == 'r':
         if s[0] < (MAZE_W-1)*UNIT:
             base_action[0] += UNIT
+            base_action[2] += UNIT
     elif a == 'l':
         if s[0] > UNIT:
             base_action[0] -= UNIT
+            base_action[2] -= UNIT
+
+    # hit the wall
+    if (np.array(s) + base_action).tolist() in [canvas.coords(wall) for wall in walls]:
+        base_action *= 0
 
     canvas.move(rect, base_action[0], base_action[1])  # move agent
 
@@ -106,12 +112,9 @@ def get_reward_and_next_state(s, a):
     if s_ == canvas.coords(oval):
         reward = 1
         s_ = 'terminal'
-    elif s_ in [canvas.coords(hell1), canvas.coords(hell2)]:
-        reward = -1
-        s_ = 'terminal'
     else:
         reward = 0
-    return reward, s_
+    return s_, reward
 
 
 # update loop
@@ -121,13 +124,13 @@ def update():
     is_terminated = False
     while not is_terminated:
         A = QLearn.choose_action(str(S))
-        R, S_ = get_reward_and_next_state(S, A)  # take action & get reward and next state
+        R, S_ = get_reward_and_next_state(S, A)  # take action & get next state and reward
         QLearn.update_table(str(S), A, R, str(S_))
-        S = S_  # state will become next state
+        S = S_
         window.update()
-        time.sleep(0.1)
+        time.sleep(0.01)
         if S_ == 'terminal':
-            time.sleep(0.5)
+            time.sleep(0.1)
             rect = reset(rect)
             is_terminated = True
 
