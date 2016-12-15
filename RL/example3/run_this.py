@@ -1,16 +1,4 @@
-"""
-Reinforcement learning maze example.
 
-Red rectangle represents out explorer.
-Black rectangles are hell where gives a -1 reward.
-Yellow bin circle is the paradise where explorer can get a +1 reward.
-All other states have 0 reward.
-
-This script is the main part which controls the update method of this example.
-The RL is in RL_brain.py.
-
-View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
-"""
 
 from maze import Maze
 from RL_brain import QTable
