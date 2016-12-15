@@ -12,7 +12,7 @@ The RL is in RL_brain.py.
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 """
 
-from maze import Maze
+from maze_env import Maze
 from RL_brain import QTable
 
 

@@ -18,7 +18,7 @@ class RL(object):
     def choose_action(self, observation):
         pass
 
-    def learn(self, s, a, r, s_):
+    def learn(self, *args):
         pass
 
 
@@ -62,7 +62,9 @@ class QTable(RL):
         self.q_table.ix[s, a] += self.lr * (q_target - q_predict)  # update
 
 
+# online update
 class SarsaTable(RL):
+
     def __init__(self, actions, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9):
         super(SarsaTable, self).__init__(actions, learning_rate, reward_decay, e_greedy)
 
@@ -92,11 +94,11 @@ class SarsaTable(RL):
             action = np.random.choice(self.actions)
         return action
 
-    def learn(self, s, a, r, s_):
+    def learn(self, s, a, r, s_, a_):
         self.check_state_exist(s_)
         q_predict = self.q_table.ix[s, a]
         if s_ != 'terminal':
-            q_target = r + self.gamma * self.q_table.ix[s_, :].max()  # next state is not terminal
+            q_target = r + self.gamma * self.q_table.ix[s_, a_]  # next state is not terminal
         else:
             q_target = r  # next state is terminal
         self.q_table.ix[s, a] += self.lr * (q_target - q_predict)  # update
