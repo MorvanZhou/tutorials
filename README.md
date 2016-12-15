@@ -15,7 +15,7 @@
 [Youtube 频道主页](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg)
 
 
-全部内容:
+## 莫烦Python 网页全部教学内容:
 
 * [Python 基础](https://morvanzhou.github.io/tutorials/python-basic/)
   * [基础](https://morvanzhou.github.io/tutorials/python-basic/basic/)
