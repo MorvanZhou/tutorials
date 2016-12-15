@@ -19,23 +19,23 @@ from RL_brain import QTable
 def update():
     for episode in range(100):
         # initial observation
-        observation1 = env.reset()
+        observation = env.reset()
 
         while True:
             # fresh env
             env.render()
 
             # RL choose action based on observation
-            action = RL.choose_action(str(observation1))
+            action = RL.choose_action(str(observation))
 
             # RL take action and get next observation and reward
-            observation2, reward, done = env.step(action)
+            observation_, reward, done = env.step(action)
 
             # RL learn from this transition
-            RL.learn(str(observation1), action, reward, str(observation2))
+            RL.learn(str(observation), action, reward, str(observation_))
 
             # swap observation
-            observation1 = observation2
+            observation1 = observation_
 
             # break while loop when end of this episode
             if done:

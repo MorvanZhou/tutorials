@@ -14,7 +14,6 @@ View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 
 
 import numpy as np
-np.random.seed(1)
 import tkinter as tk
 import time
 
@@ -29,6 +28,7 @@ class Maze(tk.Tk):
         super(Maze, self).__init__()
         self.action_space = ['u', 'd', 'l', 'r']
         self.n_actions = len(self.action_space)
+        self.n_features = 2
         self.title('maze')
         self.geometry('{0}x{1}'.format(MAZE_H * UNIT, MAZE_H * UNIT))
         self._build_maze()
@@ -88,7 +88,7 @@ class Maze(tk.Tk):
             origin[0] + 15, origin[1] + 15,
             fill='red')
         # return observation
-        return self.canvas.coords(self.rect)
+        return ((np.array(self.canvas.coords(self.rect)[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)).tolist()
 
     def step(self, action):
         s = self.canvas.coords(self.rect)
@@ -108,23 +108,23 @@ class Maze(tk.Tk):
 
         self.canvas.move(self.rect, base_action[0], base_action[1])  # move agent
 
-        s_ = self.canvas.coords(self.rect)  # next state
+        next_coords = self.canvas.coords(self.rect)  # next state
 
         # reward function
-        if s_ == self.canvas.coords(self.oval):
+        if next_coords == self.canvas.coords(self.oval):
             reward = 1
             done = True
-        elif s_ in [self.canvas.coords(self.hell1), self.canvas.coords(self.hell2)]:
+        elif next_coords in [self.canvas.coords(self.hell1), self.canvas.coords(self.hell2)]:
             reward = -1
             done = True
         else:
             reward = 0
             done = False
-
+        s_ = ((np.array(next_coords[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)).tolist()
         return s_, reward, done
 
     def render(self):
-        time.sleep(0.05)
+        # time.sleep(0.01)
         self.update()
 
 

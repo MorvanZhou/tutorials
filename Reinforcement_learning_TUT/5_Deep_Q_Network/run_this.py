@@ -8,48 +8,48 @@ while q learning is more brave because it only cares about maximum behaviour.
 """
 
 from maze_env import Maze
-from RL_brain import SarsaLambdaTable
+from RL_brain import DeepQNetwork
 
 
-def update():
-    for episode in range(100):
+def run_maze():
+    step = 0
+    for episode in range(200):
         # initial observation
         observation = env.reset()
-
-        # initialize eligibility trace
-        RL.initialize_trace()
-
-        # RL choose action based on observation
-        action = RL.choose_action(str(observation))
 
         while True:
             # fresh env
             env.render()
 
+            # RL choose action based on observation
+            action = RL.choose_action(observation)
+
             # RL take action and get next observation and reward
             observation_, reward, done = env.step(action)
 
-            # RL choose action based on next observation
-            action_ = RL.choose_action(str(observation_))
+            RL.store_transition(observation, action, reward, observation_)
 
-            # RL learn from this transition (s, a, r, s, a) ==> Sarsa
-            RL.learn(str(observation), action, reward, str(observation_), action_)
+            if (step > 200) and (step % 5 == 0):
+                RL.learn()
 
             # swap observation and action
             observation = observation_
-            action = action_
 
             # break while loop when end of this episode
             if done:
                 break
+            step += 1
 
     # end of game
     print('game over')
     env.destroy()
 
 if __name__ == "__main__":
+    # maze game
     env = Maze()
-    RL = SarsaLambdaTable(actions=list(range(env.n_actions)))
-
-    env.after(100, update)
+    RL = DeepQNetwork(env.n_actions, env.n_features, e_greedy=0.)
+    env.after(100, run_maze)
     env.mainloop()
+    RL.plot_cost()
+
+    # gmy game
