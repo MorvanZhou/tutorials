@@ -8,13 +8,16 @@ while q learning is more brave because it only cares about maximum behaviour.
 """
 
 from maze_env import Maze
-from RL_brain import SarsaTable
+from RL_brain import SarsaLambdaTable
 
 
 def update():
     for episode in range(100):
         # initial observation
         observation = env.reset()
+
+        # initialize eligibility trace
+        RL.initialize_trace()
 
         # RL choose action based on observation
         action = RL.choose_action(str(observation))
@@ -46,7 +49,7 @@ def update():
 
 if __name__ == "__main__":
     env = Maze()
-    RL = SarsaTable(actions=list(range(env.n_actions)))
+    RL = SarsaLambdaTable(actions=list(range(env.n_actions)))
 
     env.after(100, update)
     env.mainloop()
