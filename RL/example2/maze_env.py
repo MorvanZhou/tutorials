@@ -1,10 +1,10 @@
 """
 Reinforcement learning maze example.
 
-Red rectangle represents out explorer.
-Black rectangles are hell where gives a -1 reward.
-Yellow bin circle is the paradise where explorer can get a +1 reward.
-All other states have 0 reward.
+Red rectangle:          explorer.
+Black rectangles:       hells       [reward = -1].
+Yellow bin circle:      paradise    [reward = +1].
+All other states:       ground      [reward = 0].
 
 This script is the environment part of this example. The RL is in RL_brain.py.
 
