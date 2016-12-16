@@ -44,12 +44,19 @@ def run_maze():
     print('game over')
     env.destroy()
 
+
 if __name__ == "__main__":
     # maze game
     env = Maze()
-    RL = DeepQNetwork(env.n_actions, env.n_features, e_greedy=0.)
+    RL = DeepQNetwork(env.n_actions, env.n_features,
+                      learning_rate=0.01,
+                      reward_decay=0.9,
+                      e_greedy=0.9,
+                      hidden_layers=[10, 10],
+                      replace_target_iter=100,
+                      memory_size=1000,
+                      output_graph=True
+                      )
     env.after(100, run_maze)
     env.mainloop()
     RL.plot_cost()
-
-    # gmy game
