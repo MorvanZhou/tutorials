@@ -55,7 +55,7 @@ if __name__ == "__main__":
                       hidden_layers=[10, 10],
                       replace_target_iter=100,
                       memory_size=1000,
-                      output_graph=True
+                      # output_graph=True
                       )
     env.after(100, run_maze)
     env.mainloop()

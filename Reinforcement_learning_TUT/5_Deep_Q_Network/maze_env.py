@@ -88,7 +88,7 @@ class Maze(tk.Tk):
             origin[0] + 15, origin[1] + 15,
             fill='red')
         # return observation
-        return ((np.array(self.canvas.coords(self.rect)[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)).tolist()
+        return (np.array(self.canvas.coords(self.rect)[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)
 
     def step(self, action):
         s = self.canvas.coords(self.rect)
@@ -120,7 +120,7 @@ class Maze(tk.Tk):
         else:
             reward = 0
             done = False
-        s_ = ((np.array(next_coords[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)).tolist()
+        s_ = (np.array(next_coords[:2]) - np.array(self.canvas.coords(self.oval)[:2]))/(MAZE_H*UNIT)
         return s_, reward, done
 
     def render(self):

@@ -42,7 +42,7 @@ class DeepQNetwork:
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
 
         # total learning step
-        self.learn_steps = 0
+        self.learn_step_counter = 0
 
         # initialize zero memory [s, a, r, s_]
         self.memory = pd.DataFrame(np.zeros((self.memory_size, n_features*2+2)))
@@ -60,11 +60,8 @@ class DeepQNetwork:
         self.cost_his = []
 
     def choose_action(self, observation):
-        if type(observation) is list:
-            observation = np.array(observation)
-        if observation.ndim < 2:
-            # to have batch dimension when feed into tf placeholder
-            observation = observation[np.newaxis, :]
+        # to have batch dimension when feed into tf placeholder
+        observation = observation[np.newaxis, :]
 
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
@@ -76,12 +73,14 @@ class DeepQNetwork:
 
     def learn(self):
         # check to replace target parameters
-        if self.learn_steps % self.replace_target_iter == 0:
+        if self.learn_step_counter % self.replace_target_iter == 0:
             self._replace_target_params()
             print('\ntarget_params_replaced\n')
 
         # sample batch memory from all memory
-        batch_memory = self.memory.sample(self.batch_size) if self.memory_counter > self.memory_size else self.memory.iloc[:self.memory_counter].sample(self.batch_size, replace=True)
+        batch_memory = self.memory.sample(self.batch_size) \
+            if self.memory_counter > self.memory_size \
+            else self.memory.iloc[:self.memory_counter].sample(self.batch_size, replace=True)
 
         q_next, q_eval = self.sess.run(
             [self.q_next, self.q_eval],
@@ -90,18 +89,45 @@ class DeepQNetwork:
                 self.s: batch_memory.iloc[:, :self.n_features]
             })
 
-        # change target w.r.t q_eval's action
-        target = q_eval.copy()
-        target[np.arange(self.batch_size, dtype=np.int32), batch_memory.iloc[:, self.n_features].astype(int)] = \
+        # change q_target w.r.t q_eval's action
+        q_target = q_eval.copy()
+        q_target[np.arange(self.batch_size, dtype=np.int32), batch_memory.iloc[:, self.n_features].astype(int)] = \
             batch_memory.iloc[:, self.n_features+1] + self.gamma * np.max(q_next, axis=1)
+        """
+        For example in this batch I have 2 samples and 3 actions:
+        q_eval =
+        [[1, 2, 3],
+         [4, 5, 6]]
+
+        q_target = q_eval =
+        [[1, 2, 3],
+         [4, 5, 6]]
+
+        Then change q_target with the real q_target value w.r.t the q_eval's action.
+        For example in:
+            sample 0, I took action 0, and the max q_target value is -1;
+            sample 1, I took action 2, and the max q_target value is -2:
+        q_target =
+        [[-1, 2, 3],
+         [4, 5, -2]]
+
+        So the (q_target - q_eval) become:
+        [[(-1)-(1), 0, 0],
+         [0, 0, (-2)-(6)]]
+
+        We then backpropagate this error w.r.t the corresponded action to network,
+        leave other action as error=0 cause we didn't choose it.
+        """
 
         # train eval network
-        _, self.cost = self.sess.run([self._train_op, self.loss], feed_dict={self.s: batch_memory.iloc[:, :self.n_features], self.q_target: target})
+        _, self.cost = self.sess.run([self._train_op, self.loss],
+                                     feed_dict={self.s: batch_memory.iloc[:, :self.n_features],
+                                                self.q_target: q_target})
         self.cost_his.append(self.cost)
 
         # increasing epsilon
         self.epsilon = self.epsilon + self.epsilon_increment if self.epsilon < self.epsilon_max else self.epsilon_max
-        self.learn_steps += 1
+        self.learn_step_counter += 1
 
     def store_transition(self, s, a, r, s_):
         if not hasattr(self, 'memory_counter'):
@@ -170,13 +196,12 @@ class DeepQNetwork:
         return output
 
     def _add_layer(self, inputs, in_size, out_size, activation_function=None, trainable=True):
-
         # create weights and biases
         Weights = tf.get_variable(
             name='weights',
             shape=[in_size, out_size],
             trainable=trainable,
-            initializer=tf.truncated_normal_initializer(mean=0., stddev=0.5)
+            initializer=tf.truncated_normal_initializer(mean=0., stddev=0.3)
         )
         biases = tf.get_variable(
             name='biases',
@@ -199,7 +224,3 @@ class DeepQNetwork:
         else:
             outputs = activation_function(Wx_plus_b)
         return outputs
-
-
-if __name__ == '__main__':
-    dqn = DeepQNetwork(4,4)
