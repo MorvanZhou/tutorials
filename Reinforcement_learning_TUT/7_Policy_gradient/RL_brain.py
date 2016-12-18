@@ -1,5 +1,5 @@
 """
-This part of code is the Q learning brain, which is a brain of the agent.
+This part of code is the reinforcement learning brain, which is a brain of the agent.
 All decisions are made in here.
 
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
@@ -13,8 +13,7 @@ np.random.seed(1)
 tf.set_random_seed(1)
 
 
-# Deep Q Network off-policy
-class DeepQNetwork:
+class PolicyGradient:
     def __init__(
             self,
             n_actions,
