@@ -35,7 +35,7 @@ def update():
             RL.learn(str(observation), action, reward, str(observation_))
 
             # swap observation
-            observation1 = observation_
+            observation = observation_
 
             # break while loop when end of this episode
             if done:
