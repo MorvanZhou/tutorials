@@ -13,7 +13,7 @@ from RL_brain import DeepQNetwork
 
 def run_maze():
     step = 0
-    for episode in range(200):
+    for episode in range(100):
         # initial observation
         observation = env.reset()
 
@@ -53,8 +53,8 @@ if __name__ == "__main__":
                       reward_decay=0.9,
                       e_greedy=0.9,
                       hidden_layers=[10, 10],
-                      replace_target_iter=100,
-                      memory_size=1000,
+                      replace_target_iter=200,
+                      memory_size=3000,
                       # output_graph=True
                       )
     env.after(100, run_maze)
