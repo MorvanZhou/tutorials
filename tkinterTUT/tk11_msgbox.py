@@ -17,6 +17,7 @@ def hit_me():
     #print(tk.messagebox.askyesno(title='Hi', message='hahahaha'))   # return True, False
     print(tk.messagebox.asktrycancel(title='Hi', message='hahahaha'))   # return True, False
     print(tk.messagebox.askokcancel(title='Hi', message='hahahaha'))   # return True, False
+    print(tk.messagebox.askyesnocancel(title="Hi", message="haha"))     # return, True, False, None
 
 tk.Button(window, text='hit me', command=hit_me).pack()
 window.mainloop()
