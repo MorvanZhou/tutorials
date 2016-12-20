@@ -42,8 +42,9 @@ for i_episode in range(10):
 
         if total_steps > 1000:
             RL.learn()
-            print('episode: ', i_episode, "step: ", RL.learn_steps,
-                  'cost: ', round(RL.cost, 4), ' epsilon: ', round(RL.epsilon, 2))
+            print('episode: ', i_episode,
+                  'cost: ', round(RL.cost, 4),
+                  ' epsilon: ', round(RL.epsilon, 2))
 
         if done:
             break
