@@ -13,7 +13,7 @@ View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 """
 
 from maze_env import Maze
-from RL_brain import QTable
+from RL_brain import QLearningTable
 
 
 def update():
@@ -47,7 +47,7 @@ def update():
 
 if __name__ == "__main__":
     env = Maze()
-    RL = QTable(actions=list(range(env.n_actions)))
+    RL = QLearningTable(actions=list(range(env.n_actions)))
 
     env.after(100, update)
     env.mainloop()

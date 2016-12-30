@@ -45,7 +45,10 @@ with tf.name_scope('train'):
     train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 
 sess = tf.Session()
-writer = tf.train.SummaryWriter("logs/", sess.graph)
+
+# tf.train.SummaryWriter soon be deprecated, use following
+writer = tf.summary.FileWriter("logs/", sess.graph)
+
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
 sess.run(tf.global_variables_initializer())

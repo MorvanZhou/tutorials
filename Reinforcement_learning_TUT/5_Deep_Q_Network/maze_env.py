@@ -80,7 +80,7 @@ class Maze(tk.Tk):
 
     def reset(self):
         self.update()
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.canvas.delete(self.rect)
         origin = np.array([20, 20])
         self.rect = self.canvas.create_rectangle(

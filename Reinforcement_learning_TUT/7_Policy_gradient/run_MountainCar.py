@@ -6,7 +6,7 @@ The mountain car example
 
 
 import gym
-from RL_brain import DeepQNetwork
+from RL_brain import PolicyGradient
 
 env = gym.make('MountainCar-v0')
 print(env.action_space)
@@ -14,10 +14,13 @@ print(env.observation_space)
 print(env.observation_space.high)
 print(env.observation_space.low)
 
-RL = DeepQNetwork(n_actions=3, n_features=2, learning_rate=0.0005, e_greedy=0.9,
-                  replace_target_iter=300, memory_size=3000,
-                  e_greedy_increment=0.001,
-                  hidden_layers=[20, 20])
+RL = PolicyGradient(
+    n_actions=env.action_space.n,
+    n_features=len(env.observation_space.high),
+    learning_rate=0.01,
+    reward_decay=0.99,
+    output_graph=False,
+)
 
 total_steps = 0
 

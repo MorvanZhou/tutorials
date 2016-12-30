@@ -57,10 +57,14 @@ with tf.name_scope('train'):
 
 sess = tf.Session()
 merged = tf.merge_all_summaries()
-writer = tf.train.SummaryWriter("logs/", sess.graph)
+
+# tf.train.SummaryWriter soon be deprecated, use following
+writer = tf.summary.FileWriter("logs/", sess.graph)
+
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
 sess.run(tf.global_variables_initializer())
+
 for i in range(1000):
     sess.run(train_step, feed_dict={xs: x_data, ys: y_data})
     if i % 50 == 0:

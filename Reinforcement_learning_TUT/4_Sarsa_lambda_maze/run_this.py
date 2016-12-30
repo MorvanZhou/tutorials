@@ -16,9 +16,6 @@ def update():
         # initial observation
         observation = env.reset()
 
-        # initialize eligibility trace
-        RL.initialize_trace()
-
         # RL choose action based on observation
         action = RL.choose_action(str(observation))
 

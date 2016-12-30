@@ -13,7 +13,7 @@ from RL_brain import DeepQNetwork
 
 def run_maze():
     step = 0
-    for episode in range(100):
+    for episode in range(300):
         # initial observation
         observation = env.reset()
 
@@ -32,7 +32,7 @@ def run_maze():
             if (step > 200) and (step % 5 == 0):
                 RL.learn()
 
-            # swap observation and action
+            # swap observation
             observation = observation_
 
             # break while loop when end of this episode
@@ -54,7 +54,7 @@ if __name__ == "__main__":
                       e_greedy=0.9,
                       hidden_layers=[10, 10],
                       replace_target_iter=200,
-                      memory_size=3000,
+                      memory_size=2000,
                       # output_graph=True
                       )
     env.after(100, run_maze)
