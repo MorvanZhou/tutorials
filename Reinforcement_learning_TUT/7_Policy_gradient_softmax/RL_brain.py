@@ -43,43 +43,6 @@ class PolicyGradient:
 
         self.sess.run(tf.global_variables_initializer())
 
-    def choose_action(self, observation):
-        prob_weights = self.sess.run(self.all_act_prob, feed_dict={self.tf_obs: observation[np.newaxis, :]})
-        action = np.random.choice(range(prob_weights.shape[1]), p=prob_weights.ravel())  # select action w.r.t the actions prob
-        return action
-
-    def store_transition(self, s, a, r):
-        self.ep_obs.append(s)
-        self.ep_as.append(a)
-        self.ep_rs.append(r)
-
-    def _discount_and_norm_rewards(self):
-        # discount episode rewards
-        discounted_ep_rs = np.zeros_like(self.ep_rs)
-        running_add = 0
-        for t in reversed(range(0, len(self.ep_rs))):
-            running_add = running_add * self.gamma + self.ep_rs[t]
-            discounted_ep_rs[t] = running_add
-
-        # normalize episode rewards
-        discounted_ep_rs -= np.mean(discounted_ep_rs)
-        discounted_ep_rs /= np.std(discounted_ep_rs)
-        return discounted_ep_rs
-
-    def learn(self):
-        # discount and normalize episode reward
-        discounted_ep_rs_norm = self._discount_and_norm_rewards()
-
-        # train on episode
-        self.sess.run(self.train_op, feed_dict={
-             self.tf_obs: np.vstack(self.ep_obs),  # shape=[None, n_obs]
-             self.tf_acts: np.array(self.ep_as),  # shape=[None, ]
-             self.tf_vt: discounted_ep_rs_norm,  # shape=[None, ]
-        })
-
-        self.ep_obs, self.ep_as, self.ep_rs = [], [], []    # empty episode data
-        return discounted_ep_rs_norm
-
     def _build_net(self):
         with tf.name_scope('inputs'):
             self.tf_obs = tf.placeholder(tf.float32, [None, self.n_features], name="observations")
@@ -103,4 +66,43 @@ class PolicyGradient:
 
         with tf.name_scope('train'):
             self.train_op = tf.train.AdamOptimizer(self.lr).minimize(loss)
+
+    def choose_action(self, observation):
+        prob_weights = self.sess.run(self.all_act_prob, feed_dict={self.tf_obs: observation[np.newaxis, :]})
+        action = np.random.choice(range(prob_weights.shape[1]), p=prob_weights.ravel())  # select action w.r.t the actions prob
+        return action
+
+    def store_transition(self, s, a, r):
+        self.ep_obs.append(s)
+        self.ep_as.append(a)
+        self.ep_rs.append(r)
+
+    def learn(self):
+        # discount and normalize episode reward
+        discounted_ep_rs_norm = self._discount_and_norm_rewards()
+
+        # train on episode
+        self.sess.run(self.train_op, feed_dict={
+             self.tf_obs: np.vstack(self.ep_obs),  # shape=[None, n_obs]
+             self.tf_acts: np.array(self.ep_as),  # shape=[None, ]
+             self.tf_vt: discounted_ep_rs_norm,  # shape=[None, ]
+        })
+
+        self.ep_obs, self.ep_as, self.ep_rs = [], [], []    # empty episode data
+        return discounted_ep_rs_norm
+
+    def _discount_and_norm_rewards(self):
+        # discount episode rewards
+        discounted_ep_rs = np.zeros_like(self.ep_rs)
+        running_add = 0
+        for t in reversed(range(0, len(self.ep_rs))):
+            running_add = running_add * self.gamma + self.ep_rs[t]
+            discounted_ep_rs[t] = running_add
+
+        # normalize episode rewards
+        discounted_ep_rs -= np.mean(discounted_ep_rs)
+        discounted_ep_rs /= np.std(discounted_ep_rs)
+        return discounted_ep_rs
+
+
 
