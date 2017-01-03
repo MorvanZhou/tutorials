@@ -1,6 +1,7 @@
 """
 This part of code is the Q learning brain, which is a brain of the agent.
 All decisions are made in here.
+Using Tensorflow to build the neural network.
 
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 """
@@ -197,8 +198,8 @@ class DeepQNetwork:
 
         Then change q_target with the real q_target value w.r.t the q_eval's action.
         For example in:
-            sample 0, I took action 0, and the q_target value is -1;
-            sample 1, I took action 2, and the q_target value is -2:
+            sample 0, I took action 0, and the max q_target value is -1;
+            sample 1, I took action 2, and the max q_target value is -2:
         q_target =
         [[-1, 2, 3],
          [4, 5, -2]]
@@ -220,6 +221,7 @@ class DeepQNetwork:
         # increasing epsilon
         self.epsilon = self.epsilon + self.epsilon_increment if self.epsilon < self.epsilon_max else self.epsilon_max
         self.learn_step_counter += 1
+
 
     def plot_cost(self):
         import matplotlib.pyplot as plt

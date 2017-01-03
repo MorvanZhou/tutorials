@@ -7,7 +7,6 @@ The cart pole example
 
 import gym
 from RL_brain import DeepQNetwork
-import time
 
 env = gym.make('CartPole-v0')
 print(env.action_space)
@@ -17,7 +16,7 @@ print(env.observation_space.low)
 
 RL = DeepQNetwork(n_actions=env.action_space.n,
                   n_features=len(env.observation_space.high),
-                  learning_rate=0.01, e_greedy=0.99,
+                  learning_rate=0.01, e_greedy=0.9,
                   replace_target_iter=100, memory_size=2000,
                   e_greedy_increment=0.001,
                   hidden_layers=[20, 20],)
@@ -40,8 +39,8 @@ for i_episode in range(100):
 
         # the smaller theta and closer to center the better
 
-        r1 = (env.x_threshold - abs(x))/env.x_threshold - 2
-        r2 = (env.theta_threshold_radians - abs(theta))/env.theta_threshold_radians
+        r1 = (env.x_threshold - abs(x))/env.x_threshold - 0.8
+        r2 = (env.theta_threshold_radians - abs(theta))/env.theta_threshold_radians - 0.5
         reward = r1 + r2
 
         RL.store_transition(observation, action, reward, observation_)
