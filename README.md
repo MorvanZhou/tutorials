@@ -24,6 +24,7 @@
   * [简单窗口 tkinter](https://morvanzhou.github.io/tutorials/python-basic/tkinter/)
 * [机器学习](https://morvanzhou.github.io/tutorials/machine-learning/)
   * [有趣的机器学习](https://morvanzhou.github.io/tutorials/machine-learning/ML-intro/)
+  * [强化学习 (Reinforcement Learning)](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/)
   * [Tensorflow](https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/)
   * [Theano](https://morvanzhou.github.io/tutorials/machine-learning/theano/)
   * [Keras](https://morvanzhou.github.io/tutorials/machine-learning/keras/)
