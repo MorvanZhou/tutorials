@@ -17,17 +17,6 @@ class QLearningTable:
         self.epsilon = e_greedy
         self.q_table = pd.DataFrame(columns=self.actions)
 
-    def check_state_exist(self, state):
-        if state not in self.q_table.index:
-            # append new state to q table
-            self.q_table = self.q_table.append(
-                pd.Series(
-                    [0]*len(self.actions),
-                    index=self.q_table.columns,
-                    name=state,
-                )
-            )
-
     def choose_action(self, observation):
         self.check_state_exist(observation)
         # action selection
@@ -49,3 +38,14 @@ class QLearningTable:
         else:
             q_target = r  # next state is terminal
         self.q_table.ix[s, a] += self.lr * (q_target - q_predict)  # update
+
+    def check_state_exist(self, state):
+        if state not in self.q_table.index:
+            # append new state to q table
+            self.q_table = self.q_table.append(
+                pd.Series(
+                    [0]*len(self.actions),
+                    index=self.q_table.columns,
+                    name=state,
+                )
+            )
