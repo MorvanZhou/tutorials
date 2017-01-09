@@ -63,7 +63,11 @@ writer = tf.summary.FileWriter("logs/", sess.graph)
 
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
-sess.run(tf.global_variables_initializer())
+if int((tf.__version__).split('.')[1]) < 12:
+    init = tf.initialize_all_variables()
+else:
+    init = tf.global_variables_initializer()
+sess.run(init)
 
 for i in range(1000):
     sess.run(train_step, feed_dict={xs: x_data, ys: y_data})

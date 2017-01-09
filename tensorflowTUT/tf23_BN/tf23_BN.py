@@ -154,7 +154,11 @@ train_op, cost, layers_inputs = built_net(xs, ys, norm=False)   # without BN
 train_op_norm, cost_norm, layers_inputs_norm = built_net(xs, ys, norm=True) # with BN
 
 sess = tf.Session()
-sess.run(tf.global_variables_initializer())
+if int((tf.__version__).split('.')[1]) < 12:
+    init = tf.initialize_all_variables()
+else:
+    init = tf.global_variables_initializer()
+sess.run(init)
 
 # record cost
 cost_his = []

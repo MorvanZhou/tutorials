@@ -113,4 +113,8 @@ if __name__ == '__main__':
         test_rnn2 = RNN(test_config)
         # tf.initialize_all_variables() no long valid from
         # 2017-03-02 if using tensorflow >= 0.12
-        sess.run(tf.global_variables_initializer())
+        if int((tf.__version__).split('.')[1]) < 12:
+            init = tf.initialize_all_variables()
+        else:
+            init = tf.global_variables_initializer()
+        sess.run(init)

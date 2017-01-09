@@ -42,7 +42,10 @@ train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 # important step
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
-init = tf.global_variables_initializer()
+if int((tf.__version__).split('.')[1]) < 12:
+    init = tf.initialize_all_variables()
+else:
+    init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
 

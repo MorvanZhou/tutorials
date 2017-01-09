@@ -101,7 +101,11 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 with tf.Session() as sess:
     # tf.initialize_all_variables() no long valid from
     # 2017-03-02 if using tensorflow >= 0.12
-    sess.run(tf.global_variables_initializer())
+    if int((tf.__version__).split('.')[1]) < 12:
+        init = tf.initialize_all_variables()
+    else:
+        init = tf.global_variables_initializer()
+    sess.run(init)
     step = 0
     while step * batch_size < training_iters:
         batch_xs, batch_ys = mnist.train.next_batch(batch_size)

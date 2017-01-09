@@ -18,7 +18,10 @@ update = tf.assign(state, new_value)
 
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
-init = tf.global_variables_initializer()  # must have if define variable
+if int((tf.__version__).split('.')[1]) < 12:
+    init = tf.initialize_all_variables()
+else:
+    init = tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
