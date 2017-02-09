@@ -46,9 +46,9 @@ keep_prob = tf.placeholder(tf.float32)
 
 ## conv2 layer ##
 
-## func1 layer ##
+## fc1 layer ##
 
-## func2 layer ##
+## fc2 layer ##
 
 
 # the error between prediction and real data

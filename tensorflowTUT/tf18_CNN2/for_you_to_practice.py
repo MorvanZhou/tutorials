@@ -39,8 +39,8 @@ keep_prob = tf.placeholder(tf.float32)
 
 ## conv1 layer ##
 ## conv2 layer ##
-## func1 layer ##
-## func2 layer ##
+## fully connect 1 layer ##
+## fully connect 2 layer ##
 
 # the error between prediction and real data
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(ys * tf.log(prediction),
