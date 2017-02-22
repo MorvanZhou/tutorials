@@ -48,17 +48,22 @@ class PolicyGradient:
             self.tf_obs = tf.placeholder(tf.float32, [None, self.n_features], name="observations")
             self.tf_acts = tf.placeholder(tf.int32, [None, ], name="actions_num")
             self.tf_vt = tf.placeholder(tf.float32, [None, ], name="actions_value")
-
-        with tf.variable_scope('layer1'):
-            W1 = tf.get_variable("W1", shape=[self.n_features, 10], initializer=tf.random_normal_initializer(0., 0.2))
-            b1 = tf.get_variable("b1", shape=[10, ], initializer=tf.constant_initializer(0.01))
-            layer1 = tf.matmul(self.tf_obs, W1) + b1
-
-        with tf.variable_scope('layer2'):
-            W2 = tf.get_variable("W2", shape=[10, self.n_actions], initializer=tf.random_normal_initializer(0., 0.2))
-            b2 = tf.get_variable("b2", shape=[self.n_actions, ], initializer=tf.constant_initializer(0.01))
-            layer2 = tf.matmul(layer1, W2) + b2
-            self.all_act_prob = tf.nn.softmax(layer2)  # prob for all actions
+        # fc1
+        layer = tf.contrib.layers.fully_connected(
+            inputs=self.tf_obs,
+            num_outputs=10,
+            activation_fn=None,
+            weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.2),
+            biases_initializer=tf.constant_initializer(0.01),
+        )
+        # fc2
+        self.all_act_prob = tf.contrib.layers.fully_connected(
+            inputs=layer,
+            num_outputs=self.n_actions,
+            activation_fn=tf.nn.softmax,
+            weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.2),
+            biases_initializer=tf.constant_initializer(0.01),
+        )
 
         with tf.name_scope('loss'):
             log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.all_act_prob, labels=self.tf_acts)   # this is negative log
