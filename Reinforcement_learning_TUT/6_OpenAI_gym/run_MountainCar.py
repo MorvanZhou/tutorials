@@ -14,10 +14,9 @@ print(env.observation_space)
 print(env.observation_space.high)
 print(env.observation_space.low)
 
-RL = DeepQNetwork(n_actions=3, n_features=2, learning_rate=0.0005, e_greedy=0.9,
+RL = DeepQNetwork(n_actions=3, n_features=2, learning_rate=0.001, e_greedy=0.9,
                   replace_target_iter=300, memory_size=3000,
-                  e_greedy_increment=0.0002,
-                  hidden_layers=[20, 20])
+                  e_greedy_increment=0.0002,)
 
 total_steps = 0
 

@@ -52,7 +52,6 @@ if __name__ == "__main__":
                       learning_rate=0.01,
                       reward_decay=0.9,
                       e_greedy=0.9,
-                      hidden_layers=[10, 10],
                       replace_target_iter=200,
                       memory_size=2000,
                       # output_graph=True

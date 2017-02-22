@@ -61,7 +61,7 @@ class PolicyGradient:
             self.all_act_prob = tf.nn.softmax(layer2)  # prob for all actions
 
         with tf.name_scope('loss'):
-            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(self.all_act_prob, self.tf_acts)
+            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.all_act_prob, labels=self.tf_acts)   # this is negative log
             loss = tf.reduce_mean(log_prob * self.tf_vt)  # reward guided loss
 
         with tf.name_scope('train'):

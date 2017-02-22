@@ -4,6 +4,9 @@ All decisions are made in here.
 Using Tensorflow to build the neural network.
 
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
+
+Using:
+Tensorflow: 1.0
 """
 
 import numpy as np
@@ -23,7 +26,6 @@ class DeepQNetwork:
             learning_rate=0.01,
             reward_decay=0.9,
             e_greedy=0.9,
-            hidden_layers=[10, 10],
             replace_target_iter=300,
             memory_size=500,
             batch_size=32,
@@ -35,7 +37,6 @@ class DeepQNetwork:
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon_max = e_greedy
-        self.hidden_layers = hidden_layers
         self.replace_target_iter = replace_target_iter
         self.memory_size = memory_size
         self.batch_size = batch_size
@@ -62,76 +63,56 @@ class DeepQNetwork:
         self.cost_his = []
 
     def _build_net(self):
-        # create eval and target net weights and biases separately
-        self._eval_net_params = []
-        self._target_net_params = []
-
-        # build evaluate_net
-        self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')
-        self.q_target = tf.placeholder(tf.float32, [None, self.n_actions], name='Q_target')
+        # ------------------ build evaluate_net ------------------
+        self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')  # input
+        self.q_target = tf.placeholder(tf.float32, [None, self.n_actions], name='Q_target')  # for calculating loss
         with tf.variable_scope('eval_net'):
-            self.q_eval = self._build_layers(self.s, self.n_actions, trainable=True)
-            with tf.name_scope('loss'):
-                self.loss = tf.reduce_sum(tf.square(self.q_target - self.q_eval))
-            with tf.name_scope('train'):
-                self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
-
-        # build target_net
-        self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')
-        with tf.variable_scope('target_net'):
-            self.q_next = self._build_layers(self.s_, self.n_actions, trainable=False)
-
-    def _build_layers(self, inputs, action_size, trainable):
-        layers_output = [inputs]
-        for i, n_unit in enumerate(self.hidden_layers):
-            with tf.variable_scope('layer%i' % i):
-                output = self._add_layer(
-                    layers_output[i],
-                    in_size=layers_output[i].get_shape()[1].value,
-                    out_size=n_unit,
-                    activation_function=tf.nn.relu,
-                    trainable=trainable,
-                )
-                layers_output.append(output)
-        with tf.variable_scope('output_layer'):
-            output = self._add_layer(
-                layers_output[-1],
-                in_size=layers_output[-1].get_shape()[1].value,
-                out_size=action_size,
-                activation_function=None,
-                trainable=trainable
+            # first layer
+            layer = tf.contrib.layers.fully_connected(
+                inputs=self.s,
+                num_outputs=10,
+                activation_fn=tf.nn.relu,
+                weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
+                biases_initializer=tf.constant_initializer(0.1),
+                variables_collections=['eval_net_params'],  # use it later when assign to target net
             )
-        return output
+            # second layer
+            self.q_eval = tf.contrib.layers.fully_connected(
+                inputs=layer,
+                num_outputs=self.n_actions,
+                activation_fn=None,
+                weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
+                biases_initializer=tf.constant_initializer(0.1),
+                variables_collections=['eval_net_params'],  # use it later when assign to target net
+            )
+        with tf.name_scope('loss'):
+            self.loss = tf.reduce_sum(tf.squared_difference(self.q_target, self.q_eval))
+        with tf.name_scope('train'):
+            self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
-    def _add_layer(self, inputs, in_size, out_size, activation_function=None, trainable=True):
-        # create weights and biases
-        Weights = tf.get_variable(
-            name='weights',
-            shape=[in_size, out_size],
-            trainable=trainable,
-            initializer=tf.truncated_normal_initializer(mean=0., stddev=0.3)
-        )
-        biases = tf.get_variable(
-            name='biases',
-            shape=[out_size],
-            initializer=tf.constant_initializer(0.1),
-            trainable=trainable
-        )
-
-        # record parameters
-        if trainable is True:
-            self._eval_net_params.append([Weights, biases])
-        else:
-            self._target_net_params.append([Weights, biases])
-
-        Wx_plus_b = tf.matmul(inputs, Weights) + biases
-
-        # activation function
-        if activation_function is None:
-            outputs = Wx_plus_b
-        else:
-            outputs = activation_function(Wx_plus_b)
-        return outputs
+        # ------------------ build target_net ------------------
+        self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')    # input
+        with tf.variable_scope('target_net'):
+            # first layer
+            layer = tf.contrib.layers.fully_connected(
+                inputs=self.s_,
+                num_outputs=10,
+                activation_fn=tf.nn.relu,
+                weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
+                biases_initializer=tf.constant_initializer(0.3),
+                trainable=False,
+                variables_collections=['target_net_params'],    # use it later when assign to target net
+            )
+            # second layer
+            self.q_next = tf.contrib.layers.fully_connected(
+                inputs=layer,
+                num_outputs=self.n_actions,
+                activation_fn=None,
+                weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.1),
+                biases_initializer=tf.constant_initializer(0.1),
+                trainable=False,
+                variables_collections=['target_net_params'],    # use it later when assign to target net
+            )
 
     def store_transition(self, s, a, r, s_):
         if not hasattr(self, 'memory_counter'):
@@ -158,11 +139,9 @@ class DeepQNetwork:
         return action
 
     def _replace_target_params(self):
-        replace_ops = []
-        for layer, params in enumerate(self._eval_net_params):
-            replace_op = [tf.assign(self._target_net_params[layer][W_b], params[W_b]) for W_b in range(2)]
-            replace_ops.append(replace_op)
-        self.sess.run(replace_ops)
+        t_params = tf.get_collection('target_net_params')
+        e_params = tf.get_collection('eval_net_params')
+        self.sess.run([tf.assign(t, e) for t, e in zip(t_params, e_params)])
 
     def learn(self):
         # check to replace target parameters
@@ -204,7 +183,7 @@ class DeepQNetwork:
         [[-1, 2, 3],
          [4, 5, -2]]
 
-        So the (q_target - q_eval) become:
+        So the (q_target - q_eval) becomes:
         [[(-1)-(1), 0, 0],
          [0, 0, (-2)-(6)]]
 

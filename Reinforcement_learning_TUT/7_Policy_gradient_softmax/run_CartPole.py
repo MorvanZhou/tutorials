@@ -14,7 +14,7 @@ DISPLAY_REWARD_THRESHOLD = 400  # renders environment if total episode reward is
 RENDER = False  # rendering wastes time
 
 env = gym.make('CartPole-v0')
-env.seed(2)     # reproducible, general Policy gradient has high variance
+# env.seed(2)     # reproducible, general Policy gradient has high variance
 
 print(env.action_space)
 print(env.observation_space)
@@ -25,7 +25,7 @@ RL = PolicyGradient(
     n_actions=env.action_space.n,
     n_features=len(env.observation_space.high),
     learning_rate=0.02,
-    reward_decay=0.9,
+    reward_decay=0.7,
     # output_graph=True,
 )
 
