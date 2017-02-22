@@ -99,7 +99,7 @@ class DeepQNetwork:
                 num_outputs=10,
                 activation_fn=tf.nn.relu,
                 weights_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
-                biases_initializer=tf.constant_initializer(0.3),
+                biases_initializer=tf.constant_initializer(0.1),
                 trainable=False,
                 variables_collections=['target_net_params'],    # use it later when assign to target net
             )
