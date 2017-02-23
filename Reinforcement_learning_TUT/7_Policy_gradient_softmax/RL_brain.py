@@ -52,25 +52,25 @@ class PolicyGradient:
         layer = tf.layers.dense(
             inputs=self.tf_obs,
             units=10,
-            activation=,
-            kernel_initializer=tf.random_normal_initializer(mean=0, stddev=0.2),
-            bias_initializer=tf.constant_initializer(0.01),
+            activation=tf.nn.tanh,  # tanh activation
+            kernel_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
+            bias_initializer=tf.constant_initializer(0.1),
             name='fc1'
         )
         # fc2
-        self.all_act = tf.layers.dense(
+        all_act = tf.layers.dense(
             inputs=layer,
             units=self.n_actions,
-            activation=tf.nn.softmax,
-            kernel_initializer=tf.random_normal_initializer(mean=0, stddev=0.2),
-            bias_initializer=tf.constant_initializer(0.01),
+            activation=None,
+            kernel_initializer=tf.random_normal_initializer(mean=0, stddev=0.3),
+            bias_initializer=tf.constant_initializer(0.1),
             name='fc2'
         )
 
-        self.all_act_prob = tf.nn.softmax(self.all_act)  # convert to probability
+        self.all_act_prob = tf.nn.softmax(all_act, name='act_prob')  # use softmax to convert to probability
 
         with tf.name_scope('loss'):
-            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.all_act, labels=self.tf_acts)   # this is negative log
+            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=all_act, labels=self.tf_acts)   # this is negative log
             loss = tf.reduce_mean(log_prob * self.tf_vt)  # reward guided loss
 
         with tf.name_scope('train'):
