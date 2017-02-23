@@ -14,7 +14,7 @@ DISPLAY_REWARD_THRESHOLD = -10000  # renders environment if total episode reward
 RENDER = False  # rendering wastes time
 
 env = gym.make('MountainCar-v0')
-env.seed(2)     # reproducible, general Policy gradient has high variance
+env.seed(1)     # reproducible, general Policy gradient has high variance
 
 print(env.action_space)
 print(env.observation_space)
