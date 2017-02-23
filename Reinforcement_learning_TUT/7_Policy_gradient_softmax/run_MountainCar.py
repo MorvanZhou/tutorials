@@ -11,6 +11,11 @@ from RL_brain import PolicyGradient
 import matplotlib.pyplot as plt
 
 DISPLAY_REWARD_THRESHOLD = -2000  # renders environment if total episode reward is greater then this threshold
+# episode: 154   reward: -10667
+# episode: 387   reward: -2009
+# episode: 489   reward: -1006
+# episode: 628   reward: -502
+
 RENDER = False  # rendering wastes time
 
 env = gym.make('MountainCar-v0')
@@ -24,12 +29,12 @@ print(env.observation_space.low)
 RL = PolicyGradient(
     n_actions=env.action_space.n,
     n_features=len(env.observation_space.high),
-    learning_rate=0.01,
+    learning_rate=0.02,
     reward_decay=0.995,
     # output_graph=True,
 )
 
-for i_episode in range(500):
+for i_episode in range(1000):
 
     observation = env.reset()
 
