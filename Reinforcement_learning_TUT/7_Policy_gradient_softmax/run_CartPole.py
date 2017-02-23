@@ -26,7 +26,7 @@ RL = PolicyGradient(
     n_features=len(env.observation_space.high),
     learning_rate=0.02,
     reward_decay=0.7,
-    # output_graph=True,
+    output_graph=True,
 )
 
 for i_episode in range(3000):
