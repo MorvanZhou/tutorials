@@ -30,7 +30,7 @@ def add_layer(inputs, in_size, out_size, activation_function=None):
 # add output layer
 
 
-# the error between prediciton and real data
+# the error between prediction and real data
 
 # important step
 

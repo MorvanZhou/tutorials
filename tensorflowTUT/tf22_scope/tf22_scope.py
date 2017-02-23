@@ -36,7 +36,7 @@ with tf.variable_scope("a_variable_scope") as scope:
 with tf.Session() as sess:
     # tf.initialize_all_variables() no long valid from
     # 2017-03-02 if using tensorflow >= 0.12
-    if int((tf.__version__).split('.')[1]) < 12:
+    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
         init = tf.initialize_all_variables()
     else:
         init = tf.global_variables_initializer()

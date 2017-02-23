@@ -34,7 +34,7 @@ l1 = add_layer(xs, 1, 10, activation_function=tf.nn.relu)
 # add output layer
 prediction = add_layer(l1, 10, 1, activation_function=None)
 
-# the error between prediciton and real data
+# the error between prediction and real data
 loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys - prediction),
                      reduction_indices=[1]))
 train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
