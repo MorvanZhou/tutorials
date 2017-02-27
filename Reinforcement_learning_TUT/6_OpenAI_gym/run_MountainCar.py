@@ -35,7 +35,7 @@ for i_episode in range(10):
         position, velocity = observation_
 
         # the higher the better
-        reward = abs(position - (-0.5))
+        reward = abs(position - (-0.5))     # r in [0, 1]
 
         RL.store_transition(observation, action, reward, observation_)
 

@@ -70,8 +70,8 @@ class PolicyGradient:
         self.all_act_prob = tf.nn.softmax(all_act, name='act_prob')  # use softmax to convert to probability
 
         with tf.name_scope('loss'):
-            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=all_act, labels=self.tf_acts)   # this is negative log
-            loss = tf.reduce_mean(log_prob * self.tf_vt)  # reward guided loss
+            neg_log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=all_act, labels=self.tf_acts)   # this is negative log
+            loss = tf.reduce_mean(neg_log_prob * self.tf_vt)  # reward guided loss
 
         with tf.name_scope('train'):
             self.train_op = tf.train.AdamOptimizer(self.lr).minimize(loss)

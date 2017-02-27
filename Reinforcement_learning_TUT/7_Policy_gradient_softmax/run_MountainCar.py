@@ -28,7 +28,7 @@ print(env.observation_space.low)
 
 RL = PolicyGradient(
     n_actions=env.action_space.n,
-    n_features=len(env.observation_space.high),
+    n_features=env.observation_space.shape[0],
     learning_rate=0.02,
     reward_decay=0.995,
     # output_graph=True,
