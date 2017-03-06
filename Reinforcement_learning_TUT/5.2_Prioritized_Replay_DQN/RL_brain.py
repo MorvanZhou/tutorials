@@ -107,9 +107,6 @@ class Memory(object):   # stored as ( s, a, r, s_ ) in SumTree
     def __init__(self, capacity):
         self.tree = SumTree(capacity)
 
-    def _get_priority(self, error):
-        return np.power(error + self.epsilon, self.alpha)
-
     def store(self, error, transition):
         p = self._get_priority(error)
         self.tree.add_new_priority(p, transition)
@@ -134,6 +131,9 @@ class Memory(object):   # stored as ( s, a, r, s_ ) in SumTree
     def update(self, idx, error):
         p = self._get_priority(error)
         self.tree.update(idx, p)
+
+    def _get_priority(self, error):
+        return np.power(error + self.epsilon, self.alpha)
 
 
 class DQNPrioritizedReplay:
