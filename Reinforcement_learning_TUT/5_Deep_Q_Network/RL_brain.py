@@ -84,9 +84,9 @@ class DeepQNetwork:
                 b2 = tf.get_variable('b2', [1, self.n_actions], initializer=b_initializer, collections=c_names)
                 self.q_eval = tf.matmul(l1, w2) + b2
 
-        with tf.name_scope('loss'):
+        with tf.variable_scope('loss'):
             self.loss = tf.reduce_sum(tf.squared_difference(self.q_target, self.q_eval))
-        with tf.name_scope('train'):
+        with tf.variable_scope('train'):
             self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
         # ------------------ build target_net ------------------
@@ -150,14 +150,19 @@ class DeepQNetwork:
         q_next, q_eval = self.sess.run(
             [self.q_next, self.q_eval],
             feed_dict={
-                self.s_: batch_memory.iloc[:, -self.n_features:],
-                self.s: batch_memory.iloc[:, :self.n_features]
+                self.s_: batch_memory.iloc[:, -self.n_features:],   # fixed params
+                self.s: batch_memory.iloc[:, :self.n_features],     # newest params
             })
 
         # change q_target w.r.t q_eval's action
         q_target = q_eval.copy()
-        q_target[np.arange(self.batch_size, dtype=np.int32), batch_memory.iloc[:, self.n_features].astype(int)] = \
-            batch_memory.iloc[:, self.n_features+1] + self.gamma * np.max(q_next, axis=1)
+
+        batch_index = np.arange(self.batch_size, dtype=np.int32)
+        eval_act_index = batch_memory.iloc[:, self.n_features].astype(int)
+        reward = batch_memory.iloc[:, self.n_features + 1]
+
+        q_target[batch_index, eval_act_index] = reward + self.gamma * np.max(q_next, axis=1)
+
         """
         For example in this batch I have 2 samples and 3 actions:
         q_eval =
@@ -180,7 +185,7 @@ class DeepQNetwork:
         [[(-1)-(1), 0, 0],
          [0, 0, (-2)-(6)]]
 
-        We then backpropagate this error w.r.t the corresponded action to network,
+        We then backpropagate this error w.r.t the corresponding action to network,
         leave other action as error=0 cause we didn't choose it.
         """
 
@@ -198,6 +203,8 @@ class DeepQNetwork:
     def plot_cost(self):
         import matplotlib.pyplot as plt
         plt.plot(np.arange(len(self.cost_his)), self.cost_his)
+        plt.ylabel('Cost')
+        plt.xlabel('training steps')
         plt.show()
 
 
