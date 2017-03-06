@@ -1,42 +1,46 @@
 """
-Deep Q network,
+The DQN improvement: Prioritized Experience Replay (based on https://arxiv.org/abs/1511.05952)
 
-The mountain car example
+View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
+
+Using:
+Tensorflow: 1.0
 """
 
 
 import gym
-from RL_brain import DoubleDQNPrioritizedReplay, DeepQNetwork
+from RL_brain import DQNPrioritizedReplay
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 
 env = gym.make('MountainCar-v0')
-env.seed(1)
+env.seed(21)
 MEMORY_SIZE = 10000
 
 sess = tf.Session()
 with tf.variable_scope('natural_DQN'):
-    RL_natural = DeepQNetwork(n_actions=3, n_features=2, learning_rate=0.005, e_greedy=0.9,
-               reward_decay=0.9,
-                  replace_target_iter=500, memory_size=MEMORY_SIZE,
-                  e_greedy_increment=0.0001, sess=sess)
+    RL_natural = DQNPrioritizedReplay(
+        n_actions=3, n_features=2, memory_size=MEMORY_SIZE,
+        e_greedy_increment=0.00005, sess=sess, prioritized=False,
+    )
 
 with tf.variable_scope('DQN_with_prioritized_replay'):
-    RL_prio = DoubleDQNPrioritizedReplay(n_actions=3, n_features=2, learning_rate=0.005, e_greedy=0.9,
-               reward_decay=0.9,
-                  replace_target_iter=500, memory_size=MEMORY_SIZE,
-                  e_greedy_increment=0.0001, double_q=False, sess=sess)
-
+    RL_prio = DQNPrioritizedReplay(
+        n_actions=3, n_features=2, memory_size=MEMORY_SIZE,
+        e_greedy_increment=0.00005, sess=sess, prioritized=True, output_graph=True,
+    )
 sess.run(tf.global_variables_initializer())
 
 
 def train(RL):
     total_steps = 0
-    for i_episode in range(10):
+    steps = []
+    episodes = []
+    for i_episode in range(20):
         observation = env.reset()
         while True:
-            env.render()
+            # env.render()
 
             action = RL.choose_action(observation)
 
@@ -50,24 +54,23 @@ def train(RL):
                 RL.learn()
 
             if done:
-                print('episode: ', i_episode,
-                     ' epsilon: ', round(RL.epsilon, 2))
+                print('episode ', i_episode, ' finished')
+                steps.append(total_steps)
+                episodes.append(i_episode)
                 break
 
             observation = observation_
             total_steps += 1
-    return RL.qn
+    return np.vstack((episodes, steps))
 
-print('train natural DQN')
-qn_natural = train(RL_natural)
-print('train DQN prioritized')
-qn_prio = train(RL_prio)
+his_natural = train(RL_natural)
+his_prio = train(RL_prio)
 
-plt.plot(np.array(qn_natural), c='b', label='natural DQN')
-plt.plot(np.array(qn_prio), c='r', label='DQN with prioritized replay')
+plt.plot(his_natural[0, :], his_natural[1, :], c='b', label='natural DQN')
+plt.plot(his_prio[0, :], his_prio[1, :], c='r', label='DQN with prioritized replay')
 plt.legend()
-plt.ylabel('max q next')
-plt.xlabel('training steps')
+plt.ylabel('total training time')
+plt.xlabel('episode')
 plt.grid()
 plt.show()
 

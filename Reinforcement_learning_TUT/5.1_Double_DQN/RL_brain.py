@@ -24,7 +24,7 @@ class DoubleDQN:
             reward_decay=0.9,
             e_greedy=0.9,
             replace_target_iter=200,
-            memory_size=500,
+            memory_size=3000,
             batch_size=32,
             e_greedy_increment=None,
             output_graph=False,
@@ -49,6 +49,7 @@ class DoubleDQN:
         self._build_net()
         if sess is None:
             self.sess = tf.Session()
+            self.sess.run(tf.global_variables_initializer())
         else:
             self.sess = sess
         if output_graph:
@@ -80,7 +81,7 @@ class DoubleDQN:
             self.q_eval = build_layers(self.s, c_names, n_l1, w_initializer, b_initializer)
 
         with tf.variable_scope('loss'):
-            self.loss = tf.reduce_sum(tf.squared_difference(self.q_target, self.q_eval))
+            self.loss = tf.reduce_mean(tf.squared_difference(self.q_target, self.q_eval))
         with tf.variable_scope('train'):
             self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
@@ -104,7 +105,7 @@ class DoubleDQN:
         actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
         action = np.argmax(actions_value)
 
-        if not hasattr(self, 'q'):  # record action value it get
+        if not hasattr(self, 'q'):  # record action value it gets
             self.q = []
             self.running_q = 0
         self.running_q = self.running_q*0.99 + 0.01 * np.max(actions_value)

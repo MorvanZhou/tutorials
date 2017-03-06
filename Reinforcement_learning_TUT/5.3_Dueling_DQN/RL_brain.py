@@ -97,7 +97,7 @@ class DuelingDQN:
             self.q_eval = build_layers(self.s, c_names, n_l1, w_initializer, b_initializer)
 
         with tf.variable_scope('loss'):
-            self.loss = tf.reduce_sum(tf.squared_difference(self.q_target, self.q_eval))
+            self.loss = tf.reduce_mean(tf.squared_difference(self.q_target, self.q_eval))
         with tf.variable_scope('train'):
             self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 

@@ -1,5 +1,5 @@
 """
-This part of code is the Q learning brain, which is a brain of the agent.
+This part of code is the DQN brain, which is a brain of the agent.
 All decisions are made in here.
 Using Tensorflow to build the neural network.
 
@@ -85,7 +85,7 @@ class DeepQNetwork:
                 self.q_eval = tf.matmul(l1, w2) + b2
 
         with tf.variable_scope('loss'):
-            self.loss = tf.reduce_sum(tf.squared_difference(self.q_target, self.q_eval))
+            self.loss = tf.reduce_mean(tf.squared_difference(self.q_target, self.q_eval))
         with tf.variable_scope('train'):
             self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
