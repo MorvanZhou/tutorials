@@ -50,6 +50,7 @@ class DuelingDQN:
         self._build_net()
         if sess is None:
             self.sess = tf.Session()
+            self.sess.run(tf.global_variables_initializer())
         else:
             self.sess = sess
         if output_graph:
