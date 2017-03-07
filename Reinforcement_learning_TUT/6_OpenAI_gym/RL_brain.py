@@ -47,7 +47,7 @@ class DeepQNetwork:
         self.learn_step_counter = 0
 
         # initialize zero memory [s, a, r, s_]
-        self.memory = pd.DataFrame(np.zeros((self.memory_size, n_features*2+2)))
+        self.memory = np.zeros((self.memory_size, n_features * 2 + 2))
 
         # consist of [target_net, evaluate_net]
         self._build_net()
@@ -115,7 +115,7 @@ class DeepQNetwork:
 
         # replace the old memory with new memory
         index = self.memory_counter % self.memory_size
-        self.memory.iloc[index, :] = transition
+        self.memory[index, :] = transition
 
         self.memory_counter += 1
 
@@ -143,23 +143,25 @@ class DeepQNetwork:
             print('\ntarget_params_replaced\n')
 
         # sample batch memory from all memory
-        batch_memory = self.memory.sample(self.batch_size) \
-            if self.memory_counter > self.memory_size \
-            else self.memory.iloc[:self.memory_counter].sample(self.batch_size, replace=True)
+        if self.memory_counter > self.memory_size:
+            sample_index = np.random.choice(self.memory_size, size=self.batch_size)
+        else:
+            sample_index = np.random.choice(self.memory_counter, size=self.batch_size)
+        batch_memory = self.memory[sample_index, :]
 
         q_next, q_eval = self.sess.run(
             [self.q_next, self.q_eval],
             feed_dict={
-                self.s_: batch_memory.iloc[:, -self.n_features:],   # fixed params
-                self.s: batch_memory.iloc[:, :self.n_features],     # newest params
+                self.s_: batch_memory[:, -self.n_features:],  # fixed params
+                self.s: batch_memory[:, :self.n_features],  # newest params
             })
 
         # change q_target w.r.t q_eval's action
         q_target = q_eval.copy()
 
         batch_index = np.arange(self.batch_size, dtype=np.int32)
-        eval_act_index = batch_memory.iloc[:, self.n_features].astype(int)
-        reward = batch_memory.iloc[:, self.n_features + 1]
+        eval_act_index = batch_memory[:, self.n_features].astype(int)
+        reward = batch_memory[:, self.n_features + 1]
 
         q_target[batch_index, eval_act_index] = reward + self.gamma * np.max(q_next, axis=1)
 
@@ -191,7 +193,7 @@ class DeepQNetwork:
 
         # train eval network
         _, self.cost = self.sess.run([self._train_op, self.loss],
-                                     feed_dict={self.s: batch_memory.iloc[:, :self.n_features],
+                                     feed_dict={self.s: batch_memory[:, :self.n_features],
                                                 self.q_target: q_target})
         self.cost_his.append(self.cost)
 

@@ -8,9 +8,7 @@ Tensorflow: 1.0
 """
 
 import numpy as np
-import pandas as pd
 import tensorflow as tf
-import matplotlib.pyplot as plt
 
 np.random.seed(1)
 tf.set_random_seed(1)
@@ -46,7 +44,7 @@ class DuelingDQN:
         self.dueling = dueling      # decide to use dueling DQN or not
 
         self.learn_step_counter = 0
-        self.memory = pd.DataFrame(np.zeros((self.memory_size, n_features*2+2)))
+        self.memory = np.zeros((self.memory_size, n_features*2+2))
         self._build_net()
         if sess is None:
             self.sess = tf.Session()
@@ -114,7 +112,7 @@ class DuelingDQN:
             self.memory_counter = 0
         transition = np.hstack((s, [a, r], s_))
         index = self.memory_counter % self.memory_size
-        self.memory.iloc[index, :] = transition
+        self.memory[index, :] = transition
         self.memory_counter += 1
 
     def choose_action(self, observation):
@@ -136,26 +134,25 @@ class DuelingDQN:
             self._replace_target_params()
             print('\ntarget_params_replaced\n')
 
-        batch_memory = self.memory.sample(self.batch_size) \
-            if self.memory_counter > self.memory_size \
-            else self.memory.iloc[:self.memory_counter].sample(self.batch_size, replace=True)
+        sample_index = np.random.choice(self.memory_size, size=self.batch_size)
+        batch_memory = self.memory[sample_index, :]
 
         q_next, q_eval4next,  = self.sess.run(
             [self.q_next, self.q_eval],
-            feed_dict={self.s_: batch_memory.iloc[:, -self.n_features:],    # next observation
-                       self.s: batch_memory.iloc[:, -self.n_features:]})    # next observation
-        q_eval = self.sess.run(self.q_eval, {self.s: batch_memory.iloc[:, :self.n_features]})
+            feed_dict={self.s_: batch_memory[:, -self.n_features:],    # next observation
+                       self.s: batch_memory[:, -self.n_features:]})    # next observation
+        q_eval = self.sess.run(self.q_eval, {self.s: batch_memory[:, :self.n_features]})
 
         q_target = q_eval.copy()
 
         batch_index = np.arange(self.batch_size, dtype=np.int32)
-        eval_act_index = batch_memory.iloc[:, self.n_features].astype(int)
-        reward = batch_memory.iloc[:, self.n_features + 1]
+        eval_act_index = batch_memory[:, self.n_features].astype(int)
+        reward = batch_memory[:, self.n_features + 1]
 
         q_target[batch_index, eval_act_index] = reward + self.gamma * np.max(q_next, axis=1)
 
         _, self.cost = self.sess.run([self._train_op, self.loss],
-                                     feed_dict={self.s: batch_memory.iloc[:, :self.n_features],
+                                     feed_dict={self.s: batch_memory[:, :self.n_features],
                                                 self.q_target: q_target})
         self.cost_his.append(self.cost)
 

@@ -15,9 +15,9 @@ import tensorflow as tf
 
 
 env = gym.make('Pendulum-v0')
-# env.seed(1)
+env.seed(1)
 MEMORY_SIZE = 3000
-ACTION_SPACE = 5
+ACTION_SPACE = 25
 
 sess = tf.Session()
 with tf.variable_scope('natural'):
@@ -53,7 +53,7 @@ def train(RL):
         if total_steps > MEMORY_SIZE:
             RL.learn()
 
-        if total_steps-MEMORY_SIZE > 10000:
+        if total_steps-MEMORY_SIZE > 15000:
             break
 
         observation = observation_
