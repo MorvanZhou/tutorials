@@ -53,7 +53,6 @@ class DuelingDQN:
             self.sess = sess
         if output_graph:
             tf.summary.FileWriter("logs/", self.sess.graph)
-        # self.sess.run(tf.global_variables_initializer())
         self.cost_his = []
 
     def _build_net(self):
