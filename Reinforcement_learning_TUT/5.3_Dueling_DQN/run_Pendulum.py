@@ -1,7 +1,9 @@
 """
-Deep Q network,
+Dueling DQN & Natural DQN comparison
 
-The mountain car example
+View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
+
+The pendulum example
 """
 
 
