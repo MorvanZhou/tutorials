@@ -42,7 +42,7 @@ def train(RL):
         f_action = (action-(ACTION_SPACE-1)/2)/((ACTION_SPACE-1)/4)   # [-2 ~ 2] float actions
         observation_, reward, done, info = env.step(np.array([f_action]))
 
-        reward = reward/10
+        reward /= 10      # normalize to a range of (-1, 0)
         acc_r.append(reward + acc_r[-1])  # accumulated reward
 
         RL.store_transition(observation, action, reward, observation_)
