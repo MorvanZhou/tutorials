@@ -73,7 +73,7 @@ class Critic(object):
             l1 = tf.layers.dense(
                 inputs=state,
                 units=20,  # number of hidden units
-                activation=tf.nn.relu,  # open end
+                activation=tf.nn.relu,
                 kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
                 bias_initializer=tf.constant_initializer(0.1),  # biases
                 name='l1'
