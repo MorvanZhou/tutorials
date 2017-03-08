@@ -1,7 +1,7 @@
 """
-This part of code is the DQN brain, which is a brain of the agent.
-All decisions are made in here.
-Using Tensorflow to build the neural network.
+This part of code is the DQN brain.
+
+view the tensorboard picture about this DQN structure on: https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/4-3-DQN3/#modification
 
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 
@@ -80,6 +80,7 @@ class DeepQNetwork:
         self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')  # input Next State
         self.r = tf.placeholder(tf.float32, [None, ], name='r')  # input Reward
         self.a = tf.placeholder(tf.int32, [None, ], name='a')  # input Action
+
         # ------------------ build evaluate_net ------------------
         with tf.variable_scope('eval_net'):
             # c_names(collections_names) are the collections to store variables
