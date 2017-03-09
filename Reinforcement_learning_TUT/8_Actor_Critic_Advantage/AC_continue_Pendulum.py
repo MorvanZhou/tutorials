@@ -3,6 +3,8 @@ Actor-Critic with continuous action using TD-error as the Advantage, Reinforceme
 
 The cart pole example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/CliffWalk%20Actor%20Critic%20Solution.ipynb)
 
+Cannot converge!!!
+
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
 Using:
@@ -26,50 +28,43 @@ class Actor(object):
             self.act = tf.placeholder(tf.float32, name="act")
             self.advantage = tf.placeholder(tf.float32, name="adv")  # TD_error
 
-        mu_ = tf.layers.dense(
+        l1 = tf.layers.dense(
             inputs=state,
-            units=40,  # number of hidden units
-            activation=tf.nn.relu,
+            units=30,  # number of hidden units
+            activation=None,
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(0.1),  # biases
-            name='mu_'
+            name='l1'
         )
 
         mu = tf.layers.dense(
-            inputs=mu_,
+            inputs=l1,
             units=1,  # number of hidden units
-            activation=None,
+            activation=tf.nn.tanh,
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(0.1),  # biases
             name='mu'
         )
 
-        sigma_ = tf.layers.dense(
-            inputs=state,
-            units=40,  # output units
-            activation=None,  # get action probabilities
-            kernel_initializer=tf.random_normal_initializer(0., .3),  # weights
-            bias_initializer=tf.constant_initializer(0.3),  # biases
-            name='sigma_'
-        )
         sigma = tf.layers.dense(
-            inputs=sigma_,
+            inputs=l1,
             units=1,  # output units
-            activation=tf.nn.softplus,  # get action probabilities
-            kernel_initializer=tf.random_normal_initializer(0., .3),  # weights
-            bias_initializer=tf.constant_initializer(.5),  # biases
+            activation=tf.nn.relu,  # get action probabilities
+            kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
+            bias_initializer=tf.constant_initializer(1.),  # biases
             name='sigma'
         )
 
-        self.mu, self.sigma = tf.squeeze(mu), tf.squeeze(sigma+1e-1)
+        self.mu, self.sigma = tf.squeeze(mu*2), tf.squeeze(sigma+1e-2)
         self.normal_dist = tf.contrib.distributions.Normal(self.mu, self.sigma)
 
         self.action = tf.clip_by_value(self.normal_dist.sample(1), action_range[0], action_range[1])
 
         with tf.name_scope('loss'):
             neg_log_prob = -self.normal_dist.log_prob(self.act)  # loss without advantage
-            self.loss = tf.reduce_mean(neg_log_prob * self.advantage)  # advantage (TD_error) guided loss
-            self.loss -= 3e-1 * self.normal_dist.entropy()
+            self.loss = neg_log_prob * self.advantage  # advantage (TD_error) guided loss
+            # Add cross entropy cost to encourage exploration
+            self.loss -= 1e-1 * self.normal_dist.entropy()
 
         with tf.name_scope('train'):
             self.train_op = tf.train.AdamOptimizer(lr).minimize(self.loss)
@@ -93,8 +88,8 @@ class Critic(object):
         with tf.variable_scope('Critic'):
             l1 = tf.layers.dense(
                 inputs=state,
-                units=40,  # number of hidden units
-                activation=tf.nn.relu,  # open end
+                units=30,  # number of hidden units
+                activation=None,
                 kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
                 bias_initializer=tf.constant_initializer(0.1),  # biases
                 name='l1'
@@ -112,7 +107,7 @@ class Critic(object):
         with tf.name_scope('loss'):
             self.loss = tf.reduce_mean(tf.squared_difference(self.target, self.eval))    # TD_error = (r+gamma*V_next) - V_eval
         with tf.name_scope('train'):
-            self.train_op = tf.train.AdamOptimizer(lr).minimize(self.loss)
+            self.train_op = tf.train.RMSPropOptimizer(lr).minimize(self.loss)
 
     def update(self, s, target):
         _, loss = self.sess.run([self.train_op, self.loss], {self.state: s, self.target: target})
@@ -123,7 +118,7 @@ class Critic(object):
 
 
 OUTPUT_GRAPH = False
-EPISODE_TIME_THRESHOLD = 100
+EPISODE_TIME_THRESHOLD = 300
 DISPLAY_REWARD_THRESHOLD = -550  # renders environment if total episode reward is greater then this threshold
 RENDER = False  # rendering wastes time
 GAMMA = 0.9
@@ -131,8 +126,8 @@ GAMMA = 0.9
 env = gym.make('Pendulum-v0')
 # env.seed(1)  # reproducible
 
-actor = Actor(n_features=env.observation_space.shape[0], action_range=[env.action_space.low[0], env.action_space.high[0]], lr=0.0001)
-critic = Critic(n_features=env.observation_space.shape[0], lr=0.0001)
+actor = Actor(n_features=env.observation_space.shape[0], action_range=[env.action_space.low[0], env.action_space.high[0]], lr=0.001)
+critic = Critic(n_features=env.observation_space.shape[0], lr=0.002)
 
 with tf.Session() as sess:
     if OUTPUT_GRAPH:
@@ -146,12 +141,12 @@ with tf.Session() as sess:
         t = 0
         ep_rs = []
         while True:
-            if RENDER: env.render()
+            # if RENDER:
+            env.render()
             action, mu, sigma = actor.choose_action(observation)
 
             observation_, reward, done, info = env.step(action)
-            # if reward > -2: reward = (reward+5)*2
-
+            reward /= 10
             TD_target = reward + GAMMA * critic.evaluate(observation_)    # r + gamma * V_next
             TD_eval = critic.evaluate(observation)    # V_now
             TD_error = TD_target - TD_eval
@@ -168,7 +163,7 @@ with tf.Session() as sess:
                 if 'running_reward' not in globals():
                     running_reward = ep_rs_sum
                 else:
-                    running_reward = running_reward * 0.99 + ep_rs_sum * 0.01
+                    running_reward = running_reward * 0.9 + ep_rs_sum * 0.1
                 if running_reward > DISPLAY_REWARD_THRESHOLD: RENDER = True  # rendering
                 print("episode:", i_episode, "  reward:", int(running_reward))
                 break
