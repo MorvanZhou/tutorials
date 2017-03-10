@@ -21,7 +21,8 @@ tf.set_random_seed(2)  # reproducible
 
 
 class Actor(object):
-    def __init__(self, n_features, action_range, lr=0.0001):
+    def __init__(self, sess, n_features, action_range, lr=0.0001):
+        self.sess = sess
         with tf.name_scope('inputs'):
             self.state = tf.placeholder(tf.float32, [n_features, ], "state")
             state = tf.expand_dims(self.state, axis=0)
@@ -79,7 +80,8 @@ class Actor(object):
 
 
 class Critic(object):
-    def __init__(self, n_features, lr=0.01):
+    def __init__(self, sess, n_features, lr=0.01):
+        self.sess = sess
         with tf.name_scope('inputs'):
             self.state = tf.placeholder(tf.float32, [n_features, ], "state")
             state = tf.expand_dims(self.state, axis=0)
@@ -118,53 +120,56 @@ class Critic(object):
 
 
 OUTPUT_GRAPH = False
+MAX_EPISODE = 3000
 EPISODE_TIME_THRESHOLD = 300
 DISPLAY_REWARD_THRESHOLD = -550  # renders environment if total episode reward is greater then this threshold
 RENDER = False  # rendering wastes time
 GAMMA = 0.9
+LR_A = 0.001    # learning rate for actor
+LR_C = 0.01     # learning rate for critic
 
 env = gym.make('Pendulum-v0')
-# env.seed(1)  # reproducible
+env.seed(1)  # reproducible
 
-actor = Actor(n_features=env.observation_space.shape[0], action_range=[env.action_space.low[0], env.action_space.high[0]], lr=0.001)
-critic = Critic(n_features=env.observation_space.shape[0], lr=0.002)
+sess = tf.Session()
 
-with tf.Session() as sess:
-    if OUTPUT_GRAPH:
-        tf.summary.FileWriter("logs/", sess.graph)
+actor = Actor(sess, n_features=env.observation_space.shape[0], action_range=[env.action_space.low[0], env.action_space.high[0]], lr=LR_A)
+critic = Critic(sess, n_features=env.observation_space.shape[0], lr=LR_C)
 
-    actor.sess, critic.sess = sess, sess    # define the tf session
-    tf.global_variables_initializer().run()
+sess.run(tf.global_variables_initializer())
 
-    for i_episode in range(3000):
-        observation = env.reset()
-        t = 0
-        ep_rs = []
-        while True:
-            # if RENDER:
-            env.render()
-            action, mu, sigma = actor.choose_action(observation)
+if OUTPUT_GRAPH:
+    tf.summary.FileWriter("logs/", sess.graph)
 
-            observation_, reward, done, info = env.step(action)
-            reward /= 10
-            TD_target = reward + GAMMA * critic.evaluate(observation_)    # r + gamma * V_next
-            TD_eval = critic.evaluate(observation)    # V_now
-            TD_error = TD_target - TD_eval
+for i_episode in range(MAX_EPISODE):
+    s = env.reset()
+    t = 0
+    ep_rs = []
+    while True:
+        # if RENDER:
+        env.render()
+        a, mu, sigma = actor.choose_action(s)
 
-            actor.update(s=observation, a=action, adv=TD_error)
-            critic.update(s=observation, target=TD_target)
+        s_, r, done, info = env.step(a)
+        r /= 10
+        TD_target = r + GAMMA * critic.evaluate(s_)    # r + gamma * V_next
+        TD_eval = critic.evaluate(s)    # V_now
+        TD_error = TD_target - TD_eval
 
-            observation = observation_
-            t += 1
-            # print(reward)
-            ep_rs.append(reward)
-            if t > EPISODE_TIME_THRESHOLD:
-                ep_rs_sum = sum(ep_rs)
-                if 'running_reward' not in globals():
-                    running_reward = ep_rs_sum
-                else:
-                    running_reward = running_reward * 0.9 + ep_rs_sum * 0.1
-                if running_reward > DISPLAY_REWARD_THRESHOLD: RENDER = True  # rendering
-                print("episode:", i_episode, "  reward:", int(running_reward))
-                break
+        actor.update(s=s, a=a, adv=TD_error)
+        critic.update(s=s, target=TD_target)
+
+        s = s_
+        t += 1
+        # print(reward)
+        ep_rs.append(r)
+        if t > EPISODE_TIME_THRESHOLD:
+            ep_rs_sum = sum(ep_rs)
+            if 'running_reward' not in globals():
+                running_reward = ep_rs_sum
+            else:
+                running_reward = running_reward * 0.9 + ep_rs_sum * 0.1
+            if running_reward > DISPLAY_REWARD_THRESHOLD: RENDER = True  # rendering
+            print("episode:", i_episode, "  reward:", int(running_reward))
+            break
 

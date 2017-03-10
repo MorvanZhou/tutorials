@@ -74,7 +74,9 @@ class Critic(object):
         l1 = tf.layers.dense(
             inputs=self.state,
             units=20,  # number of hidden units
-            activation=tf.nn.relu,
+            activation=tf.nn.relu,  # None
+            # have to be linear to make sure the convergence of actor.
+            # But linear approximator seems hardly learns the correct Q.
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(0.1),  # biases
             name='l1'
@@ -104,11 +106,17 @@ class Critic(object):
         return td_error, loss
 
 
+
+# Superparameters
+
 OUTPUT_GRAPH = False
+MAX_EPISODE = 3000
 DISPLAY_REWARD_THRESHOLD = 200  # renders environment if total episode reward is greater then this threshold
-EPISODE_TIME_THRESHOLD = 1000
+MAX_EP_STEPS = 1000   # maximum time step in one episode
 RENDER = False  # rendering wastes time
-GAMMA = 0.9
+GAMMA = 0.9     # reward discount in TD error
+LR_A = 0.001    # learning rate for actor
+LR_C = 0.01     # learning rate for critic
 
 env = gym.make('CartPole-v0')
 env.seed(1)  # reproducible
@@ -116,16 +124,16 @@ env.seed(1)  # reproducible
 sess = tf.Session()
 
 with tf.variable_scope('Actor'):
-    actor = Actor(sess, n_features=env.observation_space.shape[0], n_actions=env.action_space.n, lr=0.001)
+    actor = Actor(sess, n_features=env.observation_space.shape[0], n_actions=env.action_space.n, lr=LR_A)
 with tf.variable_scope('Critic'):
-    critic = Critic(sess, n_features=env.observation_space.shape[0], lr=0.01)     # we need a good teacher, so the teacher should learn faster than the actor
+    critic = Critic(sess, n_features=env.observation_space.shape[0], lr=LR_C)     # we need a good teacher, so the teacher should learn faster than the actor
 
 sess.run(tf.global_variables_initializer())
 
 if OUTPUT_GRAPH:
     tf.summary.FileWriter("logs/", sess.graph)
 
-for i_episode in range(3000):
+for i_episode in range(MAX_EPISODE):
     s = env.reset()
     t = 0
     track_r = []
@@ -146,7 +154,7 @@ for i_episode in range(3000):
         s = s_
         t += 1
 
-        if done or t >= EPISODE_TIME_THRESHOLD:
+        if done or t >= MAX_EP_STEPS:
             ep_rs_sum = sum(track_r)
 
             if 'running_reward' not in globals():

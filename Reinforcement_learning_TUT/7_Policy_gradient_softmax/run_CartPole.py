@@ -40,12 +40,6 @@ for i_episode in range(3000):
 
         observation_, reward, done, info = env.step(action)
 
-        # x, x_dot, theta, theta_dot = observation_
-        # # the smaller theta and closer to center the better
-        # r1 = (env.x_threshold - abs(x))/env.x_threshold - 0.5
-        # r2 = (env.theta_threshold_radians - abs(theta))/env.theta_threshold_radians - 0.5
-        # reward = r1 + r2
-
         RL.store_transition(observation, action, reward)
 
         if done:
