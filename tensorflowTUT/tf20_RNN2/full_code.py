@@ -65,7 +65,10 @@ def RNN(X, weights, biases):
     ##########################################
 
     # basic LSTM Cell.
-    lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
+    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
+        lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
+    else:
+        lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden_units)
     # lstm cell is divided into two parts (c_state, h_state)
     init_state = lstm_cell.zero_state(batch_size, dtype=tf.float32)
 
@@ -85,14 +88,17 @@ def RNN(X, weights, biases):
 
     # # or
     # unpack to list [(batch, outputs)..] * steps
-    outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
+    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
+        outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
+    else:
+        outputs = tf.unstack(tf.transpose(outputs, [1,0,2]))
     results = tf.matmul(outputs[-1], weights['out']) + biases['out']
 
     return results
 
 
 pred = RNN(x, weights, biases)
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))
 train_op = tf.train.AdamOptimizer(lr).minimize(cost)
 
 correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
