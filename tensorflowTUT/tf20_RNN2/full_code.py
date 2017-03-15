@@ -92,7 +92,7 @@ def RNN(X, weights, biases):
         outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
     else:
         outputs = tf.unstack(tf.transpose(outputs, [1,0,2]))
-    results = tf.matmul(outputs[-1], weights['out']) + biases['out']
+    results = tf.matmul(outputs[-1], weights['out']) + biases['out']    # shape = (128, 10)
 
     return results
 
