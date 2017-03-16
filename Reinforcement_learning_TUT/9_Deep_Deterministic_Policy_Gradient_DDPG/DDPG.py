@@ -1,3 +1,15 @@
+"""
+Deep Deterministic Policy Gradient (DDPG), Reinforcement Learning.
+DDPG is Actor Critic based algorithm.
+Pendulum example.
+
+View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
+
+Using:
+tensorflow 1.0
+gym 0.7.3
+"""
+
 import tensorflow as tf
 import numpy as np
 import gym
@@ -9,13 +21,6 @@ tf.set_random_seed(1)
 ###############################  Actor  ####################################
 
 class Actor(object):
-    """
-    Input to the network is the state, output is the action
-    under a deterministic policy.
-    The output layer activation is a tanh to keep the action
-    between -2 and 2
-    """
-
     def __init__(self, sess, action_dim, action_bound, learning_rate, t_replace_iter):
         self.sess = sess
         self.a_dim = action_dim
@@ -53,7 +58,7 @@ class Actor(object):
         # target_params = (1-tau) * target_params + tau * eval_params
         # self.sess.run([tf.assign(t, (1 - self.tau) * t + self.tau * e) for t, e in zip(self.t_params, self.e_params)])
 
-        # instead of above method, we use a hard replacement here
+        # instead of above method, I use a hard replacement here
         if self.t_replace_counter % self.t_replace_iter == 0:
             self.sess.run([tf.assign(t, e) for t, e in zip(self.t_params, self.e_params)])
         self.t_replace_counter += 1
@@ -62,7 +67,7 @@ class Actor(object):
         s = s[np.newaxis, :]    # single state
         return self.sess.run(self.a, feed_dict={S: s})[0]  # single action
 
-    def set_grad_from_critic(self, a_grads):
+    def add_grad_to_graph(self, a_grads):
         with tf.variable_scope('policy_grads'):
             # ys = policy;
             # xs = policy's parameters;
@@ -126,18 +131,15 @@ class Critic(object):
         return q
 
     def learn(self, s, a, r, s_):
-        _, q = self.sess.run([self.train_op, self.q], feed_dict={S: s, A: a, R: r, S_: s_})
+        self.sess.run(self.train_op, feed_dict={S: s, A: a, R: r, S_: s_})
         # the following method for soft replace target params is computational expansive
         # target_params = (1-tau) * target_params + tau * eval_params
-
         # self.sess.run([tf.assign(t, (1 - self.tau) * t + self.tau * e) for t, e in zip(self.t_params, self.e_params)])
 
         # instead of above method, we use a hard replacement here
         if self.t_replace_counter % self.t_replace_iter == 0:
             self.sess.run([tf.assign(t, e) for t, e in zip(self.t_params, self.e_params)])
         self.t_replace_counter += 1
-
-        return np.mean(q)
 
 
 class Memory(object):
@@ -173,7 +175,7 @@ REPLACE_ITER_C = 300
 MEMORY_CAPACITY = 7000
 BATCH_SIZE = 32
 
-RENDER = True
+RENDER = False
 OUTPUT_GRAPH = True
 ENV_NAME = 'Pendulum-v0'
 
@@ -198,10 +200,10 @@ with tf.name_scope('S_'):
 sess = tf.Session()
 
 # Create actor and critic.
-# They are actually connected to each other, details can be seen in tensorboard
+# They are actually connected to each other, details can be seen in tensorboard or in this picture:
 actor = Actor(sess, action_dim, action_bound, LR_A, REPLACE_ITER_A)
 critic = Critic(sess, state_dim, action_dim, LR_C, GAMMA, REPLACE_ITER_C, actor.a_)
-actor.set_grad_from_critic(critic.a_grads)
+actor.add_grad_to_graph(critic.a_grads)
 
 sess.run(tf.global_variables_initializer())
 
@@ -223,27 +225,27 @@ for i in range(MAX_EPISODES):
 
         # Added exploration noise
         a = actor.choose_action(s)
-        a = np.clip(np.random.normal(a, var), -2, 2)
+        a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
         s_, r, done, info = env.step(a)
 
         M.store_transition(s, a, r / 10, s_)
 
         if M.pointer > MEMORY_CAPACITY:
-            var *= .9998
+            var *= .9998    # decay the action randomness
             b_M = M.sample(BATCH_SIZE)
             b_s = b_M[:, :state_dim]
             b_a = b_M[:, state_dim: state_dim + action_dim]
             b_r = b_M[:, -state_dim - 1: -state_dim]
             b_s_ = b_M[:, -state_dim:]
 
-            q = critic.learn(b_s, b_a, b_r, b_s_)
+            critic.learn(b_s, b_a, b_r, b_s_)
             actor.learn(b_s, b_a)
 
         s = s_
         ep_reward += r
 
-        if j == MAX_EP_STEPS - 1:
-            print('Episode:', i, ' Reward: %i' % int(ep_reward), 'Explore: %.2f' % e, )
+        if j == MAX_EP_STEPS:
+            print('Episode:', i, ' Reward: %i' % int(ep_reward), 'Explore: %.2f' % var, )
             if ep_reward > -1000:
                 RENDER = True
             break

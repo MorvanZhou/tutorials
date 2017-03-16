@@ -3,7 +3,7 @@ Actor-Critic with continuous action using TD-error as the Advantage, Reinforceme
 
 The cart pole example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb)
 
-Cannot converge!!!
+Cannot converge!!! oscillate!!!
 
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
@@ -124,7 +124,7 @@ class Critic(object):
 
 
 OUTPUT_GRAPH = False
-MAX_EPISODE = 3000
+MAX_EPISODE = 1000
 MAX_EP_STEPS = 300
 DISPLAY_REWARD_THRESHOLD = -550  # renders environment if total episode reward is greater then this threshold
 RENDER = False  # rendering wastes time
