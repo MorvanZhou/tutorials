@@ -1,7 +1,7 @@
 """
 Actor-Critic with continuous action using TD-error as the Advantage, Reinforcement Learning.
 
-The cart pole example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/CliffWalk%20Actor%20Critic%20Solution.ipynb)
+The cart pole example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb)
 
 Cannot converge!!!
 
@@ -21,18 +21,17 @@ tf.set_random_seed(2)  # reproducible
 
 
 class Actor(object):
-    def __init__(self, sess, n_features, action_range, lr=0.0001):
+    def __init__(self, sess, n_features, action_bound, lr=0.0001):
         self.sess = sess
-        with tf.name_scope('inputs'):
-            self.state = tf.placeholder(tf.float32, [n_features, ], "state")
-            state = tf.expand_dims(self.state, axis=0)
-            self.act = tf.placeholder(tf.float32, name="act")
-            self.advantage = tf.placeholder(tf.float32, name="adv")  # TD_error
+
+        self.s = tf.placeholder(tf.float32, [1, n_features], "state")
+        self.a = tf.placeholder(tf.float32, None, name="act")
+        self.td_error = tf.placeholder(tf.float32, None, name="td_error")  # TD_error
 
         l1 = tf.layers.dense(
-            inputs=state,
+            inputs=self.s,
             units=30,  # number of hidden units
-            activation=None,
+            activation=tf.nn.relu,
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(0.1),  # biases
             name='l1'
@@ -50,78 +49,83 @@ class Actor(object):
         sigma = tf.layers.dense(
             inputs=l1,
             units=1,  # output units
-            activation=tf.nn.relu,  # get action probabilities
+            activation=tf.nn.sigmoid,  # get action probabilities
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(1.),  # biases
             name='sigma'
         )
-
-        self.mu, self.sigma = tf.squeeze(mu*2), tf.squeeze(sigma+1e-2)
+        global_step = tf.Variable(0, trainable=False)
+        # self.e = epsilon = tf.train.exponential_decay(2., global_step, 1000, 0.9)
+        self.mu, self.sigma = tf.squeeze(mu*2), tf.squeeze(sigma+0.1)
         self.normal_dist = tf.contrib.distributions.Normal(self.mu, self.sigma)
 
-        self.action = tf.clip_by_value(self.normal_dist.sample(1), action_range[0], action_range[1])
+        self.action = tf.clip_by_value(self.normal_dist.sample(1), action_bound[0], action_bound[1])
 
-        with tf.name_scope('loss'):
-            neg_log_prob = -self.normal_dist.log_prob(self.act)  # loss without advantage
-            self.loss = neg_log_prob * self.advantage  # advantage (TD_error) guided loss
+        with tf.name_scope('exp_v'):
+            log_prob = self.normal_dist.log_prob(self.a)  # loss without advantage
+            self.exp_v = log_prob * self.td_error  # advantage (TD_error) guided loss
             # Add cross entropy cost to encourage exploration
-            self.loss -= 1e-1 * self.normal_dist.entropy()
+            self.exp_v += self.normal_dist.entropy()
 
         with tf.name_scope('train'):
-            self.train_op = tf.train.AdamOptimizer(lr).minimize(self.loss)
+            self.train_op = tf.train.AdamOptimizer(lr).minimize(-self.exp_v, global_step)    # min(v) = max(-v)
 
-    def update(self, s, a, adv):
-        feed_dict = {self.state: s, self.act: a, self.advantage: adv}
-        _, loss = self.sess.run([self.train_op, self.loss], feed_dict)
-        return loss
+    def learn(self, s, a, td):
+        s = s[np.newaxis, :]
+        feed_dict = {self.s: s, self.a: a, self.td_error: td}
+        _, exp_v = self.sess.run([self.train_op, self.exp_v], feed_dict)
+        return exp_v
 
     def choose_action(self, s):
-        return self.sess.run([self.action, self.mu, self.sigma], {self.state: s})  # get probabilities for all actions
+        s = s[np.newaxis, :]
+        return self.sess.run(self.action, {self.s: s})  # get probabilities for all actions
 
 
 class Critic(object):
     def __init__(self, sess, n_features, lr=0.01):
         self.sess = sess
         with tf.name_scope('inputs'):
-            self.state = tf.placeholder(tf.float32, [n_features, ], "state")
-            state = tf.expand_dims(self.state, axis=0)
-            self.target = tf.placeholder(dtype=tf.float32, name="target")  # TD target=r+gamma*V_next
+            self.s = tf.placeholder(tf.float32, [1, n_features], "state")
+            self.v_ = tf.placeholder(tf.float32, [1, 1], name="v_next")
+            self.r = tf.placeholder(tf.float32, name='r')
 
         with tf.variable_scope('Critic'):
             l1 = tf.layers.dense(
-                inputs=state,
+                inputs=self.s,
                 units=30,  # number of hidden units
-                activation=None,
+                activation=tf.nn.relu,
                 kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
                 bias_initializer=tf.constant_initializer(0.1),  # biases
                 name='l1'
             )
 
-            self.eval = tf.layers.dense(
+            self.v = tf.layers.dense(
                 inputs=l1,
                 units=1,  # output units
                 activation=None,
                 kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
                 bias_initializer=tf.constant_initializer(0.1),  # biases
-                name='l2'
+                name='V'
             )
 
-        with tf.name_scope('loss'):
-            self.loss = tf.reduce_mean(tf.squared_difference(self.target, self.eval))    # TD_error = (r+gamma*V_next) - V_eval
-        with tf.name_scope('train'):
-            self.train_op = tf.train.RMSPropOptimizer(lr).minimize(self.loss)
+        with tf.variable_scope('squared_TD_error'):
+            self.td_error = tf.reduce_mean(self.r + GAMMA * self.v_ - self.v)
+            self.loss = tf.square(self.td_error)    # TD_error = (r+gamma*V_next) - V_eval
+        with tf.variable_scope('train'):
+            self.train_op = tf.train.AdamOptimizer(lr).minimize(self.loss)
 
-    def update(self, s, target):
-        _, loss = self.sess.run([self.train_op, self.loss], {self.state: s, self.target: target})
-        return loss
+    def learn(self, s, r, s_):
+        s, s_ = s[np.newaxis, :], s_[np.newaxis, :]
 
-    def evaluate(self, s):
-        return self.sess.run(self.eval, {self.state: s})[0, 0]  # return a float
+        v_ = self.sess.run(self.v, {self.s: s_})
+        td_error, _ = self.sess.run([self.td_error, self.train_op],
+                                          {self.s: s, self.v_: v_, self.r: r})
+        return td_error
 
 
 OUTPUT_GRAPH = False
 MAX_EPISODE = 3000
-EPISODE_TIME_THRESHOLD = 300
+MAX_EP_STEPS = 300
 DISPLAY_REWARD_THRESHOLD = -550  # renders environment if total episode reward is greater then this threshold
 RENDER = False  # rendering wastes time
 GAMMA = 0.9
@@ -131,10 +135,13 @@ LR_C = 0.01     # learning rate for critic
 env = gym.make('Pendulum-v0')
 env.seed(1)  # reproducible
 
+N_S = env.observation_space.shape[0]
+A_BOUND = env.action_space.high
+
 sess = tf.Session()
 
-actor = Actor(sess, n_features=env.observation_space.shape[0], action_range=[env.action_space.low[0], env.action_space.high[0]], lr=LR_A)
-critic = Critic(sess, n_features=env.observation_space.shape[0], lr=LR_C)
+actor = Actor(sess, n_features=N_S, lr=LR_A, action_bound=[-A_BOUND, A_BOUND])
+critic = Critic(sess, n_features=N_S, lr=LR_C)
 
 sess.run(tf.global_variables_initializer())
 
@@ -148,22 +155,18 @@ for i_episode in range(MAX_EPISODE):
     while True:
         # if RENDER:
         env.render()
-        a, mu, sigma = actor.choose_action(s)
+        a = actor.choose_action(s)
 
         s_, r, done, info = env.step(a)
         r /= 10
-        TD_target = r + GAMMA * critic.evaluate(s_)    # r + gamma * V_next
-        TD_eval = critic.evaluate(s)    # V_now
-        TD_error = TD_target - TD_eval
 
-        actor.update(s=s, a=a, adv=TD_error)
-        critic.update(s=s, target=TD_target)
+        td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
+        actor.learn(s, a, td_error)  # true_gradient = grad[logPi(s,a) * td_error]
 
         s = s_
         t += 1
-        # print(reward)
         ep_rs.append(r)
-        if t > EPISODE_TIME_THRESHOLD:
+        if t > MAX_EP_STEPS:
             ep_rs_sum = sum(ep_rs)
             if 'running_reward' not in globals():
                 running_reward = ep_rs_sum

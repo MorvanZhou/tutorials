@@ -69,7 +69,7 @@ class LSTMRNN(object):
         self.l_in_y = tf.reshape(l_in_y, [-1, self.n_steps, self.cell_size], name='2_3D')
 
     def add_cell(self):
-        lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(self.cell_size, forget_bias=1.0, state_is_tuple=True)
+        lstm_cell = tf.contrib.rnn.BasicLSTMCell(self.cell_size, forget_bias=1.0, state_is_tuple=True)
         with tf.name_scope('initial_state'):
             self.cell_init_state = lstm_cell.zero_state(self.batch_size, dtype=tf.float32)
         self.cell_outputs, self.cell_final_state = tf.nn.dynamic_rnn(
@@ -85,7 +85,7 @@ class LSTMRNN(object):
             self.pred = tf.matmul(l_out_x, Ws_out) + bs_out
 
     def compute_cost(self):
-        losses = tf.nn.seq2seq.sequence_loss_by_example(
+        losses = tf.contrib.legacy_seq2seq.sequence_loss_by_example(
             [tf.reshape(self.pred, [-1], name='reshape_pred')],
             [tf.reshape(self.ys, [-1], name='reshape_target')],
             [tf.ones([self.batch_size * self.n_steps], dtype=tf.float32)],
@@ -98,10 +98,10 @@ class LSTMRNN(object):
                 tf.reduce_sum(losses, name='losses_sum'),
                 self.batch_size,
                 name='average_cost')
-            tf.scalar_summary('cost', self.cost)
+            tf.summary.scalar('cost', self.cost)
 
     def ms_error(self, y_pre, y_target):
-        return tf.square(tf.sub(y_pre, y_target))
+        return tf.square(tf.subtract(y_pre, y_target))
 
     def _weight_variable(self, shape, name='weights'):
         initializer = tf.random_normal_initializer(mean=0., stddev=1.,)
@@ -115,8 +115,8 @@ class LSTMRNN(object):
 if __name__ == '__main__':
     model = LSTMRNN(TIME_STEPS, INPUT_SIZE, OUTPUT_SIZE, CELL_SIZE, BATCH_SIZE)
     sess = tf.Session()
-    merged = tf.merge_all_summaries()
-    writer = tf.train.SummaryWriter("logs", sess.graph)
+    merged = tf.summary.merge_all()
+    writer = tf.summary.FileWriter("logs", sess.graph)
     # tf.initialize_all_variables() no long valid from
     # 2017-03-02 if using tensorflow >= 0.12
     if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
