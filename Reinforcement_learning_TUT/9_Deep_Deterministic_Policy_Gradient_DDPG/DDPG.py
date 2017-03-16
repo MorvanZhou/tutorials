@@ -142,6 +142,8 @@ class Critic(object):
         self.t_replace_counter += 1
 
 
+#####################  Memory  ####################
+
 class Memory(object):
     def __init__(self, capacity, dims):
         self.capacity = capacity
