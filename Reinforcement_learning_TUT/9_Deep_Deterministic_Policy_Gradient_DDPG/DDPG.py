@@ -97,7 +97,7 @@ class Critic(object):
             self.q = self._build_net(S, A, 'eval_net', trainable=True)
 
             # Input (s_, a_), output q_ for q_target
-            self.q_ = self._build_net(S_, a_, 'target_net', trainable=False)
+            self.q_ = self._build_net(S_, a_, 'target_net', trainable=False)    # target_q is based on a_ from Actor's target_net
 
             self.e_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Critic/eval_net')
             self.t_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Critic/target_net')
