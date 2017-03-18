@@ -31,7 +31,7 @@ def add_layer(inputs, in_size, out_size, layer_name, activation_function=None, )
         outputs = Wx_plus_b
     else:
         outputs = activation_function(Wx_plus_b, )
-    tf.histogram_summary(layer_name + '/outputs', outputs)
+    tf.summary.histogram(layer_name + '/outputs', outputs)
     return outputs
 
 
@@ -47,14 +47,14 @@ prediction = add_layer(l1, 50, 10, 'l2', activation_function=tf.nn.softmax)
 # the loss between prediction and real data
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(ys * tf.log(prediction),
                                               reduction_indices=[1]))  # loss
-tf.scalar_summary('loss', cross_entropy)
+tf.summary.scalar('loss', cross_entropy)
 train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
 sess = tf.Session()
-merged = tf.merge_all_summaries()
+merged = tf.summary.merge_all()
 # summary writer goes in here
-train_writer = tf.train.SummaryWriter("logs/train", sess.graph)
-test_writer = tf.train.SummaryWriter("logs/test", sess.graph)
+train_writer = tf.summary.FileWriter("logs/train", sess.graph)
+test_writer = tf.summary.FileWriter("logs/test", sess.graph)
 
 # tf.initialize_all_variables() no long valid from
 # 2017-03-02 if using tensorflow >= 0.12
