@@ -7,6 +7,7 @@ View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 
 Using:
 Tensorflow: 1.0
+gym: 0.7.3
 """
 
 import numpy as np

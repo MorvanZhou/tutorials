@@ -5,6 +5,7 @@ View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
 
 Using:
 Tensorflow: 1.0
+gym: 0.8.0
 """
 
 
@@ -15,6 +16,7 @@ import tensorflow as tf
 import numpy as np
 
 env = gym.make('MountainCar-v0')
+env = env.unwrapped
 env.seed(21)
 MEMORY_SIZE = 10000
 

@@ -7,7 +7,7 @@ View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
 Using:
 tensorflow 1.0
-gym 0.7.3
+gym 0.8.0
 """
 
 import tensorflow as tf
@@ -182,6 +182,7 @@ OUTPUT_GRAPH = True
 ENV_NAME = 'Pendulum-v0'
 
 env = gym.make(ENV_NAME)
+env = env.unwrapped
 env.seed(1)
 
 state_dim = env.observation_space.shape[0]
@@ -246,7 +247,7 @@ for i in range(MAX_EPISODES):
         s = s_
         ep_reward += r
 
-        if j == MAX_EP_STEPS:
+        if j == MAX_EP_STEPS-1:
             print('Episode:', i, ' Reward: %i' % int(ep_reward), 'Explore: %.2f' % var, )
             if ep_reward > -1000:
                 RENDER = True

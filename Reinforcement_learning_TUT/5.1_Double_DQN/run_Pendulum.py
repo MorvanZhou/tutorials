@@ -3,6 +3,10 @@ Double DQN & Natural DQN comparison,
 The Pendulum example.
 
 View more on 莫烦Python: https://morvanzhou.github.io/tutorials/
+
+Using:
+Tensorflow: 1.0
+gym: 0.8.0
 """
 
 
@@ -14,6 +18,7 @@ import tensorflow as tf
 
 
 env = gym.make('Pendulum-v0')
+env = env.unwrapped
 env.seed(1)
 MEMORY_SIZE = 3000
 ACTION_SPACE = 11

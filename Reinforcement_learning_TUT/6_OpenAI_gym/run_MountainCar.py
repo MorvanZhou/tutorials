@@ -1,7 +1,9 @@
 """
 Deep Q network,
 
-The mountain car example
+Using:
+Tensorflow: 1.0
+gym: 0.8.0
 """
 
 
@@ -9,6 +11,8 @@ import gym
 from RL_brain import DeepQNetwork
 
 env = gym.make('MountainCar-v0')
+env = env.unwrapped
+
 print(env.action_space)
 print(env.observation_space)
 print(env.observation_space.high)
@@ -24,7 +28,7 @@ total_steps = 0
 for i_episode in range(10):
 
     observation = env.reset()
-
+    ep_r = 0
     while True:
         env.render()
 
@@ -41,11 +45,14 @@ for i_episode in range(10):
 
         if total_steps > 1000:
             RL.learn()
-            print('episode: ', i_episode,
-                  'cost: ', round(RL.cost, 4),
-                  ' epsilon: ', round(RL.epsilon, 2))
 
+        ep_r += reward
         if done:
+            get = '| Get' if observation_[0] >= env.unwrapped.goal_position else '| ----'
+            print('Epi: ', i_episode,
+                  get,
+                  '| Ep_r: ', round(ep_r, 4),
+                  '| Epsilon: ', round(RL.epsilon, 2))
             break
 
         observation = observation_

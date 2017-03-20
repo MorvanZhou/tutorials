@@ -9,7 +9,7 @@ View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
 Using:
 tensorflow 1.0
-gym 0.7.3
+gym 0.8.0
 """
 
 import tensorflow as tf
@@ -134,6 +134,7 @@ LR_C = 0.01     # learning rate for critic
 
 env = gym.make('Pendulum-v0')
 env.seed(1)  # reproducible
+env = env.unwrapped
 
 N_S = env.observation_space.shape[0]
 A_BOUND = env.action_space.high

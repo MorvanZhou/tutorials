@@ -7,7 +7,7 @@ View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
 Using:
 tensorflow 1.0
-gym 0.7.3
+gym 0.8.0
 """
 
 import numpy as np
@@ -122,6 +122,7 @@ LR_C = 0.01     # learning rate for critic
 
 env = gym.make('CartPole-v0')
 env.seed(1)  # reproducible
+env = env.unwrapped
 
 N_F = env.observation_space.shape[0]
 N_A = env.action_space.n

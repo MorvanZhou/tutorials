@@ -4,6 +4,10 @@ Policy Gradient, Reinforcement Learning.
 The cart pole example
 
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
+
+Using:
+Tensorflow: 1.0
+gym: 0.8.0
 """
 
 import gym
@@ -15,6 +19,7 @@ RENDER = False  # rendering wastes time
 
 env = gym.make('CartPole-v0')
 env.seed(1)     # reproducible, general Policy gradient has high variance
+env = env.unwrapped
 
 print(env.action_space)
 print(env.observation_space)
