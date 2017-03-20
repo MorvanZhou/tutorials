@@ -234,10 +234,7 @@ class DQNPrioritizedReplay:
     def store_transition(self, s, a, r, s_):
         if self.prioritized:    # prioritized replay
             transition = np.hstack((s, [a, r], s_))
-            q_next, q_eval = self.sess.run([self.q_next, self.q_eval],
-                                           {self.s: s[np.newaxis, :], self.s_: s_[np.newaxis, :]})
-            error = r + np.max(q_next, axis=1) - q_eval[0, a]
-            self.memory.store(abs(error[0]), transition)
+            self.memory.store(1, transition)    # have 1 priority for newly arrived transition
         else:       # random replay
             if not hasattr(self, 'memory_counter'):
                 self.memory_counter = 0
