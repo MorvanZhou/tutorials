@@ -102,7 +102,7 @@ class Memory(object):   # stored as ( s, a, r, s_ ) in SumTree
     alpha = 0.6     # [0~1] convert the importance of TD error to priority
     beta = 0.4      # importance-sampling, from initial value increasing to 1
     beta_increment_per_sampling = 0.001
-    maxiwi = 1      # refer to the paper
+    abs_err_upper = 1  # clipped abs error
 
     def __init__(self, capacity):
         self.tree = SumTree(capacity)
@@ -114,26 +114,33 @@ class Memory(object):   # stored as ( s, a, r, s_ ) in SumTree
     def sample(self, n):
         batch_idx, batch_memory, ISWeights = [], [], []
         segment = self.tree.root_priority / n
-        self.beta = self.beta + self.beta_increment_per_sampling if self.beta < 1 else 1  # max = 1
+        self.beta = np.min([1, self.beta + self.beta_increment_per_sampling])  # max = 1
 
+        min_prob = np.min(self.tree.tree[-self.tree.capacity:]) / self.tree.root_priority
+        maxiwi = np.power(self.tree.capacity * min_prob, -self.beta)  # for later normalizing ISWeights
         for i in range(n):
             a = segment * i
             b = segment * (i + 1)
             lower_bound = np.random.uniform(a, b)
             idx, p, data = self.tree.get_leaf(lower_bound)
-            prob = p/self.tree.root_priority
-            ISWeights.append(np.power(self.tree.capacity * prob, -self.beta)/self.maxiwi)
+            prob = p / self.tree.root_priority
+            ISWeights.append(self.tree.capacity * prob)
             batch_idx.append(idx)
             batch_memory.append(data)
 
-        return batch_idx, np.vstack(batch_memory), np.vstack(ISWeights)
+        ISWeights = np.vstack(ISWeights)
+        ISWeights = np.power(ISWeights, -self.beta) / maxiwi  # normalize
+        return batch_idx, np.vstack(batch_memory), ISWeights
 
     def update(self, idx, error):
         p = self._get_priority(error)
         self.tree.update(idx, p)
 
     def _get_priority(self, error):
-        return np.power(error + self.epsilon, self.alpha)
+        def _get_priority(self, error):
+            error += self.epsilon  # avoid 0
+            clipped_error = np.clip(error, 0, self.abs_err_upper)
+            return np.power(clipped_error, self.alpha)
 
 
 class DQNPrioritizedReplay:
