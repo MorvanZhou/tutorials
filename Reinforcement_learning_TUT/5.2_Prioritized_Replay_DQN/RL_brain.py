@@ -137,10 +137,9 @@ class Memory(object):   # stored as ( s, a, r, s_ ) in SumTree
         self.tree.update(idx, p)
 
     def _get_priority(self, error):
-        def _get_priority(self, error):
-            error += self.epsilon  # avoid 0
-            clipped_error = np.clip(error, 0, self.abs_err_upper)
-            return np.power(clipped_error, self.alpha)
+        error += self.epsilon  # avoid 0
+        clipped_error = np.clip(error, 0, self.abs_err_upper)
+        return np.power(clipped_error, self.alpha)
 
 
 class DQNPrioritizedReplay:
