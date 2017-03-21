@@ -68,8 +68,9 @@ def train(RL):
 his_natural = train(RL_natural)
 his_prio = train(RL_prio)
 
-plt.plot(his_natural[0, :], his_natural[1, :], c='b', label='natural DQN')
-plt.plot(his_prio[0, :], his_prio[1, :], c='r', label='DQN with prioritized replay')
+# compare based on first success
+plt.plot(his_natural[0, :], his_natural[1, :] - his_natural[1, 0], c='b', label='natural DQN')
+plt.plot(his_prio[0, :], his_prio[1, :] - his_prio[1, 0], c='r', label='DQN with prioritized replay')
 plt.legend(loc='best')
 plt.ylabel('total training time')
 plt.xlabel('episode')
