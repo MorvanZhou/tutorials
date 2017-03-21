@@ -219,7 +219,7 @@ class DQNPrioritizedReplay:
         with tf.variable_scope('loss'):
             if self.prioritized:
                 self.abs_errors = tf.reduce_sum(tf.abs(self.q_target - self.q_eval), axis=1)    # for updating Sumtree
-                self.loss = tf.reduce_mean(tf.square(self.ISWeights * self.abs_errors))
+                self.loss = tf.reduce_mean(self.ISWeights * tf.squared_difference(self.q_target, self.q_eval))
             else:
                 self.loss = tf.reduce_mean(tf.squared_difference(self.q_target, self.q_eval))
         with tf.variable_scope('train'):
@@ -234,7 +234,7 @@ class DQNPrioritizedReplay:
     def store_transition(self, s, a, r, s_):
         if self.prioritized:    # prioritized replay
             transition = np.hstack((s, [a, r], s_))
-            self.memory.store(1, transition)    # have 1 priority for newly arrived transition
+            self.memory.store(0.9, transition)    # have 1 priority for newly arrived transition
         else:       # random replay
             if not hasattr(self, 'memory_counter'):
                 self.memory_counter = 0
