@@ -9,7 +9,7 @@ Please note, this code is only for python 3+. If you are using python 2+, please
 from __future__ import print_function
 from sklearn import preprocessing
 import numpy as np
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.datasets.samples_generator import make_classification
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt

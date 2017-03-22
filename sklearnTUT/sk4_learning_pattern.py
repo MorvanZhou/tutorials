@@ -8,7 +8,7 @@ Please note, this code is only for python 3+. If you are using python 2+, please
 """
 from __future__ import print_function
 from sklearn import datasets
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
 iris = datasets.load_iris()
