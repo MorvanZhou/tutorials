@@ -10,13 +10,11 @@ gym: 0.8.0
 
 
 import gym
+from gym import wrappers
 from DuelingDQNPrioritizedReplay import DuelingDQNPrioritizedReplay
-from DQN import DeepQNetwork
-import numpy as np
 
 env = gym.make('LunarLander-v2')
 # env = env.unwrapped
-# env = env.wrappers.Monitor(env, './tmp/lander')
 env.seed(1)
 
 N_A = env.action_space.n
@@ -31,9 +29,6 @@ LR = 0.0001
 BATCH_SIZE = 32
 HIDDEN = [400, 400]
 RENDER = True
-
-# RL = DeepQNetwork(N_A, N_S, LR, GAMMA, E_GREEDY,TARGET_REP_ITER, MEMORY_CAPACITY, BATCH_SIZE,
-#                   e_greedy_increment=E_INCREMENT, hidden=HIDDEN)
 
 RL = DuelingDQNPrioritizedReplay(
     n_actions=N_A, n_features=N_S, learning_rate=LR, e_greedy=E_GREEDY, reward_decay=GAMMA,
@@ -71,5 +66,3 @@ for i_episode in range(MAX_EPISODES):
         s = s_
         total_steps += 1
 
-env.close()
-# gym.upload('/tmp/lander', api_key='sk_AWe1C0dYQWicl5kXwNrRUw')
