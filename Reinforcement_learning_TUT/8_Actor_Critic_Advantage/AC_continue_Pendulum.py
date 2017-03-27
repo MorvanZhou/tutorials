@@ -1,7 +1,7 @@
 """
 Actor-Critic with continuous action using TD-error as the Advantage, Reinforcement Learning.
 
-The cart pole example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb)
+The Pendulum example (based on https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb)
 
 Cannot converge!!! oscillate!!!
 
@@ -49,7 +49,7 @@ class Actor(object):
         sigma = tf.layers.dense(
             inputs=l1,
             units=1,  # output units
-            activation=tf.nn.sigmoid,  # get action probabilities
+            activation=tf.nn.softplus,  # get action probabilities
             kernel_initializer=tf.random_normal_initializer(0., .1),  # weights
             bias_initializer=tf.constant_initializer(1.),  # biases
             name='sigma'

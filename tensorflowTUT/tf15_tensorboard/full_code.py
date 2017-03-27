@@ -71,4 +71,4 @@ for i in range(1000):
         writer.add_summary(result, i)
 
 # direct to the local dir and run this in terminal:
-# $ tensorboard --logdir=logs
+# $ tensorboard --logdir logs
