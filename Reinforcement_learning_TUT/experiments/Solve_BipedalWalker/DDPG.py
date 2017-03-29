@@ -7,6 +7,44 @@ import shutil
 np.random.seed(1)
 tf.set_random_seed(1)
 
+MAX_EPISODES = 2000
+LR_A = 0.0002  # learning rate for actor
+LR_C = 0.0002  # learning rate for critic
+GAMMA = 0.9999  # reward discount
+REPLACE_ITER_A = 1700
+REPLACE_ITER_C = 1500
+MEMORY_CAPACITY = 200000
+BATCH_SIZE = 32
+DISPLAY_THRESHOLD = 100  # display until the running reward > 100
+DATA_PATH = './data'
+LOAD_MODEL = False
+SAVE_MODEL_ITER = 50000
+RENDER = False
+OUTPUT_GRAPH = False
+ENV_NAME = 'BipedalWalker-v2'
+
+GLOBAL_STEP = tf.Variable(0, trainable=False)
+INCREASE_GS = GLOBAL_STEP.assign(tf.add(GLOBAL_STEP, 1))
+LR_A = tf.train.exponential_decay(LR_A, GLOBAL_STEP, 10000, .97, staircase=True)
+LR_C = tf.train.exponential_decay(LR_C, GLOBAL_STEP, 10000, .97, staircase=True)
+END_POINT = (200 - 10) * (14/30)    # from game
+
+env = gym.make(ENV_NAME)
+env.seed(1)
+
+STATE_DIM = env.observation_space.shape[0]  # 24
+ACTION_DIM = env.action_space.shape[0]  # 4
+ACTION_BOUND = env.action_space.high    # [1, 1, 1, 1]
+
+# all placeholder for tf
+with tf.name_scope('S'):
+    S = tf.placeholder(tf.float32, shape=[None, STATE_DIM], name='s')
+with tf.name_scope('A'):
+    A = tf.placeholder(tf.float32, shape=[None, ACTION_DIM], name='a')
+with tf.name_scope('R'):
+    R = tf.placeholder(tf.float32, [None, 1], name='r')
+with tf.name_scope('S_'):
+    S_ = tf.placeholder(tf.float32, shape=[None, STATE_DIM], name='s_')
 
 ###############################  Actor  ####################################
 
@@ -31,14 +69,13 @@ class Actor(object):
 
     def _build_net(self, s, scope, trainable):
         with tf.variable_scope(scope):
-            init_w = tf.random_normal_initializer(0., 0.1)
-            init_b = tf.constant_initializer(0.1)
-            net = tf.layers.dense(s, 400, activation=tf.nn.relu,
-                                  kernel_initializer=init_w, bias_initializer=init_b, name='l1',
-                                  trainable=trainable)
-            net = tf.layers.dense(net, 20, activation=tf.nn.relu,
-                                  kernel_initializer=init_w, bias_initializer=init_b, name='l2',
-                                  trainable=trainable)
+            init_w = tf.random_normal_initializer(0., 0.01)
+            init_b = tf.constant_initializer(0.01)
+            net = tf.layers.dense(s, 500, activation=tf.nn.relu,
+                                  kernel_initializer=init_w, bias_initializer=init_b, name='l1', trainable=trainable)
+            net = tf.layers.dense(net, 200, activation=tf.nn.relu,
+                                  kernel_initializer=init_w, bias_initializer=init_b, name='l2', trainable=trainable)
+
             with tf.variable_scope('a'):
                 actions = tf.layers.dense(net, self.a_dim, activation=tf.nn.tanh, kernel_initializer=init_w,
                                           bias_initializer=init_b, name='a', trainable=trainable)
@@ -107,11 +144,12 @@ class Critic(object):
 
     def _build_net(self, s, a, scope, trainable):
         with tf.variable_scope(scope):
-            init_w = tf.random_normal_initializer(0., 0.1)
-            init_b = tf.constant_initializer(0.1)
+            init_w = tf.random_normal_initializer(0., 0.01)
+            init_b = tf.constant_initializer(0.01)
 
             with tf.variable_scope('l1'):
-                n_l1 = 400
+                n_l1 = 700
+                # combine the action and states together in this way
                 w1_s = tf.get_variable('w1_s', [self.s_dim, n_l1], initializer=init_w, trainable=trainable)
                 w1_a = tf.get_variable('w1_a', [self.a_dim, n_l1], initializer=init_w, trainable=trainable)
                 b1 = tf.get_variable('b1', [1, n_l1], initializer=init_b, trainable=trainable)
@@ -119,7 +157,6 @@ class Critic(object):
             with tf.variable_scope('l2'):
                 net = tf.layers.dense(net, 20, activation=tf.nn.relu, kernel_initializer=init_w,
                                       bias_initializer=init_b, name='l2', trainable=trainable)
-
             with tf.variable_scope('q'):
                 q = tf.layers.dense(net, 1, kernel_initializer=init_w, bias_initializer=init_b, trainable=trainable)   # Q(s,a)
         return q
@@ -217,7 +254,7 @@ class Memory(object):  # stored as ( s, a, r, s_ ) in SumTree
     epsilon = 0.001  # small amount to avoid zero priority
     alpha = 0.6  # [0~1] convert the importance of TD error to priority
     beta = 0.4  # importance-sampling, from initial value increasing to 1
-    beta_increment_per_sampling = 1e-4  # annealing the bias
+    beta_increment_per_sampling = 1e-5  # annealing the bias
     abs_err_upper = 1   # for stability refer to paper
 
     def __init__(self, capacity):
@@ -268,48 +305,11 @@ class Memory(object):  # stored as ( s, a, r, s_ ) in SumTree
         return np.power(clipped_error, self.alpha)
 
 
-MAX_EPISODES = 2000
-LR_A = 0.0001  # learning rate for actor
-LR_C = 0.0001  # learning rate for critic
-GAMMA = 0.999  # reward discount
-REPLACE_ITER_A = 1700
-REPLACE_ITER_C = 1500
-MEMORY_CAPACITY = 200000
-BATCH_SIZE = 32
-DISPLAY_THRESHOLD = 60
-DATA_PATH = './data'
-LOAD_MODEL = True
-SAVE_MODEL_ITER = 50000
-RENDER = False
-OUTPUT_GRAPH = False
-ENV_NAME = 'BipedalWalker-v2'
-
-GLOBAL_STEP = tf.Variable(0, trainable=False)
-INCREASE_GS = GLOBAL_STEP.assign(tf.add(GLOBAL_STEP, 1))
-END_POINT = (200 - 10) * (14/30)    # from game
-
-env = gym.make(ENV_NAME)
-env.seed(1)
-
-state_dim = env.observation_space.shape[0]  # 24
-action_dim = env.action_space.shape[0]  # 4
-action_bound = env.action_space.high    # [1, 1, 1, 1]
-
-# all placeholder for tf
-with tf.name_scope('S'):
-    S = tf.placeholder(tf.float32, shape=[None, state_dim], name='s')
-with tf.name_scope('A'):
-    A = tf.placeholder(tf.float32, shape=[None, action_dim], name='a')
-with tf.name_scope('R'):
-    R = tf.placeholder(tf.float32, [None, 1], name='r')
-with tf.name_scope('S_'):
-    S_ = tf.placeholder(tf.float32, shape=[None, state_dim], name='s_')
-
 sess = tf.Session()
 
 # Create actor and critic.
-actor = Actor(sess, action_dim, action_bound, LR_A, REPLACE_ITER_A)
-critic = Critic(sess, state_dim, action_dim, LR_C, GAMMA, REPLACE_ITER_C, actor.a_)
+actor = Actor(sess, ACTION_DIM, ACTION_BOUND, LR_A, REPLACE_ITER_A)
+critic = Critic(sess, STATE_DIM, ACTION_DIM, LR_C, GAMMA, REPLACE_ITER_C, actor.a_)
 actor.add_grad_to_graph(critic.a_grads)
 
 M = Memory(MEMORY_CAPACITY)
@@ -328,7 +328,7 @@ if OUTPUT_GRAPH:
     tf.summary.FileWriter('logs', graph=sess.graph)
 
 var = 3  # control exploration
-var_min = 0.008
+var_min = 0.001
 
 for i_episode in range(MAX_EPISODES):
     # s = (hull angle speed, angular velocity, horizontal speed, vertical speed, position of joints and joints angular speed, legs contact with ground, and 10 lidar rangefinder measurements.)
@@ -342,17 +342,19 @@ for i_episode in range(MAX_EPISODES):
         s_, r, done, _ = env.step(a)    # r = total 300+ points up to the far end. If the robot falls, it gets -100.
 
         if r == -100: r = -2
+        ep_r += r
+
         transition = np.hstack((s, a, [r], s_))
         max_p = np.max(M.tree.tree[-M.tree.capacity:])
         M.store(max_p, transition)
 
         if GLOBAL_STEP.eval(sess) > MEMORY_CAPACITY/20:
-            var = max([var*0.99995, var_min])  # decay the action randomness
+            var = max([var*0.9999, var_min])  # decay the action randomness
             tree_idx, b_M, ISWeights = M.prio_sample(BATCH_SIZE)    # for critic update
-            b_s = b_M[:, :state_dim]
-            b_a = b_M[:, state_dim: state_dim + action_dim]
-            b_r = b_M[:, -state_dim - 1: -state_dim]
-            b_s_ = b_M[:, -state_dim:]
+            b_s = b_M[:, :STATE_DIM]
+            b_a = b_M[:, STATE_DIM: STATE_DIM + ACTION_DIM]
+            b_r = b_M[:, -STATE_DIM - 1: -STATE_DIM]
+            b_s_ = b_M[:, -STATE_DIM:]
 
             abs_td = critic.learn(b_s, b_a, b_r, b_s_, ISWeights)
             actor.learn(b_s, b_a)
@@ -379,9 +381,10 @@ for i_episode in range(MAX_EPISODES):
                   '| Epi_r: %.2f' % ep_r,
                   '| Exploration: %.3f' % var,
                   '| Pos: %.i' % int(env.unwrapped.hull.position[0]),
+                  '| LR_A: %.6f' % sess.run(LR_A),
+                  '| LR_C: %.6f' % sess.run(LR_C),
                   )
             break
 
         s = s_
-        ep_r += r
         sess.run(INCREASE_GS)

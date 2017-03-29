@@ -149,10 +149,10 @@ if __name__ == '__main__':
             feed_dict=feed_dict)
 
         # plotting
-        # plt.plot(xs[0, :], res[0].flatten(), 'r', xs[0, :], pred.flatten()[:TIME_STEPS], 'b--')
-        # plt.ylim((-1.2, 1.2))
-        # plt.draw()
-        # plt.pause(0.3)
+        plt.plot(xs[0, :], res[0].flatten(), 'r', xs[0, :], pred.flatten()[:TIME_STEPS], 'b--')
+        plt.ylim((-1.2, 1.2))
+        plt.draw()
+        plt.pause(0.3)
 
         if i % 20 == 0:
             print('cost: ', round(cost, 4))
