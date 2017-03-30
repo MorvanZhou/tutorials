@@ -19,3 +19,4 @@ All methods mentioned below have their video and text tutorial in Chinese. Visit
 * Actor-Critic
   * [Actor Critic](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/8_Actor_Critic_Advantage)
   * [Deep Deterministic Policy Gradient](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/9_Deep_Deterministic_Policy_Gradient_DDPG)
+  * [A3C](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/10_A3C)

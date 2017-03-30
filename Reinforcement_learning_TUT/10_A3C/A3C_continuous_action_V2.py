@@ -1,7 +1,7 @@
 """
 Asynchronous Advantage Actor Critic (A3C) with continuous action space, Reinforcement Learning.
 
-The Pendulum example. Convergence promised, but difficult environment, this code hardly converge.
+The Pendulum example.
 
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
@@ -28,7 +28,7 @@ N_WORKERS = multiprocessing.cpu_count()
 MAX_EP_STEP = 500
 MAX_GLOBAL_EP = 1000
 GLOBAL_NET_SCOPE = 'Global_Net'
-UPDATE_GLOBAL_ITER = 10
+UPDATE_GLOBAL_ITER = 5
 GAMMA = 0.9
 ENTROPY_BETA = 0.005
 LR_A = 0.001    # learning rate for actor
@@ -66,7 +66,8 @@ class ACNet(object):
                     self.c_loss = tf.reduce_sum(tf.square(td))
 
                 with tf.name_scope('wrap_a_out'):
-                    mu, sigma = mu * a_bound[1], sigma + 1e-4
+                    mu, sigma = mu * a_bound[1], sigma*2 + 1e-2
+                    self.test = sigma[0]
 
                 normal_dist = tf.contrib.distributions.Normal(mu, sigma)
 
@@ -77,13 +78,12 @@ class ACNet(object):
                     self.exp_v = tf.reduce_sum(ENTROPY_BETA * entropy + exp_v)
                     self.a_loss = -self.exp_v
 
+                self.total_loss = self.a_loss + self.c_loss
                 with tf.name_scope('choose_a'):  # use local params to choose action
                     self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1), axis=0), a_bound[0], a_bound[1])
                 with tf.name_scope('local_grad'):
-                    self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
-                    self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
-                    self.a_grads = tf.gradients(self.a_loss, self.a_params)  # get local gradients
-                    self.c_grads = tf.gradients(self.c_loss, self.c_params)
+                    self.params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope)
+                    self.grads = tf.gradients(self.total_loss, self.a_params)  # get local gradients
 
             with tf.name_scope('sync'):
                 with tf.name_scope('pull'):
@@ -95,14 +95,11 @@ class ACNet(object):
 
     def _build_net(self, n_a):
         w_init = tf.random_normal_initializer(0., .1)
-        with tf.variable_scope('actor'):
-            l_a = tf.layers.dense(self.s, 60, tf.nn.relu, kernel_initializer=w_init, name='la')
-            mu = tf.layers.dense(l_a, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
-            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init,
-                                    bias_initializer=tf.constant_initializer(-0.5), name='sigma')
-        with tf.variable_scope('critic'):
-            l_c = tf.layers.dense(self.s, 50, tf.nn.relu, kernel_initializer=w_init, name='lc')
-            v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
+        l = tf.layers.dense(self.s, 100, None, kernel_initializer=w_init, name='la')
+        mu = tf.layers.dense(l, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
+        # control variance, not let it goes too high
+        sigma = tf.layers.dense(l, n_a, tf.nn.sigmoid, kernel_initializer=w_init, name='sigma')
+        v = tf.layers.dense(l, 1, kernel_initializer=w_init, name='v')  # state value
         return mu, sigma, v
 
     def update_global(self, feed_dict):  # run by a local
@@ -206,4 +203,3 @@ if __name__ == "__main__":
         t.start()
         worker_threads.append(t)
     coord.join(worker_threads)
-
