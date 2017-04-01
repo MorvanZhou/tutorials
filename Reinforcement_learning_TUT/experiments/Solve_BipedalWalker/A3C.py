@@ -20,14 +20,15 @@ import shutil
 
 
 GAME = 'BipedalWalker-v2'
-OUTPUT_GRAPH = True
+OUTPUT_GRAPH = False
 LOG_DIR = './log'
 N_WORKERS = multiprocessing.cpu_count()
 MAX_GLOBAL_EP = 5000
 GLOBAL_NET_SCOPE = 'Global_Net'
+MEMORY_CAPACITY = 500
 UPDATE_GLOBAL_ITER = 10
-GAMMA = 0.995
-ENTROPY_BETA = 0.005
+GAMMA = 0.99
+ENTROPY_BETA = 0.01
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.001    # learning rate for critic
 
@@ -40,7 +41,6 @@ A_BOUND = [env.action_space.low, env.action_space.high]
 
 class ACNet(object):
     def __init__(self, scope, globalAC=None):
-
         if scope == GLOBAL_NET_SCOPE:   # get global network
             with tf.variable_scope(scope):
                 self.s = tf.placeholder(tf.float32, [None, N_S], 'S')
@@ -48,6 +48,9 @@ class ACNet(object):
                 self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                 self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
         else:   # local net, calculate losses
+            self.memory = np.zeros((MEMORY_CAPACITY, N_S+N_A+1))    # local memory for replay
+            self._memory_pointer = 0
+
             with tf.variable_scope(scope):
                 self.s = tf.placeholder(tf.float32, [None, N_S], 'S')
                 self.a_his = tf.placeholder(tf.float32, [None, N_A], 'A')
@@ -60,8 +63,8 @@ class ACNet(object):
                     self.c_loss = tf.reduce_sum(tf.square(td))
 
                 with tf.name_scope('wrap_a_out'):
-                    mu, sigma = mu * A_BOUND[1], sigma + 1e-4
-
+                    mu, sigma = mu * A_BOUND[1], sigma + 1e-6
+                self.test = sigma[0]
                 normal_dist = tf.contrib.distributions.Normal(mu, sigma)
 
                 with tf.name_scope('a_loss'):
@@ -92,15 +95,34 @@ class ACNet(object):
         with tf.variable_scope('actor'):
             l_a = tf.layers.dense(self.s, 400, tf.nn.relu, kernel_initializer=w_init, name='la')
             mu = tf.layers.dense(l_a, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
-            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init,
-                                    bias_initializer=tf.constant_initializer(-0.8), name='sigma')
+            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init, name='sigma',
+                                    # bias_initializer=tf.constant_initializer(-1.),
+                                    )
         with tf.variable_scope('critic'):
             l_c = tf.layers.dense(self.s, 300, tf.nn.relu, kernel_initializer=w_init, name='lc')
             v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
         return mu, sigma, v
 
+    def store_batch_transitions(self, b_t):     # run by a local
+        b_len = b_t.shape[0]
+        space_left = MEMORY_CAPACITY - self._memory_pointer
+        if space_left < b_len:
+            b_t1 = b_t[:space_left]
+            b_t2 = b_t[space_left:]
+            self.memory[self._memory_pointer:] = b_t1
+            self._memory_pointer = b_t2.shape[0]
+            self.memory[:self._memory_pointer] = b_t2
+        else:
+            self._memory_pointer += b_len
+            self.memory[self._memory_pointer-b_len: self._memory_pointer] = b_t
+
+    def sample(self, n):
+        index = np.random.choice(np.arange(MEMORY_CAPACITY, dtype=np.int32), n)
+        return self.memory[index]
+
     def update_global(self, feed_dict):  # run by a local
-        SESS.run([self.update_a_op, self.update_c_op], feed_dict)  # local grads applies to global net
+        _, _, t = SESS.run([self.update_a_op, self.update_c_op, self.test], feed_dict)  # local grads applies to global net
+        return t
 
     def pull_global(self):  # run by a local
         SESS.run([self.pull_a_params_op, self.pull_c_params_op])
@@ -147,28 +169,38 @@ class Worker(object):
                     buffer_v_target.reverse()
 
                     buffer_s, buffer_a, buffer_v_target = np.vstack(buffer_s), np.vstack(buffer_a), np.vstack(buffer_v_target)
-                    feed_dict = {
-                        self.AC.s: buffer_s,
-                        self.AC.a_his: buffer_a,
-                        self.AC.v_target: buffer_v_target,
-                    }
-                    self.AC.update_global(feed_dict)
+                    buffer_t = np.hstack((buffer_s, buffer_a, buffer_v_target))
+                    self.AC.store_batch_transitions(buffer_t)
+
                     buffer_s, buffer_a, buffer_r = [], [], []
+
+                if total_step > MEMORY_CAPACITY and total_step % UPDATE_GLOBAL_ITER == 0:
+                    sampled_batch = self.AC.sample(UPDATE_GLOBAL_ITER)
+                    feed_dict = {
+                        self.AC.s: sampled_batch[:, :N_S],
+                        self.AC.a_his: sampled_batch[:, N_S: N_S+N_A],
+                        self.AC.v_target: sampled_batch[:, -1:],
+                    }
+                    test = self.AC.update_global(feed_dict)
                     self.AC.pull_global()
+
+                    if done:
+                        achieve = '| Achieve' if self.env.unwrapped.hull.position[0] >= 88 else '| -------'
+                        print(
+                            self.name,
+                            "Ep:", GLOBAL_EP.eval(SESS),
+                            achieve,
+                            "| Pos: %i" % self.env.unwrapped.hull.position[0],
+                            "| Ep_r: %.2f" % ep_r,
+                            '| var:', test,
+                        )
 
                 s = s_
                 total_step += 1
                 if done:
-                    achieve = '| Achieve' if self.env.unwrapped.hull.position[0] >= 88 else '| -------'
-                    print(
-                        self.name,
-                        "Ep:", GLOBAL_EP.eval(SESS),
-                        achieve,
-                        "| Pos: %i" % self.env.unwrapped.hull.position[0],
-                        "| Ep_r: %.2f" % ep_r,
-                          )
                     SESS.run(COUNT_GLOBAL_EP)
                     break
+
 
 if __name__ == "__main__":
     SESS = tf.Session()
@@ -183,7 +215,7 @@ if __name__ == "__main__":
         # Create worker
         for i in range(N_WORKERS):
             i_name = 'W_%i' % i   # worker name
-            workers.append(Worker(gym.make(GAME).unwrapped, i_name, GLOBAL_AC))
+            workers.append(Worker(gym.make(GAME), i_name, GLOBAL_AC))
 
     COORD = tf.train.Coordinator()
     SESS.run(tf.global_variables_initializer())
@@ -195,8 +227,7 @@ if __name__ == "__main__":
 
     worker_threads = []
     for worker in workers:
-        job = lambda: worker.work()
-        t = threading.Thread(target=job)
+        t = threading.Thread(target=worker.work)
         t.start()
         worker_threads.append(t)
     COORD.join(worker_threads)

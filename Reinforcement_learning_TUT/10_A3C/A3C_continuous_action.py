@@ -19,19 +19,18 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 
-
 GAME = 'Pendulum-v0'
 OUTPUT_GRAPH = True
 LOG_DIR = './log'
 N_WORKERS = multiprocessing.cpu_count()
-MAX_EP_STEP = 500
+MAX_EP_STEP = 400
 MAX_GLOBAL_EP = 800
 GLOBAL_NET_SCOPE = 'Global_Net'
 UPDATE_GLOBAL_ITER = 5
 GAMMA = 0.9
-ENTROPY_BETA = 0.005
-LR_A = 0.002    # learning rate for actor
-LR_C = 0.004    # learning rate for critic
+ENTROPY_BETA = 0.01
+LR_A = 0.001    # learning rate for actor
+LR_C = 0.002    # learning rate for critic
 GLOBAL_RUNNING_R = []
 
 env = gym.make(GAME)
@@ -60,7 +59,8 @@ class ACNet(object):
 
                 td = tf.subtract(self.v_target, self.v, name='TD_error')
                 with tf.name_scope('c_loss'):
-                    self.c_loss = tf.reduce_sum(tf.square(td))
+                    self.c_losses = tf.square(td)   # shape (None, 1), use this to get sum of gradients over batch
+                    self.c_loss = tf.reduce_mean(self.c_losses)
 
                 with tf.name_scope('wrap_a_out'):
                     mu, sigma = mu * A_BOUND[1], sigma + 1e-4
@@ -71,16 +71,17 @@ class ACNet(object):
                     log_prob = normal_dist.log_prob(self.a_his)
                     exp_v = log_prob * td
                     entropy = normal_dist.entropy()  # encourage exploration
-                    self.exp_v = tf.reduce_sum(ENTROPY_BETA * entropy + exp_v)
-                    self.a_loss = -self.exp_v
+                    self.exp_v = ENTROPY_BETA * entropy + exp_v
+                    self.a_losses = -self.exp_v   # shape (None, 1), use this to get sum of gradients over batch
+                    self.a_loss = tf.reduce_mean(self.a_losses)
 
                 with tf.name_scope('choose_a'):  # use local params to choose action
                     self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1), axis=0), A_BOUND[0], A_BOUND[1])
                 with tf.name_scope('local_grad'):
                     self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                     self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
-                    self.a_grads = tf.gradients(self.a_loss, self.a_params)  # get local gradients
-                    self.c_grads = tf.gradients(self.c_loss, self.c_params)
+                    self.a_grads = tf.gradients(self.a_losses, self.a_params)  # use losses will give accumulated sum of gradients
+                    self.c_grads = tf.gradients(self.c_losses, self.c_params)
 
             with tf.name_scope('sync'):
                 with tf.name_scope('pull'):
@@ -93,11 +94,11 @@ class ACNet(object):
     def _build_net(self, n_a):
         w_init = tf.random_normal_initializer(0., .1)
         with tf.variable_scope('actor'):
-            l_a = tf.layers.dense(self.s, 100, tf.nn.relu, kernel_initializer=w_init, name='la')
+            l_a = tf.layers.dense(self.s, 200, tf.nn.relu6, kernel_initializer=w_init, name='la')
             mu = tf.layers.dense(l_a, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
             sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init, name='sigma')
         with tf.variable_scope('critic'):
-            l_c = tf.layers.dense(self.s, 60, tf.nn.relu, kernel_initializer=w_init, name='lc')
+            l_c = tf.layers.dense(self.s, 100, tf.nn.relu6, kernel_initializer=w_init, name='lc')
             v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
         return mu, sigma, v
 
@@ -125,8 +126,8 @@ class Worker(object):
             s = self.env.reset()
             ep_r = 0
             for ep_t in range(MAX_EP_STEP):
-                # if self.name == 'W_0':
-                #     self.env.render()
+                if self.name == 'W_0':
+                    self.env.render()
                 a = self.AC.choose_action(s)
                 s_, r, done, info = self.env.step(a)
                 done = True if ep_t == MAX_EP_STEP - 1 else False
@@ -165,7 +166,7 @@ class Worker(object):
                     if len(GLOBAL_RUNNING_R) == 0:  # record running episode reward
                         GLOBAL_RUNNING_R.append(ep_r)
                     else:
-                        GLOBAL_RUNNING_R.append(0.99 * GLOBAL_RUNNING_R[-1] + 0.01 * ep_r)
+                        GLOBAL_RUNNING_R.append(0.9 * GLOBAL_RUNNING_R[-1] + 0.1 * ep_r)
                     print(
                         self.name,
                         "Ep:", GLOBAL_EP.eval(SESS),

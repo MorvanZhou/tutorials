@@ -17,6 +17,23 @@ import gym
 np.random.seed(1)
 tf.set_random_seed(1)
 
+#####################  hyper parameters  ####################
+
+MAX_EPISODES = 70
+MAX_EP_STEPS = 400
+LR_A = 0.001  # learning rate for actor
+LR_C = 0.01  # learning rate for critic
+GAMMA = 0.9  # reward discount
+TAU = 0.01  # Soft update for target param, but this is computationally expansive
+# so we use replace_iter instead
+REPLACE_ITER_A = 500
+REPLACE_ITER_C = 300
+MEMORY_CAPACITY = 7000
+BATCH_SIZE = 32
+
+RENDER = False
+OUTPUT_GRAPH = True
+ENV_NAME = 'Pendulum-v0'
 
 ###############################  Actor  ####################################
 
@@ -162,25 +179,6 @@ class Memory(object):
         return self.data[indices, :]
 
 
-
-#####################  hyper parameters  ####################
-
-MAX_EPISODES = 50
-MAX_EP_STEPS = 400
-LR_A = 0.001  # learning rate for actor
-LR_C = 0.01  # learning rate for critic
-GAMMA = 0.9  # reward discount
-TAU = 0.01  # Soft update for target param, but this is computationally expansive
-# so we use replace_iter instead
-REPLACE_ITER_A = 500
-REPLACE_ITER_C = 300
-MEMORY_CAPACITY = 7000
-BATCH_SIZE = 32
-
-RENDER = False
-OUTPUT_GRAPH = True
-ENV_NAME = 'Pendulum-v0'
-
 env = gym.make(ENV_NAME)
 env = env.unwrapped
 env.seed(1)
@@ -234,7 +232,7 @@ for i in range(MAX_EPISODES):
         M.store_transition(s, a, r / 10, s_)
 
         if M.pointer > MEMORY_CAPACITY:
-            var *= .9998    # decay the action randomness
+            var *= .9995    # decay the action randomness
             b_M = M.sample(BATCH_SIZE)
             b_s = b_M[:, :state_dim]
             b_a = b_M[:, state_dim: state_dim + action_dim]
