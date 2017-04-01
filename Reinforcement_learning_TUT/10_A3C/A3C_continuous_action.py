@@ -130,7 +130,9 @@ class Worker(object):
                     self.env.render()
                 a = self.AC.choose_action(s)
                 s_, r, done, info = self.env.step(a)
+                done = True if ep_t == MAX_EP_STEP - 1 else False
                 r /= 10     # normalize reward
+
                 ep_r += r
                 buffer_s.append(s)
                 buffer_a.append(a)
@@ -159,7 +161,7 @@ class Worker(object):
 
                 s = s_
                 total_step += 1
-                if ep_t == MAX_EP_STEP-1:
+                if done:
                     print(
                         self.name,
                         "Ep:", GLOBAL_EP.eval(SESS),
