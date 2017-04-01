@@ -17,22 +17,22 @@ import numpy as np
 import gym
 import os
 import shutil
+import matplotlib.pyplot as plt
 
-np.random.seed(2)
-tf.set_random_seed(2)  # reproducible
 
 GAME = 'Pendulum-v0'
 OUTPUT_GRAPH = True
 LOG_DIR = './log'
 N_WORKERS = multiprocessing.cpu_count()
 MAX_EP_STEP = 500
-MAX_GLOBAL_EP = 1000
+MAX_GLOBAL_EP = 800
 GLOBAL_NET_SCOPE = 'Global_Net'
-UPDATE_GLOBAL_ITER = 10
+UPDATE_GLOBAL_ITER = 5
 GAMMA = 0.9
 ENTROPY_BETA = 0.005
-LR_A = 0.001    # learning rate for actor
-LR_C = 0.002    # learning rate for critic
+LR_A = 0.002    # learning rate for actor
+LR_C = 0.004    # learning rate for critic
+GLOBAL_RUNNING_R = []
 
 env = gym.make(GAME)
 
@@ -93,12 +93,11 @@ class ACNet(object):
     def _build_net(self, n_a):
         w_init = tf.random_normal_initializer(0., .1)
         with tf.variable_scope('actor'):
-            l_a = tf.layers.dense(self.s, 80, tf.nn.relu, kernel_initializer=w_init, name='la')
+            l_a = tf.layers.dense(self.s, 100, tf.nn.relu, kernel_initializer=w_init, name='la')
             mu = tf.layers.dense(l_a, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
-            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init,
-                                    bias_initializer=tf.constant_initializer(-0.5), name='sigma')
+            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init, name='sigma')
         with tf.variable_scope('critic'):
-            l_c = tf.layers.dense(self.s, 50, tf.nn.relu, kernel_initializer=w_init, name='lc')
+            l_c = tf.layers.dense(self.s, 60, tf.nn.relu, kernel_initializer=w_init, name='lc')
             v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
         return mu, sigma, v
 
@@ -114,8 +113,8 @@ class ACNet(object):
 
 
 class Worker(object):
-    def __init__(self, env, name, globalAC):
-        self.env = env
+    def __init__(self, name, globalAC):
+        self.env = gym.make(GAME).unwrapped
         self.name = name
         self.AC = ACNet(name, globalAC)
 
@@ -126,8 +125,8 @@ class Worker(object):
             s = self.env.reset()
             ep_r = 0
             for ep_t in range(MAX_EP_STEP):
-                if self.name == 'W_0':
-                    self.env.render()
+                # if self.name == 'W_0':
+                #     self.env.render()
                 a = self.AC.choose_action(s)
                 s_, r, done, info = self.env.step(a)
                 done = True if ep_t == MAX_EP_STEP - 1 else False
@@ -162,10 +161,15 @@ class Worker(object):
                 s = s_
                 total_step += 1
                 if done:
+                    global GLOBAL_RUNNING_R
+                    if len(GLOBAL_RUNNING_R) == 0:  # record running episode reward
+                        GLOBAL_RUNNING_R.append(ep_r)
+                    else:
+                        GLOBAL_RUNNING_R.append(0.99 * GLOBAL_RUNNING_R[-1] + 0.01 * ep_r)
                     print(
                         self.name,
                         "Ep:", GLOBAL_EP.eval(SESS),
-                        "| Ep_r: %.2f" % ep_r,
+                        "| Ep_r: %i" % GLOBAL_RUNNING_R[-1],
                           )
                     SESS.run(COUNT_GLOBAL_EP)
                     break
@@ -183,7 +187,7 @@ if __name__ == "__main__":
         # Create worker
         for i in range(N_WORKERS):
             i_name = 'W_%i' % i   # worker name
-            workers.append(Worker(gym.make(GAME).unwrapped, i_name, GLOBAL_AC))
+            workers.append(Worker(i_name, GLOBAL_AC))
 
     COORD = tf.train.Coordinator()
     SESS.run(tf.global_variables_initializer())
@@ -200,4 +204,9 @@ if __name__ == "__main__":
         t.start()
         worker_threads.append(t)
     COORD.join(worker_threads)
+
+    plt.plot(np.arange(len(GLOBAL_RUNNING_R)), GLOBAL_RUNNING_R)
+    plt.xlabel('step')
+    plt.ylabel('Total moving reward')
+    plt.show()
 
