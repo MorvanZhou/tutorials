@@ -1,7 +1,7 @@
 """
 Asynchronous Advantage Actor Critic (A3C) with continuous action space, Reinforcement Learning.
 
-The Pendulum example. Convergence promised, but difficult environment, this code hardly converge.
+The Pendulum example.
 
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
