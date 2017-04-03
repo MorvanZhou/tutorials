@@ -32,6 +32,7 @@ ENTROPY_BETA = 0.01
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.002    # learning rate for critic
 GLOBAL_RUNNING_R = []
+GLOBAL_EP = 0
 
 env = gym.make(GAME)
 
@@ -120,9 +121,10 @@ class Worker(object):
         self.AC = ACNet(name, globalAC)
 
     def work(self):
+        global GLOBAL_RUNNING_R, GLOBAL_EP
         total_step = 1
         buffer_s, buffer_a, buffer_r = [], [], []
-        while not COORD.should_stop() and GLOBAL_EP.eval(SESS) < MAX_GLOBAL_EP:
+        while not COORD.should_stop() and GLOBAL_EP < MAX_GLOBAL_EP:
             s = self.env.reset()
             ep_r = 0
             for ep_t in range(MAX_EP_STEP):
@@ -162,25 +164,22 @@ class Worker(object):
                 s = s_
                 total_step += 1
                 if done:
-                    global GLOBAL_RUNNING_R
                     if len(GLOBAL_RUNNING_R) == 0:  # record running episode reward
                         GLOBAL_RUNNING_R.append(ep_r)
                     else:
                         GLOBAL_RUNNING_R.append(0.9 * GLOBAL_RUNNING_R[-1] + 0.1 * ep_r)
                     print(
                         self.name,
-                        "Ep:", GLOBAL_EP.eval(SESS),
+                        "Ep:", GLOBAL_EP,
                         "| Ep_r: %i" % GLOBAL_RUNNING_R[-1],
                           )
-                    SESS.run(COUNT_GLOBAL_EP)
+                    GLOBAL_EP += 1
                     break
 
 if __name__ == "__main__":
     SESS = tf.Session()
 
     with tf.device("/cpu:0"):
-        GLOBAL_EP = tf.Variable(0, dtype=tf.int32, name='global_ep', trainable=False)
-        COUNT_GLOBAL_EP = tf.assign(GLOBAL_EP, tf.add(GLOBAL_EP, tf.constant(1), name='step_ep'))
         OPT_A = tf.train.RMSPropOptimizer(LR_A, name='RMSPropA')
         OPT_C = tf.train.RMSPropOptimizer(LR_C, name='RMSPropC')
         GLOBAL_AC = ACNet(GLOBAL_NET_SCOPE)  # we only need its params

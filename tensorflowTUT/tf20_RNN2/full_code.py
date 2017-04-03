@@ -66,11 +66,11 @@ def RNN(X, weights, biases):
 
     # basic LSTM Cell.
     if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
-        lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
+        cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
     else:
-        lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden_units)
+        cell = tf.contrib.rnn.BasicLSTMCell(n_hidden_units)
     # lstm cell is divided into two parts (c_state, h_state)
-    init_state = lstm_cell.zero_state(batch_size, dtype=tf.float32)
+    init_state = cell.zero_state(batch_size, dtype=tf.float32)
 
     # You have 2 options for following step.
     # 1: tf.nn.rnn(cell, inputs);
@@ -80,7 +80,7 @@ def RNN(X, weights, biases):
     # In here, we go for option 2.
     # dynamic_rnn receive Tensor (batch, steps, inputs) or (steps, batch, inputs) as X_in.
     # Make sure the time_major is changed accordingly.
-    outputs, final_state = tf.nn.dynamic_rnn(lstm_cell, X_in, initial_state=init_state, time_major=False)
+    outputs, final_state = tf.nn.dynamic_rnn(cell, X_in, initial_state=init_state, time_major=False)
 
     # hidden layer for output as the final results
     #############################################
