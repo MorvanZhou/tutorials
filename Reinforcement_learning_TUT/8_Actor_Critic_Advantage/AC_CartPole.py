@@ -17,6 +17,23 @@ import gym
 np.random.seed(2)
 tf.set_random_seed(2)  # reproducible
 
+# Superparameters
+OUTPUT_GRAPH = False
+MAX_EPISODE = 3000
+DISPLAY_REWARD_THRESHOLD = 200  # renders environment if total episode reward is greater then this threshold
+MAX_EP_STEPS = 1000   # maximum time step in one episode
+RENDER = False  # rendering wastes time
+GAMMA = 0.9     # reward discount in TD error
+LR_A = 0.001    # learning rate for actor
+LR_C = 0.01     # learning rate for critic
+
+env = gym.make('CartPole-v0')
+env.seed(1)  # reproducible
+env = env.unwrapped
+
+N_F = env.observation_space.shape[0]
+N_A = env.action_space.n
+
 
 class Actor(object):
     def __init__(self, sess, n_features, n_actions, lr=0.001):
@@ -107,25 +124,6 @@ class Critic(object):
                                           {self.s: s, self.v_: v_, self.r: r})
         return td_error
 
-
-
-# Superparameters
-
-OUTPUT_GRAPH = False
-MAX_EPISODE = 3000
-DISPLAY_REWARD_THRESHOLD = 200  # renders environment if total episode reward is greater then this threshold
-MAX_EP_STEPS = 1000   # maximum time step in one episode
-RENDER = False  # rendering wastes time
-GAMMA = 0.9     # reward discount in TD error
-LR_A = 0.001    # learning rate for actor
-LR_C = 0.01     # learning rate for critic
-
-env = gym.make('CartPole-v0')
-env.seed(1)  # reproducible
-env = env.unwrapped
-
-N_F = env.observation_space.shape[0]
-N_A = env.action_space.n
 
 sess = tf.Session()
 
