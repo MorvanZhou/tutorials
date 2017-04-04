@@ -90,11 +90,11 @@ class Actor(object):
             # xs = policy's parameters;
             # self.a_grads = the gradients of the policy to get more Q
             # tf.gradients will calculate dys/dxs with a initial gradients for ys, so this is dq/da * da/dparams
-            self.policy_grads_and_vars = tf.gradients(ys=self.a, xs=self.e_params, grad_ys=a_grads)
+            self.policy_grads = tf.gradients(ys=self.a, xs=self.e_params, grad_ys=a_grads)
 
         with tf.variable_scope('A_train'):
             opt = tf.train.AdamOptimizer(-self.lr)  # (- learning rate) for ascent policy
-            self.train_op = opt.apply_gradients(zip(self.policy_grads_and_vars, self.e_params))
+            self.train_op = opt.apply_gradients(zip(self.policy_grads, self.e_params))
 
 
 ###############################  Critic  ####################################
