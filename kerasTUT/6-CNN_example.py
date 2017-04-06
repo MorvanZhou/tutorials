@@ -27,8 +27,8 @@ from keras.optimizers import Adam
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 # data pre-processing
-X_train = X_train.reshape(-1, 1,28, 28)
-X_test = X_test.reshape(-1, 1,28, 28)
+X_train = X_train.reshape(-1, 1,28, 28)/255.
+X_test = X_test.reshape(-1, 1,28, 28)/255.
 y_train = np_utils.to_categorical(y_train, nb_classes=10)
 y_test = np_utils.to_categorical(y_test, nb_classes=10)
 
