@@ -25,8 +25,8 @@ from keras.optimizers import RMSprop
 # data pre-processing
 X_train = X_train.reshape(X_train.shape[0], -1) / 255.   # normalize
 X_test = X_test.reshape(X_test.shape[0], -1) / 255.      # normalize
-y_train = np_utils.to_categorical(y_train, nb_classes=10)
-y_test = np_utils.to_categorical(y_test, nb_classes=10)
+y_train = np_utils.to_categorical(y_train, num_classes=10)
+y_test = np_utils.to_categorical(y_test, num_classes=10)
 
 # Another way to build your neural net
 model = Sequential([
@@ -46,7 +46,7 @@ model.compile(optimizer=rmsprop,
 
 print('Training ------------')
 # Another way to train the model
-model.fit(X_train, y_train, nb_epoch=2, batch_size=32)
+model.fit(X_train, y_train, epoch=2, batch_size=32)
 
 print('\nTesting ------------')
 # Evaluate the model with the metrics we defined earlier

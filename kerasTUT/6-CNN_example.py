@@ -29,8 +29,8 @@ from keras.optimizers import Adam
 # data pre-processing
 X_train = X_train.reshape(-1, 1,28, 28)/255.
 X_test = X_test.reshape(-1, 1,28, 28)/255.
-y_train = np_utils.to_categorical(y_train, nb_classes=10)
-y_test = np_utils.to_categorical(y_test, nb_classes=10)
+y_train = np_utils.to_categorical(y_train, num_classes=10)
+y_test = np_utils.to_categorical(y_test, num_classes=10)
 
 # Another way to build your CNN
 model = Sequential()
@@ -80,7 +80,7 @@ model.compile(optimizer=adam,
 
 print('Training ------------')
 # Another way to train the model
-model.fit(X_train, y_train, nb_epoch=1, batch_size=32,)
+model.fit(X_train, y_train, epoch=1, batch_size=32,)
 
 print('\nTesting ------------')
 # Evaluate the model with the metrics we defined earlier

@@ -39,8 +39,8 @@ LR = 0.001
 # data pre-processing
 X_train = X_train.reshape(-1, 28, 28) / 255.      # normalize
 X_test = X_test.reshape(-1, 28, 28) / 255.        # normalize
-y_train = np_utils.to_categorical(y_train, nb_classes=10)
-y_test = np_utils.to_categorical(y_test, nb_classes=10)
+y_train = np_utils.to_categorical(y_train, num_classes=10)
+y_test = np_utils.to_categorical(y_test, num_classes=10)
 
 # build RNN model
 model = Sequential()
