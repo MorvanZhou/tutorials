@@ -21,7 +21,7 @@ tf.set_random_seed(1)
 
 MAX_EPISODES = 70
 MAX_EP_STEPS = 400
-LR_A = 0.001  # learning rate for actor
+LR_A = 0.01  # learning rate for actor
 LR_C = 0.01  # learning rate for critic
 GAMMA = 0.9  # reward discount
 TAU = 0.01  # Soft update for target param, but this is computationally expansive
@@ -90,11 +90,10 @@ class Actor(object):
             # xs = policy's parameters;
             # self.a_grads = the gradients of the policy to get more Q
             # tf.gradients will calculate dys/dxs with a initial gradients for ys, so this is dq/da * da/dparams
-            a_grads = tf.div(a_grads, tf.cast(tf.shape(a_grads)[0], tf.float32), name='take_mean')
             self.policy_grads = tf.gradients(ys=self.a, xs=self.e_params, grad_ys=a_grads)
 
         with tf.variable_scope('A_train'):
-            opt = tf.train.AdamOptimizer(-self.lr)  # (- learning rate) for ascent policy
+            opt = tf.train.AdamOptimizer(-self.lr / BATCH_SIZE)  # (- learning rate) for ascent policy, div to take mean
             self.train_op = opt.apply_gradients(zip(self.policy_grads, self.e_params))
 
 
