@@ -16,8 +16,7 @@ All methods mentioned below have their video and text tutorial in Chinese. Visit
   * [DQN with Prioitized Experience Replay](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/5.2_Prioritized_Replay_DQN)
   * [Dueling DQN](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/5.3_Dueling_DQN)
 * [Policy Gradients](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/7_Policy_gradient_softmax)
-* Actor-Critic
-  * [Actor Critic](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/8_Actor_Critic_Advantage)
+* [Actor Critic](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/8_Actor_Critic_Advantage)
   * [Deep Deterministic Policy Gradient](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/9_Deep_Deterministic_Policy_Gradient_DDPG)
   * [A3C](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/10_A3C)
 * Model-based RL (WIP)
