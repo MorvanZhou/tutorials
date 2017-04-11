@@ -8,9 +8,9 @@ np.random.seed(1)
 tf.set_random_seed(1)
 
 MAX_EPISODES = 2000
-LR_A = 0.0002  # learning rate for actor
-LR_C = 0.0002  # learning rate for critic
-GAMMA = 0.9999  # reward discount
+LR_A = 0.0005  # learning rate for actor
+LR_C = 0.0005  # learning rate for critic
+GAMMA = 0.999  # reward discount
 REPLACE_ITER_A = 1700
 REPLACE_ITER_C = 1500
 MEMORY_CAPACITY = 200000
@@ -18,7 +18,7 @@ BATCH_SIZE = 32
 DISPLAY_THRESHOLD = 100  # display until the running reward > 100
 DATA_PATH = './data'
 LOAD_MODEL = False
-SAVE_MODEL_ITER = 50000
+SAVE_MODEL_ITER = 100000
 RENDER = False
 OUTPUT_GRAPH = False
 ENV_NAME = 'BipedalWalker-v2'
@@ -98,11 +98,10 @@ class Actor(object):
             # xs = policy's parameters;
             # self.a_grads = the gradients of the policy to get more Q
             # tf.gradients will calculate dys/dxs with a initial gradients for ys, so this is dq/da * da/dparams
-            a_grads = tf.div(a_grads, tf.cast(tf.shape(a_grads)[0], tf.float32), name='take_mean')
             self.policy_grads_and_vars = tf.gradients(ys=self.a, xs=self.e_params, grad_ys=a_grads)
 
         with tf.variable_scope('A_train'):
-            opt = tf.train.AdamOptimizer(-self.lr)  # (- learning rate) for ascent policy
+            opt = tf.train.AdamOptimizer(-self.lr/BATCH_SIZE)  # (- learning rate) for ascent policy
             self.train_op = opt.apply_gradients(zip(self.policy_grads_and_vars, self.e_params), global_step=GLOBAL_STEP)
 
 
@@ -329,7 +328,7 @@ if OUTPUT_GRAPH:
     tf.summary.FileWriter('logs', graph=sess.graph)
 
 var = 3  # control exploration
-var_min = 0.001
+var_min = 0.01
 
 for i_episode in range(MAX_EPISODES):
     # s = (hull angle speed, angular velocity, horizontal speed, vertical speed, position of joints and joints angular speed, legs contact with ground, and 10 lidar rangefinder measurements.)

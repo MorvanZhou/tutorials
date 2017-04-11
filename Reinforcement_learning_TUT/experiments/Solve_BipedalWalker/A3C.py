@@ -98,51 +98,41 @@ class ACNet(object):
 
     def _build_net(self, n_a):
         w_init = tf.random_normal_initializer(0., .01)
-        with tf.variable_scope('critic'):
-            cell_size = 64
+        with tf.variable_scope('critic'):  # only critic controls the rnn update
+            cell_size = 128
             s = tf.expand_dims(self.s, axis=1,
                                name='timely_input')  # [time_step, feature] => [time_step, batch, feature]
             rnn_cell = tf.contrib.rnn.BasicRNNCell(cell_size)
             self.init_state = rnn_cell.zero_state(batch_size=1, dtype=tf.float32)
-            outputs, _ = tf.nn.dynamic_rnn(
+            outputs, self.final_state = tf.nn.dynamic_rnn(
                 cell=rnn_cell, inputs=s, initial_state=self.init_state, time_major=True)
             cell_out = tf.reshape(outputs, [-1, cell_size], name='flatten_rnn_outputs')  # joined state representation
             l_c = tf.layers.dense(cell_out, 300, tf.nn.relu6, kernel_initializer=w_init, name='lc')
             v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
 
-        with tf.variable_scope('actor'):
-            # cell_out = tf.stop_gradient(cell_out, name='c_cell_out')
-            cell_size = 64
-            s = tf.expand_dims(self.s, axis=1,
-                               name='timely_input')  # [time_step, feature] => [time_step, batch, feature]
-            rnn_cell = tf.contrib.rnn.BasicRNNCell(cell_size)
-            self.init_state = rnn_cell.zero_state(batch_size=1, dtype=tf.float32)
-            outputs, _ = tf.nn.dynamic_rnn(
-                cell=rnn_cell, inputs=s, initial_state=self.init_state, time_major=True)
-            cell_out = tf.reshape(outputs, [-1, cell_size], name='flatten_rnn_outputs')
-
+        with tf.variable_scope('actor'):  # state representation is based on critic
+            cell_out = tf.stop_gradient(cell_out, name='c_cell_out')  # from what critic think it is
             l_a = tf.layers.dense(cell_out, 400, tf.nn.relu6, kernel_initializer=w_init, name='la')
-            mu = tf.layers.dense(l_a, n_a, tf.nn.tanh, kernel_initializer=w_init, name='mu')
-            sigma = tf.layers.dense(l_a, n_a, tf.nn.softplus, kernel_initializer=w_init,
-                                    # bias_initializer=tf.constant_initializer(3.),
-                                    name='sigma')
+            mu = tf.layers.dense(l_a, N_A, tf.nn.tanh, kernel_initializer=w_init, name='mu')
+            sigma = tf.layers.dense(l_a, N_A, tf.nn.softplus, kernel_initializer=w_init, name='sigma')
         return mu, sigma, v
 
     def update_global(self, feed_dict):  # run by a local
-        _, _, state, t = SESS.run([self.update_a_op, self.update_c_op, self.init_state, self.test], feed_dict)  # local grads applies to global net
-        return state, t
+        _, _, t = SESS.run([self.update_a_op, self.update_c_op, self.test], feed_dict)  # local grads applies to global net
+        return t
 
     def pull_global(self):  # run by a local
         SESS.run([self.pull_a_params_op, self.pull_c_params_op])
 
-    def choose_action(self, s):  # run by a local
+    def choose_action(self, s, cell_state):  # run by a local
         s = s[np.newaxis, :]
-        return SESS.run(self.A, {self.s: s})[0]
+        a, cell_state = SESS.run([self.A, self.final_state], {self.s: s, self.init_state: cell_state})
+        return a[0], cell_state
 
 
 class Worker(object):
     def __init__(self, name, globalAC):
-        self.env = gym.make(GAME)
+        self.env = gym.make(GAME).unwrapped
         self.name = name
         self.AC = ACNet(name, globalAC)
 
@@ -153,14 +143,15 @@ class Worker(object):
         while not COORD.should_stop() and GLOBAL_EP < MAX_GLOBAL_EP:
             s = self.env.reset()
             ep_r = 0
-            ep_t = 0
+            rnn_state = SESS.run(self.AC.init_state)  # zero rnn state at beginning
+            keep_state = rnn_state.copy()  # keep rnn state for updating global net
             while True:
                 if self.name == 'W_0' and total_step % 30 == 0:
                     self.env.render()
-                a = self.AC.choose_action(s)
-                s_, r, done, info = self.env.step(a)
 
-                if r == -100: r = -2     # normalize reward
+                a, rnn_state_ = self.AC.choose_action(s, rnn_state)  # get the action and next rnn state
+                s_, r, done, info = self.env.step(a)
+                if r == -100: r = -2
 
                 ep_r += r
                 buffer_s.append(s)
@@ -171,7 +162,8 @@ class Worker(object):
                     if done:
                         v_s_ = 0  # terminal
                     else:
-                        v_s_ = SESS.run(self.AC.v, {self.AC.s: s_[np.newaxis, :]})[0, 0]
+                        v_s_ = SESS.run(self.AC.v, {self.AC.s: s_[np.newaxis, :], self.AC.init_state: rnn_state_})[
+                            0, 0]
                     buffer_v_target = []
                     for r in buffer_r[::-1]:  # reverse buffer r
                         v_s_ = r + GAMMA * v_s_
@@ -180,26 +172,25 @@ class Worker(object):
 
                     buffer_s, buffer_a, buffer_v_target = np.vstack(buffer_s), np.vstack(buffer_a), np.vstack(
                         buffer_v_target)
+
                     feed_dict = {
                         self.AC.s: buffer_s,
                         self.AC.a_his: buffer_a,
                         self.AC.v_target: buffer_v_target,
-                        # use zero initial state if is beginning of the episode
+                        self.AC.init_state: keep_state,
                     }
 
-                    if ep_t > UPDATE_GLOBAL_ITER - 1:  # not beginning of this episode
-                        feed_dict[self.AC.init_state] = state
-
-                    state, test = self.AC.update_global(feed_dict)
+                    test = self.AC.update_global(feed_dict)
                     buffer_s, buffer_a, buffer_r = [], [], []
                     self.AC.pull_global()
+                    keep_state = rnn_state_.copy()  # replace the keep_state as the new initial rnn state_
 
                 s = s_
+                rnn_state = rnn_state_  # renew rnn state
                 total_step += 1
-                ep_t += 1
 
                 if done:
-                    achieve = '| Achieve' if self.env.unwrapped.hull.position[0] >= 88 else '| -------'
+                    achieve = '| Achieve' if self.env.hull.position[0] >= 88 else '| -------'
                     if len(GLOBAL_RUNNING_R) == 0:  # record running episode reward
                         GLOBAL_RUNNING_R.append(ep_r)
                     else:
@@ -208,7 +199,7 @@ class Worker(object):
                         self.name,
                         "Ep:", GLOBAL_EP,
                         achieve,
-                        "| Pos: %i" % self.env.unwrapped.hull.position[0],
+                        "| Pos: %i" % self.env.hull.position[0],
                         "| Ep_r: %.1f" % GLOBAL_RUNNING_R[-1],
                         '| var:', test,
                     )
@@ -220,8 +211,8 @@ if __name__ == "__main__":
     SESS = tf.Session()
 
     with tf.device("/cpu:0"):
-        OPT_A = tf.train.RMSPropOptimizer(LR_A, name='RMSPropA', decay=0.95)
-        OPT_C = tf.train.RMSPropOptimizer(LR_C, name='RMSPropC', decay=0.95)
+        OPT_A = tf.train.RMSPropOptimizer(LR_A/UPDATE_GLOBAL_ITER, name='RMSPropA', decay=0.95)
+        OPT_C = tf.train.RMSPropOptimizer(LR_C/UPDATE_GLOBAL_ITER, name='RMSPropC', decay=0.95)
         GLOBAL_AC = ACNet(GLOBAL_NET_SCOPE)  # we only need its params
         workers = []
         # Create worker
