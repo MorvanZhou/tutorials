@@ -20,3 +20,4 @@ All methods mentioned below have their video and text tutorial in Chinese. Visit
   * [Deep Deterministic Policy Gradient](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/9_Deep_Deterministic_Policy_Gradient_DDPG)
   * [A3C](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/10_A3C)
 * Model-based RL (WIP)
+  * [Dyna-Q](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/11_Dyna_Q)
