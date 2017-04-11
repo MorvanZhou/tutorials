@@ -52,27 +52,28 @@ class QLearningTable:
 
 
 class EnvModel:
-    """Similar to the memory buffer of DQN, you can store past experiences in here"""
+    """Similar to the memory buffer in DQN, you can store past experiences in here.
+    Alternatively, the model can generate next state and reward signal accurately."""
     def __init__(self, actions):
         # the simplest case is to think about the model is a memory which has all past transition information
         self.actions = actions
-        self.memory = pd.DataFrame(columns=actions, dtype=np.object)
+        self.database = pd.DataFrame(columns=actions, dtype=np.object)
 
     def store_transition(self, s, a, r, s_):
-        if s not in self.memory.index:
-            self.memory = self.memory.append(
+        if s not in self.database.index:
+            self.database = self.database.append(
                 pd.Series(
                     [None] * len(self.actions),
-                    index=self.memory.columns,
+                    index=self.database.columns,
                     name=s,
                 ))
-        self.memory.set_value(s, a, (r, s_))
+        self.database.set_value(s, a, (r, s_))
 
     def sample_s_a(self):
-        s = np.random.choice(self.memory.index)
-        a = np.random.choice(self.memory.ix[s].dropna().index)    # filter out the None value
+        s = np.random.choice(self.database.index)
+        a = np.random.choice(self.database.ix[s].dropna().index)    # filter out the None value
         return s, a
 
     def get_r_s_(self, s, a):
-        r, s_ = self.memory.ix[s, a]
+        r, s_ = self.database.ix[s, a]
         return r, s_
