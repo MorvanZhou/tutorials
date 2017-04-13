@@ -1,3 +1,11 @@
+"""
+Environment for Robot Arm.
+You can customize this script in a way you want.
+ 
+Requirement:
+pyglet >= 1.2.4
+numpy >= 1.12.1
+"""
 import numpy as np
 import pyglet
 
@@ -205,18 +213,4 @@ class Viewer(pyglet.window.Window):
         self.mouse_in[0] = False
 
 
-if __name__ == '__main__':
-    np.random.seed(2)
-    env = ArmEnv(False)
-
-    env.set_fps()
-    for ep in range(20):
-        s = env.reset()
-        while True:
-            env.render()
-            s_, r, done = env.step(np.array([0,0]))
-            print(r)
-            if done:
-                break
-            # print(s_, r, done)
 

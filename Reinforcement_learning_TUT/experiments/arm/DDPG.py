@@ -1,3 +1,21 @@
+"""
+Environment is a Robot Arm. The arm tries to get to the blue point.
+The environment will return a geographic (distance) information for the arm to learn.
+
+The far away from blue point the less reward; touch blue r+=1; stop at blue for a while then get r=+10.
+ 
+You can train this RL by using LOAD = False, after training, this model will be store in the a local folder.
+Using LOAD = True to reload the trained model for playing.
+
+You can customize this script in a way you want.
+
+
+Requirement:
+pyglet >= 1.2.4
+numpy >= 1.12.1
+tensorflow >= 1.0.1
+"""
+
 import tensorflow as tf
 import numpy as np
 import os
@@ -19,7 +37,7 @@ MEMORY_CAPACITY = 10000
 BATCH_SIZE = 16
 VAR_MIN = 0.1
 RENDER = True
-LOAD = True
+LOAD = False
 MODE = ['easy', 'hard']
 n_model = 1
 
