@@ -1,44 +1,53 @@
 """
-Asynchronous Advantage Actor Critic (A3C) with continuous action space, Reinforcement Learning.
+Environment is a Robot Arm. The arm tries to get to the blue point.
+The environment will return a geographic (distance) information for the arm to learn.
 
-The Pendulum example.
+The far away from blue point the less reward; touch blue r+=1; stop at blue for a while then get r=+10.
+ 
+You can train this RL by using LOAD = False, after training, this model will be store in the a local folder.
+Using LOAD = True to reload the trained model for playing.
+
+You can customize this script in a way you want.
 
 View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
 
-Using:
-tensorflow 1.0
-gym 0.8.0
+
+Requirement:
+pyglet >= 1.2.4
+numpy >= 1.12.1
+tensorflow >= 1.0.1
 """
 
 import multiprocessing
 import threading
 import tensorflow as tf
 import numpy as np
-import gym
-import os
-import shutil
-import matplotlib.pyplot as plt
+from arm_env import ArmEnv
 
-GAME = 'Pendulum-v0'
-OUTPUT_GRAPH = True
-LOG_DIR = './log'
-N_WORKERS = multiprocessing.cpu_count()
-MAX_EP_STEP = 400
-MAX_GLOBAL_EP = 800
-GLOBAL_NET_SCOPE = 'Global_Net'
+
+# np.random.seed(1)
+# tf.set_random_seed(1)
+
+MAX_GLOBAL_EP = 2000
+MAX_EP_STEP = 300
 UPDATE_GLOBAL_ITER = 5
-GAMMA = 0.9
+N_WORKERS = multiprocessing.cpu_count()
+LR_A = 1e-4  # learning rate for actor
+LR_C = 2e-4  # learning rate for critic
+GAMMA = 0.9  # reward discount
+MODE = ['easy', 'hard']
+n_model = 1
+GLOBAL_NET_SCOPE = 'Global_Net'
 ENTROPY_BETA = 0.01
-LR_A = 0.0001    # learning rate for actor
-LR_C = 0.001    # learning rate for critic
 GLOBAL_RUNNING_R = []
 GLOBAL_EP = 0
 
-env = gym.make(GAME)
 
-N_S = env.observation_space.shape[0]
-N_A = env.action_space.shape[0]
-A_BOUND = [env.action_space.low, env.action_space.high]
+env = ArmEnv(mode=MODE[n_model])
+N_S = env.state_dim
+N_A = env.action_dim
+A_BOUND = env.action_bound
+del env
 
 
 class ACNet(object):
@@ -63,7 +72,8 @@ class ACNet(object):
                     self.c_loss = tf.reduce_mean(tf.square(td))
 
                 with tf.name_scope('wrap_a_out'):
-                    mu, sigma = mu * A_BOUND[1], sigma + 1e-4
+                    self.test = sigma[0]
+                    mu, sigma = mu * A_BOUND[1], sigma + 1e-5
 
                 normal_dist = tf.contrib.distributions.Normal(mu, sigma)
 
@@ -75,7 +85,7 @@ class ACNet(object):
                     self.a_loss = tf.reduce_mean(-self.exp_v)
 
                 with tf.name_scope('choose_a'):  # use local params to choose action
-                    self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1), axis=0), A_BOUND[0], A_BOUND[1])
+                    self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1), axis=0), *A_BOUND)
                 with tf.name_scope('local_grad'):
                     self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                     self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
@@ -90,19 +100,22 @@ class ACNet(object):
                     self.update_a_op = OPT_A.apply_gradients(zip(self.a_grads, globalAC.a_params))
                     self.update_c_op = OPT_C.apply_gradients(zip(self.c_grads, globalAC.c_params))
 
-    def _build_net(self ):
-        w_init = tf.random_normal_initializer(0., .1)
+    def _build_net(self):
+        w_init = tf.contrib.layers.xavier_initializer()
         with tf.variable_scope('actor'):
-            l_a = tf.layers.dense(self.s, 200, tf.nn.relu6, kernel_initializer=w_init, name='la')
+            l_a = tf.layers.dense(self.s, 400, tf.nn.relu6, kernel_initializer=w_init, name='la')
+            l_a = tf.layers.dense(l_a, 300, tf.nn.relu6, kernel_initializer=w_init, name='la2')
             mu = tf.layers.dense(l_a, N_A, tf.nn.tanh, kernel_initializer=w_init, name='mu')
             sigma = tf.layers.dense(l_a, N_A, tf.nn.softplus, kernel_initializer=w_init, name='sigma')
         with tf.variable_scope('critic'):
-            l_c = tf.layers.dense(self.s, 100, tf.nn.relu6, kernel_initializer=w_init, name='lc')
+            l_c = tf.layers.dense(self.s, 400, tf.nn.relu6, kernel_initializer=w_init, name='lc')
+            l_c = tf.layers.dense(l_c, 200, tf.nn.relu6, kernel_initializer=w_init, name='lc2')
             v = tf.layers.dense(l_c, 1, kernel_initializer=w_init, name='v')  # state value
         return mu, sigma, v
 
     def update_global(self, feed_dict):  # run by a local
-        SESS.run([self.update_a_op, self.update_c_op], feed_dict)  # local grads applies to global net
+        _, _, t = SESS.run([self.update_a_op, self.update_c_op, self.test], feed_dict)  # local grads applies to global net
+        return t
 
     def pull_global(self):  # run by a local
         SESS.run([self.pull_a_params_op, self.pull_c_params_op])
@@ -114,7 +127,7 @@ class ACNet(object):
 
 class Worker(object):
     def __init__(self, name, globalAC):
-        self.env = gym.make(GAME).unwrapped
+        self.env = ArmEnv(mode=MODE[n_model])
         self.name = name
         self.AC = ACNet(name, globalAC)
 
@@ -129,10 +142,8 @@ class Worker(object):
                 if self.name == 'W_0':
                     self.env.render()
                 a = self.AC.choose_action(s)
-                s_, r, done, info = self.env.step(a)
-                done = True if ep_t == MAX_EP_STEP - 1 else False
-                r /= 10     # normalize reward
-
+                s_, r, done = self.env.step(a)
+                if ep_t == MAX_EP_STEP - 1: done = True
                 ep_r += r
                 buffer_s.append(s)
                 buffer_a.append(a)
@@ -155,7 +166,7 @@ class Worker(object):
                         self.AC.a_his: buffer_a,
                         self.AC.v_target: buffer_v_target,
                     }
-                    self.AC.update_global(feed_dict)
+                    test = self.AC.update_global(feed_dict)
                     buffer_s, buffer_a, buffer_r = [], [], []
                     self.AC.pull_global()
 
@@ -170,6 +181,8 @@ class Worker(object):
                         self.name,
                         "Ep:", GLOBAL_EP,
                         "| Ep_r: %i" % GLOBAL_RUNNING_R[-1],
+                        '| Var:', test,
+
                           )
                     GLOBAL_EP += 1
                     break
@@ -190,11 +203,6 @@ if __name__ == "__main__":
     COORD = tf.train.Coordinator()
     SESS.run(tf.global_variables_initializer())
 
-    if OUTPUT_GRAPH:
-        if os.path.exists(LOG_DIR):
-            shutil.rmtree(LOG_DIR)
-        tf.summary.FileWriter(LOG_DIR, SESS.graph)
-
     worker_threads = []
     for worker in workers:
         job = lambda: worker.work()
@@ -203,8 +211,4 @@ if __name__ == "__main__":
         worker_threads.append(t)
     COORD.join(worker_threads)
 
-    plt.plot(np.arange(len(GLOBAL_RUNNING_R)), GLOBAL_RUNNING_R)
-    plt.xlabel('step')
-    plt.ylabel('Total moving reward')
-    plt.show()
 

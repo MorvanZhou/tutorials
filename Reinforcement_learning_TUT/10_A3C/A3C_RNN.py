@@ -30,7 +30,7 @@ UPDATE_GLOBAL_ITER = 5
 GAMMA = 0.9
 ENTROPY_BETA = 0.01
 LR_A = 0.0001    # learning rate for actor
-LR_C = 0.0005    # learning rate for critic
+LR_C = 0.001    # learning rate for critic
 GLOBAL_RUNNING_R = []
 GLOBAL_EP = 0
 
@@ -60,8 +60,7 @@ class ACNet(object):
 
                 td = tf.subtract(self.v_target, self.v, name='TD_error')
                 with tf.name_scope('c_loss'):
-                    self.c_losses = tf.square(td)   # shape (None, 1), use this to get sum of gradients over batch
-                    self.c_loss = tf.reduce_mean(self.c_losses)
+                    self.c_loss = tf.reduce_mean(tf.square(td))
 
                 with tf.name_scope('wrap_a_out'):
                     mu, sigma = mu * A_BOUND[1], sigma + 1e-4
@@ -73,16 +72,15 @@ class ACNet(object):
                     exp_v = log_prob * td
                     entropy = normal_dist.entropy()  # encourage exploration
                     self.exp_v = ENTROPY_BETA * entropy + exp_v
-                    self.a_losses = -self.exp_v   # shape (None, 1), use this to get sum of gradients over batch
-                    self.a_loss = tf.reduce_mean(self.a_losses)
+                    self.a_loss = tf.reduce_mean(-self.exp_v)
 
                 with tf.name_scope('choose_a'):  # use local params to choose action
                     self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1), axis=0), A_BOUND[0], A_BOUND[1])
                 with tf.name_scope('local_grad'):
                     self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                     self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
-                    self.a_grads = tf.gradients(self.a_losses, self.a_params)  # use losses will give accumulated sum of gradients
-                    self.c_grads = tf.gradients(self.c_losses, self.c_params)
+                    self.a_grads = tf.gradients(self.a_loss, self.a_params)
+                    self.c_grads = tf.gradients(self.c_loss, self.c_params)
 
             with tf.name_scope('sync'):
                 with tf.name_scope('pull'):

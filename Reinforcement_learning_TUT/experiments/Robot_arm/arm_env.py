@@ -1,7 +1,10 @@
 """
 Environment for Robot Arm.
 You can customize this script in a way you want.
- 
+
+View more on [莫烦Python] : https://morvanzhou.github.io/tutorials/
+
+
 Requirement:
 pyglet >= 1.2.4
 numpy >= 1.12.1
@@ -101,13 +104,13 @@ class ArmEnv(object):
         t = 50
         abs_distance = np.sqrt(np.sum(np.square(distance)))
         r = -abs_distance/200
-        if abs_distance < self.viewer.point_l and (not self.get_point):
+        if abs_distance < self.point_l and (not self.get_point):
             r += 1.
             self.grab_counter += 1
             if self.grab_counter > t:
                 r += 10.
                 self.get_point = True
-        elif abs_distance > self.viewer.point_l:
+        elif abs_distance > self.point_l:
             self.grab_counter = 0
             self.get_point = False
         return r

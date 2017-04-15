@@ -59,22 +59,20 @@ class ACNet(object):
 
                 td = tf.subtract(self.v_target, self.v, name='TD_error')
                 with tf.name_scope('c_loss'):
-                    self.c_losses = tf.square(td)    # shape (None, 1), use this to get sum of gradients over batch
-                    self.c_loss = tf.reduce_mean(self.c_losses)
+                    self.c_loss = tf.reduce_mean(tf.square(td))
 
                 with tf.name_scope('a_loss'):
                     log_prob = tf.reduce_sum(tf.log(self.a_prob) * tf.one_hot(self.a_his, N_A, dtype=tf.float32), axis=1, keep_dims=True)
                     exp_v = log_prob * td
                     entropy = -tf.reduce_sum(self.a_prob * tf.log(self.a_prob), axis=1, keep_dims=True)  # encourage exploration
                     self.exp_v = ENTROPY_BETA * entropy + exp_v
-                    self.a_losses = -self.exp_v     # shape (None, 1), use this to get sum of gradients over batch
-                    self.a_loss = tf.reduce_mean(self.a_losses)
+                    self.a_loss = tf.reduce_mean(-self.exp_v)
 
                 with tf.name_scope('local_grad'):
                     self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                     self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
-                    self.a_grads = tf.gradients(self.a_losses, self.a_params)  # use losses will give accumulated sum of gradients
-                    self.c_grads = tf.gradients(self.c_losses, self.c_params)
+                    self.a_grads = tf.gradients(self.a_loss, self.a_params)
+                    self.c_grads = tf.gradients(self.c_loss, self.c_params)
 
             with tf.name_scope('sync'):
                 with tf.name_scope('pull'):

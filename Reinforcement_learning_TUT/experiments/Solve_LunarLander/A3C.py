@@ -38,6 +38,7 @@ env = gym.make(GAME)
 
 N_S = env.observation_space.shape[0]
 N_A = env.action_space.n
+del env
 
 
 class ACNet(object):
@@ -58,27 +59,25 @@ class ACNet(object):
 
                 td = tf.subtract(self.v_target, self.v, name='TD_error')
                 with tf.name_scope('c_loss'):
-                    self.c_losses = tf.square(td)    # shape (None, 1), use this to get sum of gradients over batch
-                    self.c_loss = tf.reduce_mean(self.c_losses)
+                    self.c_loss = tf.reduce_mean(tf.square(td))
 
                 with tf.name_scope('a_loss'):
                     log_prob = tf.reduce_sum(tf.log(self.a_prob) * tf.one_hot(self.a_his, N_A, dtype=tf.float32), axis=1, keep_dims=True)
                     exp_v = log_prob * td
                     entropy = -tf.reduce_sum(self.a_prob * tf.log(self.a_prob), axis=1, keep_dims=True)  # encourage exploration
                     self.exp_v = ENTROPY_BETA * entropy + exp_v
-                    self.a_losses = -self.exp_v     # shape (None, 1), use this to get sum of gradients over batch
-                    self.a_loss = tf.reduce_mean(self.a_losses)
+                    self.a_loss = tf.reduce_mean(-self.exp_v)
 
                 with tf.name_scope('local_grad'):
                     self.a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/actor')
                     self.c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope + '/critic')
-                    self.a_grads = tf.gradients(self.a_losses, self.a_params)  # use losses will give accumulated sum of gradients
-                    self.c_grads = tf.gradients(self.c_losses, self.c_params)
+                    self.a_grads = tf.gradients(self.a_loss, self.a_params)
+                    self.c_grads = tf.gradients(self.c_loss, self.c_params)
 
             with tf.name_scope('sync'):
                 with tf.name_scope('pull'):
-                    self.pull_a_params_op = [l_p.assign(tf.clip_by_value(g_p, -5., 5.)) for l_p, g_p in zip(self.a_params, globalAC.a_params)]
-                    self.pull_c_params_op = [l_p.assign(tf.clip_by_value(g_p, -5., 5.)) for l_p, g_p in zip(self.c_params, globalAC.c_params)]
+                    self.pull_a_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.a_params, globalAC.a_params)]
+                    self.pull_c_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.c_params, globalAC.c_params)]
                 with tf.name_scope('push'):
                     self.update_a_op = OPT_A.apply_gradients(zip(self.a_grads, globalAC.a_params))
                     self.update_c_op = OPT_C.apply_gradients(zip(self.c_grads, globalAC.c_params))
@@ -91,7 +90,7 @@ class ACNet(object):
                                name='timely_input')  # [time_step, feature] => [time_step, batch, feature]
             rnn_cell = tf.contrib.rnn.BasicRNNCell(cell_size)
             self.init_state = rnn_cell.zero_state(batch_size=1, dtype=tf.float32)
-            outputs, final_output = tf.nn.dynamic_rnn(
+            outputs, self.final_state = tf.nn.dynamic_rnn(
                 cell=rnn_cell, inputs=s, initial_state=self.init_state, time_major=True)
             cell_out = tf.reshape(outputs, [-1, cell_size], name='flatten_rnn_outputs')  # joined state representation
             l_c = tf.layers.dense(cell_out, 200, tf.nn.relu6, kernel_initializer=w_init, name='lc')
@@ -104,17 +103,17 @@ class ACNet(object):
         return a_prob, v
 
     def update_global(self, feed_dict):  # run by a local
-        _, _, state = SESS.run([self.update_a_op, self.update_c_op, self.init_state], feed_dict)  # local grads applies to global net
-        return state
+        SESS.run([self.update_a_op, self.update_c_op], feed_dict)  # local grads applies to global net
 
     def pull_global(self):  # run by a local
         SESS.run([self.pull_a_params_op, self.pull_c_params_op])
 
-    def choose_action(self, s):  # run by a local
-        prob_weights = SESS.run(self.a_prob, feed_dict={self.s: s[np.newaxis, :]})
+    def choose_action(self, s, cell_state):  # run by a local
+        prob_weights, cell_state = SESS.run([self.a_prob, self.final_state], feed_dict={self.s: s[np.newaxis, :],
+                                                                            self.init_state: cell_state})
         action = np.random.choice(range(prob_weights.shape[1]),
                                   p=prob_weights.ravel())  # select action w.r.t the actions prob
-        return action
+        return action, cell_state
 
 
 class Worker(object):
@@ -132,10 +131,12 @@ class Worker(object):
             s = self.env.reset()
             ep_r = 0
             ep_t = 0
+            rnn_state = SESS.run(self.AC.init_state)  # zero rnn state at beginning
+            keep_state = rnn_state.copy()  # keep rnn state for updating global net
             while True:
                 # if self.name == 'W_0' and total_step % 10 == 0:
                 #     self.env.render()
-                a = self.AC.choose_action(s)
+                a, rnn_state_ = self.AC.choose_action(s, rnn_state)  # get the action and next rnn state
                 s_, r, done, info = self.env.step(a)
                 if r == -100: r = -10
                 ep_r += r
@@ -147,7 +148,7 @@ class Worker(object):
                     if done:
                         v_s_ = 0   # terminal
                     else:
-                        v_s_ = SESS.run(self.AC.v, {self.AC.s: s_[np.newaxis, :]})[0, 0]
+                        v_s_ = SESS.run(self.AC.v, {self.AC.s: s_[np.newaxis, :], self.AC.init_state: rnn_state_})[0,0]
                     buffer_v_target = []
                     for r in buffer_r[::-1]:    # reverse buffer r
                         v_s_ = r + GAMMA * v_s_
@@ -159,19 +160,18 @@ class Worker(object):
                         self.AC.s: buffer_s,
                         self.AC.a_his: buffer_a,
                         self.AC.v_target: buffer_v_target,
-                        # use zero initial state if is beginning of the episode
+                        self.AC.init_state: keep_state,
                     }
 
-                    if ep_t > UPDATE_GLOBAL_ITER - 1:  # not beginning of this episode
-                        feed_dict[self.AC.init_state] = state
-
-                    state = self.AC.update_global(feed_dict)
+                    self.AC.update_global(feed_dict)
 
                     buffer_s, buffer_a, buffer_r = [], [], []
                     self.AC.pull_global()
+                    keep_state = rnn_state_.copy()  # replace the keep_state as the new initial rnn state_
 
                 s = s_
                 total_step += 1
+                rnn_state = rnn_state_  # renew rnn state
                 ep_t += 1
                 if done:
                     if len(GLOBAL_RUNNING_R) == 0:  # record running episode reward
