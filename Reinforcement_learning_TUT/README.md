@@ -5,7 +5,7 @@ In these tutorials for reinforcement learning, it covers from the basic RL algor
 All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://morvanzhou.github.io/tutorials/) for more.
 If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg) as well.
 
-As many requests about making these tutorials available in English, please find them in this playlist: ([https://www.youtube.com/playlist?list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba](https://www.youtube.com/playlist?list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba))
+**As many requests about making these tutorials available in English, please find them in this playlist:** ([https://www.youtube.com/playlist?list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba](https://www.youtube.com/playlist?list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba))
 
 
 * [Simple entry example](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/1_command_line_reinforcement_learning)
