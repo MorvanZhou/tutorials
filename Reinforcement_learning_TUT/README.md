@@ -28,7 +28,10 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [Dyna-Q](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/11_Dyna_Q)
 
 
-*If this does help you, please considering donation to support me to making better tutorial*
+# Donation
+
+*If this does help you, please considering donation to support me to make better tutorials*
+
 <div >
   <h3>Paypal</h3>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=morvanzhou%40gmail%2ecom&amp;lc=C2&amp;item_name=MorvanPython&amp;currency_code=AUD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
