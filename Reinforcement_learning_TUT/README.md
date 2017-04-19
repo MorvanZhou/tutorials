@@ -33,7 +33,6 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 *If this does help you, please considering donation to support me to make better tutorials*
 
 <div >
-  <h3>Paypal</h3>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=morvanzhou%40gmail%2ecom&amp;lc=C2&amp;item_name=MorvanPython&amp;currency_code=AUD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
     <img style="border-radius: 20px;  box-shadow: 0px 0px 10px 1px  #888888;"
          src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-pill-paypal-44px.png"
