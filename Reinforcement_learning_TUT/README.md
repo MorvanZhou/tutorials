@@ -30,7 +30,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 
 # Donation
 
-*If this does help you, please considering donation to support me to make better tutorials*
+*If this does help you, please consider donating to support me for better tutorials. Any contribution is greatly appreciated!*
 
 <div >
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=morvanzhou%40gmail%2ecom&amp;lc=C2&amp;item_name=MorvanPython&amp;currency_code=AUD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">

@@ -100,7 +100,6 @@ class ArmEnv(object):
                           ]), t_arms[-2:]
 
     def _r_func(self, distance):
-        """Headway and distance based reward system"""
         t = 50
         abs_distance = np.sqrt(np.sum(np.square(distance)))
         r = -abs_distance/200
