@@ -1,8 +1,8 @@
 """
-Environment is a Robot Arm. The arm tries to get to the blue point.
-The environment will return a geographic (distance) information for the arm to learn.
+Environment is a 2D car.
+Car has 5 sensors to obtain distance information.
 
-The far away from blue point the less reward; touch blue r+=1; stop at blue for a while then get r=+10.
+Car collision => reward = -1, otherwise => reward = 0.
  
 You can train this RL by using LOAD = False, after training, this model will be store in the a local folder.
 Using LOAD = True to reload the trained model for playing.
