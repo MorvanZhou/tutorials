@@ -61,7 +61,7 @@ class RNN(object):
 
             with tf.variable_scope('output_layer'):
                 # cell_outputs_reshaped (BATCH*TIME_STEP, CELL_SIZE)
-                cell_outputs_reshaped = tf.reshape(tf.concat(1, self.cell_outputs), [-1, self._cell_size])
+                cell_outputs_reshaped = tf.reshape(tf.concat(self.cell_outputs, 1), [-1, self._cell_size])
                 Wo = self._weight_variable((self._cell_size, self._output_size))
                 bo = self._bias_variable((self._output_size,))
                 product = tf.matmul(cell_outputs_reshaped, Wo) + bo
@@ -76,13 +76,13 @@ class RNN(object):
             self._cost = mse_sum_across_time
             self._cost_ave_time = self._cost / self._time_steps
 
-        with tf.name_scope('trian'):
+        with tf.variable_scope('trian'):
             self._lr = tf.convert_to_tensor(self._lr)
             self.train_op = tf.train.AdamOptimizer(self._lr).minimize(self._cost)
 
     @staticmethod
-    def ms_error(y_pre, y_target):
-        return tf.square(tf.sub(y_pre, y_target))
+    def ms_error(y_target, y_pre):
+        return tf.square(tf.subtract(y_target, y_pre))
 
     @staticmethod
     def _weight_variable(shape, name='weights'):
