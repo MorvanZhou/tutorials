@@ -14,8 +14,8 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/04_regression.py)
   * [Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/05_classification.py)
   * [An easy way](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/06_build_nn_quickly.py)
-  * [save and reload](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/07_save_reload.py)
-  * [train on batch](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/08_batch_train.py)
+  * [Save and reload](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/07_save_reload.py)
+  * [Train on batch](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/08_batch_train.py)
 * Advanced neural network
   * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/09_CNN.py)
   * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/10_RNN_classifier.py)
