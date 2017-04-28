@@ -124,7 +124,7 @@ with tf.Session() as sess:
             print(sess.run(accuracy, feed_dict={
             x: batch_xs,
             y: batch_ys,
-        }))
+            }))
         step += 1
 
 
