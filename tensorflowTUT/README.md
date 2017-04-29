@@ -3,9 +3,10 @@
     <img width="40%" src="https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/logo.jpeg" style="max-width:100%;">
     </a>
 </p>
-<br>
 
 ---
+
+<br>
 
 # Tensorflow Tutorials
 

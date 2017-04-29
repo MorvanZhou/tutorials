@@ -1,3 +1,13 @@
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=pieI7rOXELI&list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba" target="_blank">
+    <img width="40%" src="https://github.com/MorvanZhou/tutorials/blob/master/Reinforcement_learning_TUT/RL_cover.jpg" style="max-width:100%;">
+    </a>
+</p>
+
+---
+
+<br>
+
 # Reinforcement Learning Methods and Tutorials
 
 In these tutorials for reinforcement learning, it covers from the basic RL algorithms to advanced algorithms developed recent years.
