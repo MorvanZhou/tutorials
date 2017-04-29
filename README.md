@@ -1,21 +1,17 @@
-# 关于 莫烦Python 
-这个 github 是我做 python 机器学习视频教程的支柱. 里面都是视频中提到的代码源码. 主要做的方面是机器学习的, 包括神经网络等等. 
-自己的 research 是在神经网络和强化学习方面, 所以以后也会补上强化学习的教程, 敬请期待. 欢迎大家分享传播, 让我们都能轻松的学习~
+<p align="center">
+    <a href="https://morvanzhou.github.io/tutorials/" target="_blank">
+    <img width="60%" src="https://github.com/MorvanZhou/tutorials/blob/master/%E7%89%87%E5%A4%B4.png" style="max-width:100%;">
+    </a>
+</p>
 
-[<img src="https://github.com/MorvanZhou/tutorials/blob/master/%E7%89%87%E5%A4%B4.png?raw=true" height="200">](https://morvanzhou.github.io/tutorials/)
+---
 
+<br>
 
-## 大陆没办法翻墙, 我们还有优酷, 网易云
-[优酷频道主页](http://i.youku.com/pythontutorial)
+我是 周沫凡, [莫烦Python](https://morvanzhou.github.io/about/) 只是谐音, 我喜欢制作,
+分享所学的东西, 所以你能在这里找到很多有用的东西, 少走弯路. 你能在[这里](https://morvanzhou.github.io/about/)找到关于我的所有东西.
 
-[网易云课堂](http://study.163.com/u/2635988091)
-
-
-## 有梯子的同学, Youtube 等着你呢
-[Youtube 频道主页](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg)
-
-
-## 莫烦Python 网页全部教学内容:
+## 这个 Python tutorial 的一些内容:
 
 * [Python 基础](https://morvanzhou.github.io/tutorials/python-basic/)
   * [基础](https://morvanzhou.github.io/tutorials/python-basic/basic/)
@@ -36,3 +32,7 @@
 * [其他](https://morvanzhou.github.io/tutorials/others/)
   * [Git (版本管理)](https://morvanzhou.github.io/tutorials/others/git/)
 
+## 赞助和支持
+
+这些 tutorial 都是我用业余时间写出来, 录成视频, 如果你觉得它对你很有帮助, 请你也分享给需要学习的朋友们.
+如果你看好我的经验分享, 也请考虑适当的 [赞助打赏](https://morvanzhou.github.io/support/), 让我能继续分享更好的内容给大家.
