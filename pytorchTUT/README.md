@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="http://pytorch.org/" target="_blank"><img width="40%" src="/yunjey/pytorch-tutorial/raw/master/logo/pytorch_logo.png" style="max-width:100%;"></a>
-    <img width="40%" src="/yunjey/pytorch-tutorial/raw/master/logo/pytorch_logo.png" style="max-width:100%;">
+    <a href="http://pytorch.org/" target="_blank">
+    <img width="40%" src="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/logo.png" style="max-width:100%;">
     </a>
 </p>
 
