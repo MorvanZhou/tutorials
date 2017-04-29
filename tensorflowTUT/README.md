@@ -5,6 +5,8 @@
 </p>
 <br>
 
+---
+
 # Tensorflow Tutorials
 
 In these tutorials for Tensorflow, we will build our first Neural Network and try to build some advanced Neural Network architectures developed recent years.
