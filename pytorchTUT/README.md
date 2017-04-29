@@ -21,6 +21,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/10_RNN_classifier.py)
   * [RNN-Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/11_RNN_regressor.py)
 * Others (WIP)
+  * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/12_why_torch_dynamic_graph.py)
 
 # Donation
 
