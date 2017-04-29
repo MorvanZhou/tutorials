@@ -1,3 +1,10 @@
+"""
+Know more, visit 莫烦Python: https://morvanzhou.github.io/tutorials/
+My Youtube Channel: https://www.youtube.com/user/MorvanZhou
+
+Dependencies:
+torch: 0.1.11
+"""
 import torch
 from torch import nn
 from torch.autograd import Variable
