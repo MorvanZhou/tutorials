@@ -1,3 +1,9 @@
+<p align="center">
+    <a href="http://pytorch.org/" target="_blank"><img width="40%" src="/yunjey/pytorch-tutorial/raw/master/logo/pytorch_logo.png" style="max-width:100%;"></a>
+    <img width="40%" src="/yunjey/pytorch-tutorial/raw/master/logo/pytorch_logo.png" style="max-width:100%;">
+    </a>
+</p>
+
 # pyTorch Tutorials
 
 In these tutorials for pyTorch, we will build our first Neural Network and try to build some advanced Neural Network architectures developed recent years.
