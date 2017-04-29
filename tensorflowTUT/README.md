@@ -1,3 +1,10 @@
+<p align="center">
+    <a href="https://www.tensorflow.org/" target="_blank">
+    <img width="40%" src="https://github.com/MorvanZhou/tutorials/blob/master/tensorflowTUT/logo.jpeg" style="max-width:100%;">
+    </a>
+</p>
+<br>
+
 # Tensorflow Tutorials
 
 In these tutorials for Tensorflow, we will build our first Neural Network and try to build some advanced Neural Network architectures developed recent years.

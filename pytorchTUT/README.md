@@ -3,6 +3,7 @@
     <img width="40%" src="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/logo.png" style="max-width:100%;">
     </a>
 </p>
+<br>
 
 # pyTorch Tutorials
 
