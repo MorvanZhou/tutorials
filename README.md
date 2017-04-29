@@ -22,7 +22,7 @@
   * [有趣的机器学习](https://morvanzhou.github.io/tutorials/machine-learning/ML-intro/)
   * [强化学习 (Reinforcement Learning)](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/)
   * [Tensorflow (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/)
-  * [Pytorch (神经网络)](https://github.com/MorvanZhou/tutorials/tree/master/pytorchTUT)
+  * [PyTorch (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/torch/)
   * [Theano (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/theano/)
   * [Keras (快速神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/keras/)
   * [Scikit-Learn (机器学习)](https://morvanzhou.github.io/tutorials/machine-learning/sklearn/)
