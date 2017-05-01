@@ -37,6 +37,21 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 * Model-based RL (WIP)
   * [Dyna-Q](https://github.com/MorvanZhou/tutorials/tree/master/Reinforcement_learning_TUT/11_Dyna_Q)
 
+<video width="500" controls loop autoplay muted>
+  <source src="https://morvanzhou.github.io/static/results/rl/maze%20dqn.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<video width="500" controls loop autoplay muted>
+  <source src="https://morvanzhou.github.io/static/results/rl/Pendulum%20DDPG.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<video width="500" controls loop autoplay muted>
+  <source src="https://morvanzhou.github.io/static/results/rl/mountaincar%20policy%20gradient%20softmax.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
 
 # Donation
 
