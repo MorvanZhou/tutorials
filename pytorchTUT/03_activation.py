@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # fake data
 x = torch.linspace(-5, 5, 200)  # x data (tensor), shape=(100, 1)
 x = Variable(x)
-x_np = x.data.numpy()
+x_np = x.data.numpy()   # numpy array for plotting
 
 # following are popular activation functions
 y_relu = F.relu(x).data.numpy()

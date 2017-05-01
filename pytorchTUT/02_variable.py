@@ -34,3 +34,24 @@ print(variable.grad)
  0.5000  1.0000
  1.5000  2.0000
 '''
+
+print(variable)     # this is data in variable format
+"""
+Variable containing:
+ 1  2
+ 3  4
+[torch.FloatTensor of size 2x2]
+"""
+
+print(variable.data)    # this is data in tensor format
+"""
+ 1  2
+ 3  4
+[torch.FloatTensor of size 2x2]
+"""
+
+print(variable.data.numpy())    # numpy format
+"""
+[[ 1.  2.]
+ [ 3.  4.]]
+"""

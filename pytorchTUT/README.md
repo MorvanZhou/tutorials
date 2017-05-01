@@ -15,6 +15,10 @@ In these tutorials for pyTorch, we will build our first Neural Network and try t
 All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://morvanzhou.github.io/tutorials/) for more.
 If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg) as well.
 
+<img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-2.gif">
+
+<img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-3.gif">
+
 
 * pyTorch basic
   * [torch and numpy](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/01_torch_numpy.py)

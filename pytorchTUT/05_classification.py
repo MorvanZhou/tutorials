@@ -62,6 +62,8 @@ for t in range(100):
         accuracy = sum(pred_y == target_y)/200
         plt.text(2, -4, 'Accuracy=%.2f' % accuracy, fontdict={'size': 20, 'color':  'red'})
         plt.pause(0.1)
+        if t % 2 == 0:
+            plt.savefig('%s.png' % t, format='png')
 
 plt.ioff()
 plt.show()
