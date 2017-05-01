@@ -8,7 +8,10 @@ torch: 0.1.11
 import torch
 import torch.utils.data as Data
 
-BATCH_SIZE = 8
+torch.manual_seed(1)    # reproducible
+
+BATCH_SIZE = 5
+# BATCH_SIZE = 8
 
 x = torch.linspace(1, 10, 10)       # this is x data (torch tensor)
 y = torch.linspace(10, 1, 10)       # this is y data (torch tensor)
