@@ -39,12 +39,11 @@ plt.imshow(train_data.train_data[0].numpy(), cmap='gray')
 plt.title('%i' % train_data.train_labels[0])
 plt.show()
 
-test_data = torchvision.datasets.MNIST(root='./mnist/', train=False)
-
 # Data Loader for easy mini-batch return in training, the image batch shape will be (50, 1, 28, 28)
 train_loader = Data.DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=True)
 
 # convert test data into Variable, pick 2000 samples to speed up testing
+test_data = torchvision.datasets.MNIST(root='./mnist/', train=False)
 test_x = Variable(torch.unsqueeze(test_data.test_data, dim=1)).type(torch.FloatTensor)[:2000]/255.   # shape from (2000, 28, 28) to (2000, 1, 28, 28), value in range(0,1)
 test_y = test_data.test_labels[:2000]
 

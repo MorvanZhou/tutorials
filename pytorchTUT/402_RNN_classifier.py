@@ -42,13 +42,11 @@ plt.imshow(train_data.train_data[0].numpy(), cmap='gray')
 plt.title('%i' % train_data.train_labels[0])
 plt.show()
 
-
-test_data = dsets.MNIST(root='./mnist/', train=False, transform=transforms.ToTensor())
-
 # Data Loader for easy mini-batch return in training
 train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=True)
 
 # convert test data into Variable, pick 2000 samples to speed up testing
+test_data = dsets.MNIST(root='./mnist/', train=False, transform=transforms.ToTensor())
 test_x = Variable(test_data.test_data).type(torch.FloatTensor)[:2000]/255.   # shape (2000, 28, 28) value in range(0,1)
 test_y = test_data.test_labels.numpy().squeeze()[:2000]    # covert to numpy array
 

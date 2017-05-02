@@ -59,7 +59,7 @@ rnn = RNN()
 print(rnn)
 
 optimizer = torch.optim.Adam(rnn.parameters(), lr=LR)   # optimize all cnn parameters
-loss_func = nn.MSELoss()   # the target label is not one-hotted
+loss_func = nn.MSELoss()
 
 h_state = None   # for initial hidden state
 

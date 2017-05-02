@@ -53,6 +53,16 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
     <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/4-3-1.gif" >
 </a>
 
+### [Autoencoder](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/404_autoencoder.py)
+
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/4-4-1.gif" >
+</a>
+
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/4-4-2.gif" >
+</a>
+
 ### [Dropout](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py)
 <a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py">
     <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/5-3-1.gif" >
