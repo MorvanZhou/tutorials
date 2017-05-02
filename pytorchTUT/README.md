@@ -33,6 +33,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 * Others (WIP)
   * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/501_why_torch_dynamic_graph.py)
   * [Train on GPU](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/502_GPU.py)
+  * [Dropout](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py)
 
 ### [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/301_regression.py)
 
@@ -52,6 +53,10 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
     <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/4-3-1.gif" >
 </a>
 
+### [Dropout](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py)
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/5-3-1.gif" >
+</a>
 # Donation
 
 *If this does help you, please consider donating to support me for better tutorials. Any contribution is greatly appreciated!*

@@ -44,13 +44,9 @@ net_dropped = torch.nn.Sequential(
     torch.nn.Linear(1, N_HIDDEN),
     torch.nn.Dropout(0.5),  # drop 50% of the neuron
     torch.nn.ReLU(),
-
-
     torch.nn.Linear(N_HIDDEN, N_HIDDEN),
     torch.nn.Dropout(0.5),  # drop 50% of the neuron
-
     torch.nn.ReLU(),
-
     torch.nn.Linear(N_HIDDEN, 1),
 )
 
