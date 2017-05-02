@@ -57,6 +57,8 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 <a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py">
     <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/5-3-1.gif" >
 </a>
+
+
 # Donation
 
 *If this does help you, please consider donating to support me for better tutorials. Any contribution is greatly appreciated!*
