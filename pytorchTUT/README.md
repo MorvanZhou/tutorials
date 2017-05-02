@@ -30,6 +30,8 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/401_CNN.py)
   * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/402_RNN_classifier.py)
   * [RNN-Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py)
+  * [AutoEncoder](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/404_autoencoder.py)
+  * [DQN-Reinforcement-Learning](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/405_DQN_Reinforcement_learning.py)
 * Others (WIP)
   * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/501_why_torch_dynamic_graph.py)
   * [Train on GPU](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/502_GPU.py)
