@@ -4,6 +4,8 @@ My Youtube Channel: https://www.youtube.com/user/MorvanZhou
 
 Dependencies:
 torch: 0.1.11
+matplotlib
+numpy
 """
 import torch
 from torch import nn

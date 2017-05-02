@@ -23,9 +23,6 @@ class Net(torch.nn.Module):
 
 net1 = Net(1, 10, 1)
 
-
-
-
 # easy and fast way to build your network
 net2 = torch.nn.Sequential(
     torch.nn.Linear(1, 10),

@@ -4,6 +4,7 @@ My Youtube Channel: https://www.youtube.com/user/MorvanZhou
 
 Dependencies:
 torch: 0.1.11
+matplotlib
 """
 import torch
 from torch.autograd import Variable

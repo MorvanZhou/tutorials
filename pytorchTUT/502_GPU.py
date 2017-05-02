@@ -4,6 +4,7 @@ My Youtube Channel: https://www.youtube.com/user/MorvanZhou
 
 Dependencies:
 torch: 0.1.11
+torchvision
 """
 import torch
 import torch.nn as nn
