@@ -32,10 +32,25 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [RNN-Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py)
 * Others (WIP)
   * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/501_why_torch_dynamic_graph.py)
+  * [Train on GPU](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/502_GPU.py)
 
-<img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-2.gif">
+### [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/301_regression.py)
 
-<img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-3.gif">
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/301_regression.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-2.gif">
+</a>
+
+### [Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/302_classification.py)
+
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/302_classification.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-3.gif">
+</a>
+
+### [RNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py)
+
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/4-3-1.gif" >
+</a>
 
 # Donation
 
