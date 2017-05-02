@@ -17,21 +17,21 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 
 
 * pyTorch basic
-  * [torch and numpy](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/01_torch_numpy.py)
-  * [Variable](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/02_variable.py)
-  * [Activation](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/03_activation.py)
+  * [torch and numpy](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/201_torch_numpy.py)
+  * [Variable](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/202_variable.py)
+  * [Activation](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/203_activation.py)
 * Build your first network
-  * [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/04_regression.py)
-  * [Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/05_classification.py)
-  * [An easy way](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/06_build_nn_quickly.py)
-  * [Save and reload](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/07_save_reload.py)
-  * [Train on batch](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/08_batch_train.py)
+  * [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/301_regression.py)
+  * [Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/302_classification.py)
+  * [An easy way](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/303_build_nn_quickly.py)
+  * [Save and reload](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/304_save_reload.py)
+  * [Train on batch](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/305_batch_train.py)
 * Advanced neural network
-  * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/09_CNN.py)
-  * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/10_RNN_classifier.py)
-  * [RNN-Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/11_RNN_regressor.py)
+  * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/401_CNN.py)
+  * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/402_RNN_classifier.py)
+  * [RNN-Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/403_RNN_regressor.py)
 * Others (WIP)
-  * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/12_why_torch_dynamic_graph.py)
+  * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/501_why_torch_dynamic_graph.py)
 
 <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/1-1-2.gif">
 

@@ -10,6 +10,8 @@ from torch import nn
 from torch.autograd import Variable
 import torchvision.datasets as dsets
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
+
 
 torch.manual_seed(1)    # reproducible
 
@@ -30,6 +32,14 @@ train_data = dsets.MNIST(
                                       # torch.FloatTensor of shape (C x H x W) and normalize in the range [0.0, 1.0]
     download=DOWNLOAD_MNIST,          # download it if you don't have it
 )
+
+# plot one example
+print(train_data.train_data.size())  # (60000, 28, 28)
+print(train_data.train_labels.size()) # (60000)
+plt.imshow(train_data.train_data[0].numpy(), cmap='gray')
+plt.title('%i' % train_data.train_labels[0])
+plt.show()
+
 
 test_data = dsets.MNIST(root='./mnist/', train=False, transform=transforms.ToTensor())
 

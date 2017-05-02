@@ -15,10 +15,18 @@ torch.manual_seed(1)    # reproducible
 
 # Hyper Parameters
 BATCH_SIZE = 64
-TIME_STEP = 5       # rnn time step / image height
-INPUT_SIZE = 1      # rnn input size / image width
+TIME_STEP = 5       # rnn time step
+INPUT_SIZE = 1      # rnn input size
 LR = 0.02           # learning rate
-DOWNLOAD_MNIST = False  # set to True if haven't download the data
+
+# show data
+steps = np.linspace(0, np.pi*2, 100, dtype=np.float32)
+x_np = np.sin(steps)    # float32 for converting torch FloatTensor
+y_np = np.cos(steps)
+plt.plot(steps, y_np, 'r-', label='target (cos)')
+plt.plot(steps, x_np, 'b-', label='input (sin)')
+plt.legend(loc='best')
+plt.show()
 
 
 class RNN(nn.Module):
@@ -39,7 +47,7 @@ class RNN(nn.Module):
         # r_out (batch, time_step, output_size)
         r_out, h_state = self.rnn(x, h_state)
 
-        outs = []    # this is where you can find torch is dynamic
+        outs = []    # save all predictions
         for time_step in range(r_out.size(1)):    # calculate output for each time step
             outs.append(self.out(r_out[:, time_step, :]))
         return torch.stack(outs, dim=1), h_state
