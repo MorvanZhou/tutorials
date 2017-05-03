@@ -26,6 +26,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [An easy way](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/303_build_nn_quickly.py)
   * [Save and reload](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/304_save_reload.py)
   * [Train on batch](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/305_batch_train.py)
+  * [Optimizers](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/306_optimizer.py)
 * Advanced neural network
   * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/401_CNN.py)
   * [RNN-Classification](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/402_RNN_classifier.py)
