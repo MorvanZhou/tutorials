@@ -94,6 +94,7 @@ class DQN(object):
 
 dqn = DQN()
 
+print('\nCollecting experience...')
 for i_episode in range(400):
     s = env.reset()
     ep_r = 0
@@ -117,11 +118,12 @@ for i_episode in range(400):
         ep_r += r
         if dqn.memory_counter > MEMORY_CAPACITY:
             dqn.learn()
+            if done:
+                print('Ep: ', i_episode,
+                      '| Ep_r: ', round(ep_r, 2),
+                      )
 
         if done:
-            print('Ep: ', i_episode,
-                  '| Ep_r: ', round(ep_r, 2),
-                  )
             break
 
         s = s_

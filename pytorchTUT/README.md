@@ -37,6 +37,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
   * [Why torch dynamic](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/501_why_torch_dynamic_graph.py)
   * [Train on GPU](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/502_GPU.py)
   * [Dropout](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/503_dropout.py)
+  * [Batch Normalization](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/504_batch_normalization.py)
 
 ### [Regression](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/301_regression.py)
 

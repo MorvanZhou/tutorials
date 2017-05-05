@@ -120,7 +120,6 @@ for epoch in range(EPOCH):
             plt.draw()
             plt.pause(0.05)
 
-plt.savefig('4-4-4.png')
 plt.ioff()
 plt.show()
 
