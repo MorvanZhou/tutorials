@@ -72,6 +72,10 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
     <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/5-3-1.gif" >
 </a>
 
+### [Batch Normalization](https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/504_batch_normalization.py)
+<a href="https://github.com/MorvanZhou/tutorials/blob/master/pytorchTUT/504_batch_normalization.py">
+    <img class="course-image" src="https://morvanzhou.github.io/static/results/torch/5-4-2.gif" >
+</a>
 
 # Donation
 
