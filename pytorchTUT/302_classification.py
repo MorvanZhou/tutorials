@@ -25,7 +25,7 @@ y = torch.cat((y0, y1), ).type(torch.LongTensor)    # LongTensor = 64-bit intege
 # torch can only train on Variable, so convert them to Variable
 x, y = Variable(x), Variable(y)
 
-# plt.scatter(x.data.numpy(), y.data.numpy())
+# plt.scatter(x.data.numpy()[:, 0], x.data.numpy()[:, 1], c=y.data.numpy(), s=100, lw=0, cmap='RdYlGn')
 # plt.show()
 
 
