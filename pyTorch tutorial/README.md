@@ -8,8 +8,13 @@
 
 <br>
 
-# This pyTorch Tutorial has been moved to anther independent repo: [https://github.com/MorvanZhou/PyTorch-Tutorial](https://github.com/MorvanZhou/PyTorch-Tutorial]
-# 请注意, 这个 PyTorch 的教程代码已经被移至另一个网页: [https://github.com/MorvanZhou/PyTorch-Tutorial](https://github.com/MorvanZhou/PyTorch-Tutorial)
+# This pyTorch Tutorial has been moved to anther independent repo:
+
+[https://github.com/MorvanZhou/PyTorch-Tutorial](https://github.com/MorvanZhou/PyTorch-Tutorial)
+
+# 请注意, 这个 PyTorch 的教程代码已经被移至另一个网页:
+
+[https://github.com/MorvanZhou/PyTorch-Tutorial](https://github.com/MorvanZhou/PyTorch-Tutorial)
 
 
 # Donation

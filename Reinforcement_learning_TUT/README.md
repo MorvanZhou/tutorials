@@ -8,8 +8,13 @@
 
 <br>
 
-# Note! This Reinforcement Learning Tutorial has been moved to anther independent repo: [https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow]
-# 请注意! 这个 强化学习 的教程代码已经被移至另一个网页: [https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow)
+# Note! This Reinforcement Learning Tutorial has been moved to anther independent repo:
+
+[https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow)
+
+# 请注意! 这个 强化学习 的教程代码已经被移至另一个网页:
+
+[https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow)
 
 
 # Donation
