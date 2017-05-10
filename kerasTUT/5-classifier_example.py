@@ -46,7 +46,7 @@ model.compile(optimizer=rmsprop,
 
 print('Training ------------')
 # Another way to train the model
-model.fit(X_train, y_train, epoch=2, batch_size=32)
+model.fit(X_train, y_train, epochs=2, batch_size=32)
 
 print('\nTesting ------------')
 # Evaluate the model with the metrics we defined earlier

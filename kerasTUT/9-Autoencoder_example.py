@@ -62,7 +62,7 @@ autoencoder.compile(optimizer='adam', loss='mse')
 
 # training
 autoencoder.fit(x_train, x_train,
-                nb_epoch=20,
+                epochs=20,
                 batch_size=256,
                 shuffle=True)
 
