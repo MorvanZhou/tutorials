@@ -8,6 +8,8 @@
 
 <br>
 
+### This tutorial codes are old, so I made a [new series of Tensorflow tutorial](https://github.com/MorvanZhou/Tensorflow-Tutorial). In the new tutorials, codes are updated, contents are better organized. If you like that, please star it!
+
 # Tensorflow Tutorials
 
 In these tutorials for Tensorflow, we will build our first Neural Network and try to build some advanced Neural Network architectures developed recent years.
