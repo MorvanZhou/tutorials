@@ -29,7 +29,8 @@ X_test, Y_test = X[160:], Y[160:]       # last 40 data points
 
 # build a neural network from the 1st layer to the last layer
 model = Sequential()
-model.add(Dense(output_dim=1, input_dim=1))
+
+model.add(Dense(units=1, input_dim=1)) 
 
 # choose loss function and optimizing method
 model.compile(loss='mse', optimizer='sgd')
