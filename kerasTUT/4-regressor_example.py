@@ -30,8 +30,12 @@ X_test, Y_test = X[160:], Y[160:]       # last 40 data points
 # build a neural network from the 1st layer to the last layer
 model = Sequential()
 # update Dense arg 'units' here
+<<<<<<< HEAD
 model.add(Dense(units=1, input_dim=1))
 # new_change
+=======
+model.add(Dense(units=1, input_dim=1)) # edit same line1
+>>>>>>> kur_tutorials
 
 # choose loss function and optimizing method
 model.compile(loss='mse', optimizer='sgd')
