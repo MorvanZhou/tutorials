@@ -70,7 +70,5 @@ for i in range(1000):
         # plot the prediction
         lines = ax.plot(x_data, prediction_value, 'r-', lw=5)
         plt.pause(0.1)
-
-
-
-
+        
+sess.close()
