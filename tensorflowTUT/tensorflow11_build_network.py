@@ -56,3 +56,4 @@ for i in range(1000):
         # to see the step improvement
         print(sess.run(loss, feed_dict={xs: x_data, ys: y_data}))
 
+sess.close()
