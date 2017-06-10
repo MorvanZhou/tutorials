@@ -60,3 +60,10 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
          alt="Paypal"
          height="auto" ></a>
 </div>
+
+<div>
+  <a href="https://www.patreon.com/morvan">
+    <img src="https://morvanzhou.github.io/static/img/support/patreon.jpg"
+         alt="Patreon"
+         height=120></a>
+</div>
