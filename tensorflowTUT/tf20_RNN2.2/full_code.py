@@ -100,8 +100,8 @@ class LSTMRNN(object):
                 name='average_cost')
             tf.summary.scalar('cost', self.cost)
 
-    def ms_error(self, y_target, y_pre):
-        return tf.square(tf.subtract(y_target, y_pre))
+    def ms_error(self, labels, logits):
+        return tf.square(tf.subtract(labels, logits))
 
     def _weight_variable(self, shape, name='weights'):
         initializer = tf.random_normal_initializer(mean=0., stddev=1.,)
