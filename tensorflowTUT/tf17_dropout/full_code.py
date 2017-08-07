@@ -9,7 +9,7 @@ Please note, this code is only for python 3+. If you are using python 2+, please
 from __future__ import print_function
 import tensorflow as tf
 from sklearn.datasets import load_digits
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 
 # load data
@@ -63,7 +63,6 @@ if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[
 else:
     init = tf.global_variables_initializer()
 sess.run(init)
-
 for i in range(500):
     # here to determine the keeping probability
     sess.run(train_step, feed_dict={xs: X_train, ys: y_train, keep_prob: 0.5})
