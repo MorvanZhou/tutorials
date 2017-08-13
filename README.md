@@ -21,6 +21,7 @@
 * [机器学习](https://morvanzhou.github.io/tutorials/machine-learning/)
   * [有趣的机器学习](https://morvanzhou.github.io/tutorials/machine-learning/ML-intro/)
   * [强化学习 (Reinforcement Learning)](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/)
+  * [进化算法 (Evolutionary Algorithm) 如遗传算法等](https://morvanzhou.github.io/tutorials/machine-learning/evolutionary-algorithm/)
   * [Tensorflow (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/)
   * [PyTorch (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/torch/)
   * [Theano (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/theano/)
