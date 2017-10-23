@@ -31,6 +31,7 @@
   * [Matplotlib (绘图)](https://morvanzhou.github.io/tutorials/data-manipulation/plt/)
 * [其他](https://morvanzhou.github.io/tutorials/others/)
   * [Git (版本管理)](https://morvanzhou.github.io/tutorials/others/git/)
+  * [Linux 简易教学](https://morvanzhou.github.io/tutorials/others/linux-basic/)
 
 ## 赞助和支持
 
