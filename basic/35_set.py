@@ -10,17 +10,20 @@ sentence = 'Welcome Back to This Tutorial'
 print(set(char_list))
 print(set(sentence))
 
-print(set(char_list+ list(sentence)))
+print(set(char_list + list(sentence)))
 
 unique_char = set(char_list)
 unique_char.add('x')
-unique_char.add(['y', 'z'])
+# unique_char.add(['y', 'z']) this is wrong
 print(unique_char)
 
+unique_char.remove('x')
+print(unique_char)
+unique_char.discard('d')
+print(unique_char)
 unique_char.clear()
 print(unique_char)
-print(char_list.discard('d'))
-print(char_list.remove('d'))
 
-print(char_list.difference({'a', 'e', 'i'}))
-print(char_list.intersection({'a', 'e', 'i'}))
+unique_char = set(char_list)
+print(unique_char.difference({'a', 'e', 'i'}))
+print(unique_char.intersection({'a', 'e', 'i'}))
