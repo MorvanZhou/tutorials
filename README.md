@@ -26,6 +26,7 @@
   * [Theano (神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/theano/)
   * [Keras (快速神经网络)](https://morvanzhou.github.io/tutorials/machine-learning/keras/)
   * [Scikit-Learn (机器学习)](https://morvanzhou.github.io/tutorials/machine-learning/sklearn/)
+  * [机器学习实战](https://morvanzhou.github.io/tutorials/machine-learning/ML-practice/)
 * [数据处理](https://morvanzhou.github.io/tutorials/data-manipulation/)
   * [Numpy & Pandas (处理数据)](https://morvanzhou.github.io/tutorials/data-manipulation/np-pd/)
   * [Matplotlib (绘图)](https://morvanzhou.github.io/tutorials/data-manipulation/plt/)
