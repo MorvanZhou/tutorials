@@ -75,8 +75,8 @@ print(re.search(r"ab+", "a"))                       # None
 print(re.search(r"ab+", "abbbbb"))                  # <_sre.SRE_Match object; span=(0, 6), match='abbbbb'>
 
 # {n, m} : occur n to m times
-print(re.search(r"ab{2,10}", "a"))                   # None
-print(re.search(r"ab{2,10}", "abbbbb"))              # <_sre.SRE_Match object; span=(0, 6), match='abbbbb'>
+print(re.search(r"ab{2,10}", "a"))                  # None
+print(re.search(r"ab{2,10}", "abbbbb"))             # <_sre.SRE_Match object; span=(0, 6), match='abbbbb'>
 
 
 # group
@@ -85,11 +85,20 @@ print(match.group())                                # 021523, Date: Feb/12/2017
 print(match.group(1))                               # 021523
 print(match.group(2))                               # Date: Feb/12/2017
 
+match = re.search(r"(?P<id>\d+), Date: (?P<date>.+)", "ID: 021523, Date: Feb/12/2017")
+print(match.group('id'))                            # 021523
+print(match.group('date'))                          # Date: Feb/12/2017
+
 # findall
 print(re.findall(r"r[ua]n", "run ran ren"))         # ['run', 'ran']
 
 # | : or
 print(re.findall(r"(run|ran)", "run ran ren"))      # ['run', 'ran']
+
+
+# compile
+compiled_re = re.compile(r"r[ua]n")
+print(compiled_re.search("dog ran to cat"))     # <_sre.SRE_Match object; span=(4, 7), match='ran'>
 
 
 
