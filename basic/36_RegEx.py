@@ -95,6 +95,12 @@ print(re.findall(r"r[ua]n", "run ran ren"))         # ['run', 'ran']
 # | : or
 print(re.findall(r"(run|ran)", "run ran ren"))      # ['run', 'ran']
 
+# re.sub() replace
+print(re.sub(r"r[au]ns", "catches", "dog runs to cat"))     # dog catches to cat
+
+# re.split()
+print(re.split(r"[,;\.]", "a;b,c.d;e"))             # ['a', 'b', 'c', 'd', 'e']
+
 
 # compile
 compiled_re = re.compile(r"r[ua]n")
