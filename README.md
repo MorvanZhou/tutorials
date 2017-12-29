@@ -30,6 +30,7 @@
 * [数据处理](https://morvanzhou.github.io/tutorials/data-manipulation/)
   * [Numpy & Pandas (处理数据)](https://morvanzhou.github.io/tutorials/data-manipulation/np-pd/)
   * [Matplotlib (绘图)](https://morvanzhou.github.io/tutorials/data-manipulation/plt/)
+  * [爬虫](https://morvanzhou.github.io/tutorials/data-manipulation/scraping/)
 * [其他](https://morvanzhou.github.io/tutorials/others/)
   * [Git (版本管理)](https://morvanzhou.github.io/tutorials/others/git/)
   * [Linux 简易教学](https://morvanzhou.github.io/tutorials/others/linux-basic/)
