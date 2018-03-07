@@ -17,7 +17,7 @@ print(re.search(pattern2, string))  # None
 
 
 # multiple patterns ("run" or "ran")
-ptn = r"r[au]n"       # start with "r" means regular expression
+ptn = r"r[au]n"       # start with "r" means raw string
 print(re.search(ptn, "dog runs to cat"))    # <_sre.SRE_Match object; span=(4, 7), match='run'>
 
 
