@@ -15,3 +15,5 @@ print(time())
 
 from time import *
 print(localtime())
+
+#type "help(time)" to see all funtion of time module
