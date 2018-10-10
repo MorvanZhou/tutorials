@@ -3,10 +3,10 @@
 # Youtube video tutorial: https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg
 # Youku video tutorial: http://i.youku.com/pythontutorial
 
-import tkinter as tk
+import tkinter
 import tkinter.messagebox
 
-window = tk.Tk()
+window = tkinter.Tk()
 window.title('my window')
 window.geometry('200x200')
 
@@ -16,11 +16,11 @@ def hit_me():
     #tk.messagebox.showerror(title='Hi', message='No!! never')   # return 'ok'
     #print(tk.messagebox.askquestion(title='Hi', message='hahahaha'))   # return 'yes' , 'no'
     #print(tk.messagebox.askyesno(title='Hi', message='hahahaha'))   # return True, False
-    print(tk.messagebox.asktrycancel(title='Hi', message='hahahaha'))   # return True, False
-    print(tk.messagebox.askokcancel(title='Hi', message='hahahaha'))   # return True, False
-    print(tk.messagebox.askyesnocancel(title="Hi", message="haha"))     # return, True, False, None
+    print(tkinter.messagebox.asktrycancel(title='Hi', message='hahahaha'))   # return True, False
+    print(tkinter.messagebox.askokcancel(title='Hi', message='hahahaha'))   # return True, False
+    print(tkinter.messagebox.askyesnocancel(title="Hi", message="haha"))     # return, True, False, None
 
-tk.Button(window, text='hit me', command=hit_me).pack()
+tkinter.Button(window, text='hit me', command=hit_me).pack()
 window.mainloop()
 
 
