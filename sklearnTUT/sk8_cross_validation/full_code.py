@@ -8,7 +8,7 @@ Please note, this code is only for python 3+. If you are using python 2+, please
 """
 from __future__ import print_function
 from sklearn.datasets import load_iris
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
 iris = load_iris()
@@ -23,13 +23,13 @@ y_pred = knn.predict(X_test)
 print(knn.score(X_test, y_test))
 
 # this is cross_val_score #
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 knn = KNeighborsClassifier(n_neighbors=5)
 scores = cross_val_score(knn, X, y, cv=5, scoring='accuracy')
 print(scores)
 
 # this is how to use cross_val_score to choose model and configs #
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
 k_range = range(1, 31)
 k_scores = []
