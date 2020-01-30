@@ -26,7 +26,7 @@ with open('save/clf.pickle', 'rb') as f:
    print(clf2.predict(X[0:1]))
 
 # method 2: joblib
-from sklearn.externals import joblib
+import joblib
 # Save
 joblib.dump(clf, 'save/clf.pkl')
 # restore
