@@ -1,11 +1,3 @@
-# View more python learning tutorial on my Youtube and Youku channel!!!
-
-# Youtube video tutorial: https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg
-# Youku video tutorial: http://i.youku.com/pythontutorial
-
-"""
-Please note, this code is only for python 3+. If you are using python 2+, please modify the code accordingly.
-"""
 from __future__ import print_function
 from sklearn import datasets
 from sklearn.linear_model import LinearRegression
@@ -18,7 +10,12 @@ model = LinearRegression()
 model.fit(data_X, data_y)
 
 print(model.predict(data_X[:4, :]))
+
+# model.coef_ 和 model.intercept_ 属于 Model 的属性，
+# 例如对于 LinearRegression 这个模型，这两个属性分别输出模型的斜率k和截距b（与y轴的交点）
 print(model.coef_)
 print(model.intercept_)
-print(model.get_params())
-print(model.score(data_X, data_y)) # R^2 coefficient of determination
+
+print(model.get_params())  # 取出之前定义的参数
+print(model.score(data_X, data_y))  # 对 Model 用 R^2 的方式进行打分，输出精确度
+# R^2: coefficient of determination, 决定系数

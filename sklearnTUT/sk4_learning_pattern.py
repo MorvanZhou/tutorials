@@ -1,11 +1,7 @@
-# View more python learning tutorial on my Youtube and Youku channel!!!
-
 # 网站：https://morvanzhou.github.io/tutorials/machine-learning/sklearn/
 # 视频：https://www.bilibili.com/video/BV1xW411Y7Qd?p=5
 
-"""
-Please note, this code is only for python 3+. If you are using python 2+, please modify the code accordingly.
-"""
+# KNN classifier为例
 from __future__ import print_function
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
