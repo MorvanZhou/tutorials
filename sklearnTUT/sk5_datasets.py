@@ -23,8 +23,12 @@ print(data_y[:4])
 
 X, y = datasets.make_regression(n_samples=100, n_features=1, n_targets=1, noise=10)
 plt.scatter(X, y)
-plt.show()
+plt.show()  # 散点输出
 
+# noise 越大的话，点就会越来越离散，例如 noise 由 10 变为 50.
+X, y = datasets.make_regression(n_samples=100, n_features=1, n_targets=1, noise=50)
+plt.scatter(X, y)
+plt.show()
 
 
 
