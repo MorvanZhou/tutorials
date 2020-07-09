@@ -6,6 +6,7 @@
 import multiprocessing as mp
 import time
 
+
 def job(v, num, l):
     l.acquire()
     for _ in range(10):
@@ -13,6 +14,7 @@ def job(v, num, l):
         v.value += num
         print(v.value)
     l.release()
+
 
 def multicore():
     l = mp.Lock()
@@ -24,8 +26,6 @@ def multicore():
     p1.join()
     p2.join()
 
+
 if __name__ == '__main__':
     multicore()
-
-
-
