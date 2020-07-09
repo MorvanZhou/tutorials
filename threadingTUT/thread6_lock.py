@@ -5,6 +5,7 @@
 
 import threading
 
+
 def job1():
     global A, lock
     lock.acquire()
@@ -13,6 +14,7 @@ def job1():
         print('job1', A)
     lock.release()
 
+
 def job2():
     global A, lock
     lock.acquire()
@@ -20,6 +22,7 @@ def job2():
         A += 10
         print('job2', A)
     lock.release()
+
 
 if __name__ == '__main__':
     lock = threading.Lock()
