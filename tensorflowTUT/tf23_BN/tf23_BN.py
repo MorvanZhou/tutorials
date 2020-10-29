@@ -1,5 +1,5 @@
 """
-visit https://morvanzhou.github.io/tutorials/ for more!
+visit https://mofanpy.com/tutorials/ for more!
 
 Build two networks.
 1. Without batch normalization

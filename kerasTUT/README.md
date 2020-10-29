@@ -2,19 +2,19 @@
 
 In these tutorials for Tensorflow, we will build our first Neural Network and try to build some advanced Neural Network architectures developed recent years.
 
-All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://morvanzhou.github.io/tutorials/) for more.
+All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://mofanpy.com/) for more.
 If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg) as well.
 
 
-* [Install](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/2-installation.py)
-* [Backend (Tensorflow/Theano)](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/3-backend.py)
+* [Install](kerasTUT/2-installation.py)
+* [Backend (Tensorflow/Theano)](kerasTUT/3-backend.py)
 * Networks
-  * [Simple Regressor](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/4-regressor_example.py)
-  * [Simple Classifier](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/5-classifier_example.py)
-  * [CNN](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/6-CNN_example.py)
-  * [RNN classifier](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/7-RNN_Classifier_example.py)
-  * [RNN LSTM regressor](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/8-RNN_LSTM_Regressor_example.py)
-  * [Autoencoder](https://github.com/MorvanZhou/tutorials/blob/master/kerasTUT/9-Autoencoder_example.py)
+  * [Simple Regressor](kerasTUT/4-regressor_example.py)
+  * [Simple Classifier](kerasTUT/5-classifier_example.py)
+  * [CNN](kerasTUT/6-CNN_example.py)
+  * [RNN classifier](kerasTUT/7-RNN_Classifier_example.py)
+  * [RNN LSTM regressor](kerasTUT/8-RNN_LSTM_Regressor_example.py)
+  * [Autoencoder](kerasTUT/9-Autoencoder_example.py)
 
 
 # Donation
@@ -31,7 +31,7 @@ If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com
 
 <div>
   <a href="https://www.patreon.com/morvan">
-    <img src="https://morvanzhou.github.io/static/img/support/patreon.jpg"
+    <img src="https://mofanpy.com/static/img/support/patreon.jpg"
          alt="Patreon"
          height=120></a>
 </div>

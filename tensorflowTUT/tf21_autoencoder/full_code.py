@@ -1,6 +1,6 @@
 # View more python learning tutorial on my Youtube and Youku channel!!!
 
-# My tutorial website: https://morvanzhou.github.io/tutorials/
+# My tutorial website: https://mofanpy.com/tutorials/
 
 from __future__ import division, print_function, absolute_import
 
