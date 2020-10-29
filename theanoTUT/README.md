@@ -3,20 +3,20 @@
 All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://mofanpy.com/tutorials/) for more.
 
 
-* [Install](theanoTUT/theano2_install.py)
-* [Example of Machine Learning](theanoTUT/theano3_what_does_ML_do.py)
+* [Install](theano2_install.py)
+* [Example of Machine Learning](theano3_what_does_ML_do.py)
 * Basic
-  * [Basic Usage](theanoTUT/theano4_basic_usage.py)
-  * [Function](theanoTUT/theano5_function.py)
-  * [Shared Variable](theanoTUT/theano6_shared_variable.py)
-  * [Activation Function](theanoTUT/theano7_activation_function.py)
+  * [Basic Usage](theano4_basic_usage.py)
+  * [Function](theano5_function.py)
+  * [Shared Variable](theano6_shared_variable.py)
+  * [Activation Function](theano7_activation_function.py)
 * Build a Network
-  * [Layer](theanoTUT/theano8_Layer_class.py)
-  * [Regression](theanoTUT/theano9_regression_nn/full_code.py)
-  * [Visualize Regression](theanoTUT/theano10_regression_visualization/full_code.py)
-  * [Classification](theanoTUT/theano11_classification_nn/full_code.py)
-  * [Regularization](https://github.com/MorvanZhou/tutorials/tree/master/theanoTUT/theano12_regularization)
-  * [Save model](theanoTUT/theano13_save/full_code.py)
+  * [Layer](theano8_Layer_class.py)
+  * [Regression](theano9_regression_nn/full_code.py)
+  * [Visualize Regression](theano10_regression_visualization/full_code.py)
+  * [Classification](theano11_classification_nn/full_code.py)
+  * [Regularization](https://github.com/MorvanZhou/tutorials/tree/master/theano12_regularization)
+  * [Save model](theano13_save/full_code.py)
 
 # Donation
 

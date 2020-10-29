@@ -3,27 +3,27 @@
 All methods mentioned below have their video and text tutorial in Chinese. Visit [莫烦 Python](https://mofanpy.com/tutorials/) for more.
 
 
-* [Install](matplotlibTUT/plt2_install.py)
-* [Basic usage](matplotlibTUT/plt3_simple_plot.py)
-  * [Figure](matplotlibTUT/plt4_figure.py)
-  * [Axis setting1](matplotlibTUT/plt5_ax_setting1.py)
-  * [Axis setting2](matplotlibTUT/plt6_ax_setting2.py)
-  * [Legend](matplotlibTUT/plt7_legend.py)
-  * [Annotation](matplotlibTUT/plt8_annotation.py)
-  * [Deal with Tick](matplotlibTUT/plt9_tick_visibility.py)
+* [Install](plt2_install.py)
+* [Basic usage](plt3_simple_plot.py)
+  * [Figure](plt4_figure.py)
+  * [Axis setting1](plt5_ax_setting1.py)
+  * [Axis setting2](plt6_ax_setting2.py)
+  * [Legend](plt7_legend.py)
+  * [Annotation](plt8_annotation.py)
+  * [Deal with Tick](plt9_tick_visibility.py)
 * Drawing
-  * [Scatter](matplotlibTUT/plt10_scatter.py)
-  * [Bar](matplotlibTUT/plt11_bar.py)
-  * [Contours](matplotlibTUT/plt12_contours.py)
-  * [Image](matplotlibTUT/plt13_image.py)
-  * [3D plot](matplotlibTUT/plt14_3d.py)
+  * [Scatter](plt10_scatter.py)
+  * [Bar](plt11_bar.py)
+  * [Contours](plt12_contours.py)
+  * [Image](plt13_image.py)
+  * [3D plot](plt14_3d.py)
 * Subplots
-  * [Subplot1](matplotlibTUT/plt15_subplot.py)
-  * [Grid Subplot](matplotlibTUT/plt16_grid_subplot.py)
-  * [Plot in Plot](matplotlibTUT/plt17_plot_in_plot.py)
-  * [Second y-axis](matplotlibTUT/plt18_secondary_yaxis.py)
+  * [Subplot1](plt15_subplot.py)
+  * [Grid Subplot](plt16_grid_subplot.py)
+  * [Plot in Plot](plt17_plot_in_plot.py)
+  * [Second y-axis](plt18_secondary_yaxis.py)
 * Animation
-  * [Function Animation](matplotlibTUT/plt19_animation.py)
+  * [Function Animation](plt19_animation.py)
 
 
 # Some plots from these tutorials:

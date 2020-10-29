@@ -6,15 +6,15 @@ All methods mentioned below have their video and text tutorial in Chinese. Visit
 If you speak Chinese, you can watch my [Youtube channel](https://www.youtube.com/channel/UCdyjiB5H8Pu7aDTNVXTTpcg) as well.
 
 
-* [Install](kerasTUT/2-installation.py)
-* [Backend (Tensorflow/Theano)](kerasTUT/3-backend.py)
+* [Install](2-installation.py)
+* [Backend (Tensorflow/Theano)](3-backend.py)
 * Networks
-  * [Simple Regressor](kerasTUT/4-regressor_example.py)
-  * [Simple Classifier](kerasTUT/5-classifier_example.py)
-  * [CNN](kerasTUT/6-CNN_example.py)
-  * [RNN classifier](kerasTUT/7-RNN_Classifier_example.py)
-  * [RNN LSTM regressor](kerasTUT/8-RNN_LSTM_Regressor_example.py)
-  * [Autoencoder](kerasTUT/9-Autoencoder_example.py)
+  * [Simple Regressor](4-regressor_example.py)
+  * [Simple Classifier](5-classifier_example.py)
+  * [CNN](6-CNN_example.py)
+  * [RNN classifier](7-RNN_Classifier_example.py)
+  * [RNN LSTM regressor](8-RNN_LSTM_Regressor_example.py)
+  * [Autoencoder](9-Autoencoder_example.py)
 
 
 # Donation
