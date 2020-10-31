@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://www.youtube.com/watch?v=pieI7rOXELI&list=PLXO45tsB95cIplu-fLMpUEEZTwrDNh6Ba" target="_blank">
-    <img width="60%" src="https://gitee.com/MorvanZhou/Reinforcement-learning-with-tensorflow/blob/master/RL_cover.jpg?raw=true" style="max-width:100%;">
+    <img width="60%" src="/MorvanZhou/Reinforcement-learning-with-tensorflow/blob/master/RL_cover.jpg?raw=true" style="max-width:100%;">
     </a>
 </p>
 
@@ -10,11 +10,11 @@
 
 # Note! This Reinforcement Learning Tutorial has been moved to anther independent repo:
 
-[https://gitee.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://gitee.com/MorvanZhou/Reinforcement-learning-with-tensorflow)
+[/MorvanZhou/Reinforcement-learning-with-tensorflow](/MorvanZhou/Reinforcement-learning-with-tensorflow)
 
 # 请注意! 这个 强化学习 的教程代码已经被移至另一个网页:
 
-[https://gitee.com/MorvanZhou/Reinforcement-learning-with-tensorflow](https://gitee.com/MorvanZhou/Reinforcement-learning-with-tensorflow)
+[/MorvanZhou/Reinforcement-learning-with-tensorflow](/MorvanZhou/Reinforcement-learning-with-tensorflow)
 
 
 # Donation

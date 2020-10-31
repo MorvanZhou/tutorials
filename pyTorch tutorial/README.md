@@ -1,6 +1,6 @@
 <p align="center">
     <a href="http://pytorch.org/" target="_blank">
-    <img width="40%" src="https://gitee.com/MorvanZhou/PyTorch-Tutorial/blob/master/logo.png" style="max-width:100%;">
+    <img width="40%" src="/MorvanZhou/PyTorch-Tutorial/blob/master/logo.png" style="max-width:100%;">
     </a>
 </p>
 
@@ -10,11 +10,11 @@
 
 # This pyTorch Tutorial has been moved to anther independent repo:
 
-[https://gitee.com/MorvanZhou/PyTorch-Tutorial](https://gitee.com/MorvanZhou/PyTorch-Tutorial)
+[/MorvanZhou/PyTorch-Tutorial](/MorvanZhou/PyTorch-Tutorial)
 
 # 请注意, 这个 PyTorch 的教程代码已经被移至另一个网页:
 
-[https://gitee.com/MorvanZhou/PyTorch-Tutorial](https://gitee.com/MorvanZhou/PyTorch-Tutorial)
+[/MorvanZhou/PyTorch-Tutorial](/MorvanZhou/PyTorch-Tutorial)
 
 
 # Donation
